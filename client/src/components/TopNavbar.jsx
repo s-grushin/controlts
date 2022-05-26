@@ -29,7 +29,9 @@ const TopNavbar = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#deets">{userState.userData.name}</Nav.Link>
+                            <Nav.Link href="#deets">
+                                {`${userState.userData.fio || userState.userData.username}`}
+                            </Nav.Link>
                         </Nav>
                         <Nav>
                             <Nav.Link href="#deets">Выйти</Nav.Link>

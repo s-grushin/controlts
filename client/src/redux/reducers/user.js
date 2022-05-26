@@ -1,5 +1,5 @@
 const initialState = {
-    userData: { name: 'Фамилия И.О', login: 'root', role: 'ADMIN' },
+    userData: { username: 'root', fio: 'Фамилия И.О', role: 'ADMIN' },
     isAuth: true
 };
 
