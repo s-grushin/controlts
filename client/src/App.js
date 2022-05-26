@@ -1,8 +1,17 @@
+import { Provider } from 'react-redux'
+import { Container } from 'react-bootstrap'
+import TopNavbar from './components/TopNavbar';
+import './index.css'
+import store from './redux/store';
+
 function App() {
   return (
-    <div className="App">
-      <h1>Control TC</h1>
-    </div>
+    <Provider store={store}>
+      <TopNavbar />
+      <Container>
+
+      </Container>
+    </Provider>
   );
 }
 
