@@ -1,5 +1,6 @@
 const initialState = {
-    isLogin: false
+    userData: { name: 'Фамилия И.О', login: 'root', role: 'ADMIN' },
+    isAuth: true
 };
 
 export const ACTION_1 = 'ACTION_1'
