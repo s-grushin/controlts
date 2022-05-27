@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import AuthPage from '../pages/AuthPage'
 import MainPage from '../pages/MainPage'
+import CheckoutPage from '../pages/CheckoutPage'
 
 const AppRouter = () => {
     const userState = useSelector(state => state.user)
@@ -12,6 +13,7 @@ const AppRouter = () => {
         return (
             <Routes>
                 <Route path='/' element={<MainPage />} />
+                <Route path='/checkout' element={<CheckoutPage />} />
                 <Route path='*' element={<Navigate to='/' />} />
             </Routes>
         )
