@@ -6,7 +6,9 @@ const VehicleMoveDetails = () => {
     <div>
       <Card>
         <Card.Body>
-          <Card.Title>Детальные данные</Card.Title>
+          <Card.Title>
+            <h6>Детальные данные</h6>
+          </Card.Title>
 
           <Row>
             {/* Марка авто */}

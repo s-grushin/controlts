@@ -4,21 +4,23 @@ import { useSelector } from 'react-redux'
 import AuthPage from '../pages/AuthPage'
 import MainPage from '../pages/MainPage'
 import VehicleCheckoutPage from '../pages/VehicleCheckoutPage'
+import CatalogsPage from '../pages/CatalogsPage'
 
 const AppRouter = () => {
     const userState = useSelector(state => state.user)
 
     if (userState.isAuth) {
-        // маршруты для залогиненого пользователя
+        // маршруты для авторизованого пользователя
         return (
             <Routes>
                 <Route path='/' element={<MainPage />} />
                 <Route path='/checkout' element={<VehicleCheckoutPage />} />
+                <Route path='/catalogs' element={<CatalogsPage />} />
                 <Route path='*' element={<Navigate to='/' />} />
             </Routes>
         )
     } else {
-        // маршруты для НЕ залогиненого пользователя
+        // маршруты для НЕ авторизованого пользователя
         return (
             <Routes>
                 <Route path='/auth' element={<AuthPage />} />
