@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
 
-const CheckoutHistory = () => {
+const VehicleMovesJournal = () => {
   return (
     <Table  responsive bordered hover size='sm'>
       <thead>
@@ -44,4 +44,4 @@ const CheckoutHistory = () => {
   )
 }
 
-export default CheckoutHistory
+export default VehicleMovesJournal
