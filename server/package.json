@@ -1,0 +1,17 @@
+{
+  "name": "controlts-server",
+  "version": "1.0.0",
+  "description": "backend for Control TC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "s.grushin",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
