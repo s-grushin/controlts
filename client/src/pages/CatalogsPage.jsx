@@ -4,14 +4,14 @@ import { Row, Col, ListGroup } from 'react-bootstrap'
 
 const CatalogsPage = () => {
 
-    const [menuItems, setMenuItems] = useState([
+    const menuItems = [
         { id: 1, name: 'services', path: '/catalogs/services', title: 'Услуги' },
         { id: 2, name: 'companies', path: '/catalogs/companies', title: 'Компании' },
         { id: 3, name: 'vehicles', path: '/catalogs/vehicles', title: 'Марки и модели авто' },
         { id: 4, name: 'parkings', path: '/catalogs/parkings', title: 'Места стоянки' },
         { id: 5, name: 'shippingTypes', path: '/catalogs/shippingTypes', title: 'Виды доставок' },
         { id: 6, name: 'users', path: '/catalogs/users', title: 'Пользователи' },
-    ])
+    ]
 
     const [selectedItem, setSelectedItem] = useState(null)
 
