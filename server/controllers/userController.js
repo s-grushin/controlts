@@ -1,17 +1,28 @@
+const User = require('../models/User')
+
+
 async function getAll(req, res) {
-    res.send('get all users')
+
+    const users = await User.findAll()
+    return res.json(users)
+
 }
 
 async function getOne(req, res) {
-    res.send('get one user')
+
+    const { id } = req.params
+    const user = await User.findOne({ where: { id } })
+    return res.json(user)
 }
 
 async function create(req, res) {
-    res.json({ result: 'ok' })
+
+    //return res.send(req.body)
+    const newUser = await User.create(req.body)
+    return res.json(newUser)
+
+
 }
-
-
-
 
 module.exports.getAll = getAll
 module.exports.getOne = getOne

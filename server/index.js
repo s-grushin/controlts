@@ -10,7 +10,10 @@ const PORT = process.env.WEBSERVER_PORT || 5000
 const DBNAME = process.env.MSSQL_DBNAME
 
 const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use('/api', appRouter)
+
 
 
 async function start() {
@@ -18,6 +21,7 @@ async function start() {
     try {
         await mssql.authenticate()
         console.log(`connected to ${DBNAME}`.green);
+        await mssql.sync()
         await runWebServer()
     } catch (error) {
         console.log('Error on starting server'.red, error);
