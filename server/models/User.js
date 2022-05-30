@@ -13,6 +13,16 @@ const User = db.define('User', {
     fullName: {
         type: DataTypes.STRING,
     },
+    role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'USER'
+    },
+    isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
+    },
     phoneNumber1: {
         type: DataTypes.STRING,
     },
