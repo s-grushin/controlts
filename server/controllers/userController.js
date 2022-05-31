@@ -1,44 +1,66 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const ApiResult = require('../utils/ApiResult')
 
 
-async function getAll(req, res) {
+async function getAll(req, res, next) {
 
-    const users = await User.findAll()
-    return res.json(users)
+    try {
+        const users = await User.findAll()
+        return res.json(ApiResult.success(users))
+    } catch (error) {
+        return next(ApiResult.badRequest(error.message))
+    }
 
 }
 
-async function getOne(req, res) {
+async function getOne(req, res, next) {
 
     const { id } = req.params
-    const user = await User.findOne({ where: { id } })
-    return res.json(user)
+    try {
+        const user = await User.findOne({ where: { id } })
+        return res.json(ApiResult.success(user))
+    } catch (error) {
+        return next(ApiResult.badRequest(error.message))
+    }
 }
 
 async function create(req, res, next) {
 
+    const { login, password } = req.body
+
     try {
-        const user = await User.create(req.body)
+
+        let user
+        user = await User.findOne({ where: { login } })
+        if (user) {
+            return res.json(ApiResult.badRequest('that user is already exist'))
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 5)
+        user = await User.create({ ...req.body, password: hashedPassword })
         return res.json(ApiResult.success(user))
+        
     } catch (error) {
         next(ApiResult.badRequest(error.message))
     }
 
-
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
 
-    const { login } = req.body
+    const { login, password } = req.body
     const user = await User.findOne({ where: { login } })
     if (!user) {
-        return res.send('user not exist')
+        return next(ApiResult.badRequest('user not found'))        
     }
-
-    return res.send(user)
-
+    const isMatched = await bcrypt.compare(password, user.password)
+    if (isMatched) {
+        return res.json(ApiResult.success('login OK!'))
+    } else {
+        return next(ApiResult.badRequest('wrong password'))
+    }
 }
 
 module.exports.getAll = getAll
