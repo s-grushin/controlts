@@ -3,6 +3,7 @@ const mssql = require('./db/mssql')
 const appRouter = require('./router')
 const dotenv = require('dotenv')
 const colors = require('colors')
+const errorHandleMiddleware = require('./middleware/apiErrorHandleMiddleware')
 
 dotenv.config()
 
@@ -13,6 +14,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api', appRouter)
+app.use(errorHandleMiddleware)
 
 
 

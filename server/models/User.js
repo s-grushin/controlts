@@ -16,7 +16,10 @@ const User = db.define('User', {
     role: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'USER'
+        validate: {
+            isIn: ['USER', 'ADMIN', 'AUDITOR']
+        },
+        defaultValue: 'USER',
     },
     isActive: {
         type: DataTypes.BOOLEAN,

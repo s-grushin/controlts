@@ -1,5 +1,7 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const ApiError = require('../utils/ApiError')
+const ApiResult = require('../utils/ApiResult')
 
 
 async function getAll(req, res) {
@@ -16,11 +18,15 @@ async function getOne(req, res) {
     return res.json(user)
 }
 
-async function create(req, res) {
+async function create(req, res, next) {
 
-    //return res.send(req.body)
-    const newUser = await User.create(req.body)
-    return res.json(newUser)
+    try {
+        const user = await User.create(req.body)
+        return res.json(ApiResult.success(user))
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+
 
 }
 
