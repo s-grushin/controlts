@@ -4,7 +4,7 @@ const appRouter = require('./router')
 const dotenv = require('dotenv')
 const colors = require('colors')
 const errorHandleMiddleware = require('./middleware/apiErrorHandleMiddleware')
-const init = require('./db/init')
+const dbInit = require('./db/init')
 
 
 dotenv.config()
@@ -26,7 +26,7 @@ async function start() {
         await mssql.authenticate()
         console.log(`connected to ${DBNAME}`.green);
         await mssql.sync()
-        await init()
+        await dbInit()
         await runWebServer()
     } catch (error) {
         console.log('Error on starting server'.red, error);
