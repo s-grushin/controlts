@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Row, Col, ListGroup } from 'react-bootstrap'
+import CatalogRouter from '../components/Catalogs/CatalogRouter'
 
 const CatalogsPage = () => {
 
@@ -16,12 +17,19 @@ const CatalogsPage = () => {
     const [selectedItem, setSelectedItem] = useState(null)
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     const clickMenuItemHandler = (id) => {
         const selectedItem = menuItems.find(item => item.id === id)
         setSelectedItem(selectedItem)
         navigate(selectedItem.path)
     }
+
+    useEffect(() => {
+        console.log(location);
+
+    }, [])
+
 
     return (
         <div>
@@ -42,6 +50,8 @@ const CatalogsPage = () => {
 
                 <Col md={9}>
                     {selectedItem === null ? 'Выберите справочник' : selectedItem.title}
+                    <hr />
+                    <CatalogRouter />
                 </Col>
 
             </Row>

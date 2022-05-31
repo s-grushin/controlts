@@ -1,6 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Users = () => {
+
+    useEffect(() => {
+     
+        
+
+    }, [])
+    
+
     return (
         <div>Users</div>
     )
