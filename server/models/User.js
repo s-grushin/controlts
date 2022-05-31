@@ -17,7 +17,8 @@ const User = db.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            isIn: ['USER', 'ADMIN', 'AUDITOR']
+            isIn: ['USER', 'ADMIN', 'AUDITOR'],
+            notEmpty: true,
         },
         defaultValue: 'USER',
     },

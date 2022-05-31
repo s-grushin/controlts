@@ -1,6 +1,5 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
-const ApiError = require('../utils/ApiError')
 const ApiResult = require('../utils/ApiResult')
 
 
@@ -24,7 +23,7 @@ async function create(req, res, next) {
         const user = await User.create(req.body)
         return res.json(ApiResult.success(user))
     } catch (error) {
-        next(ApiError.badRequest(error.message))
+        next(ApiResult.badRequest(error.message))
     }
 
 
