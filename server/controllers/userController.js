@@ -41,7 +41,7 @@ async function create(req, res, next) {
         const hashedPassword = await bcrypt.hash(password, 5)
         user = await User.create({ ...req.body, password: hashedPassword })
         return res.json(ApiResult.success(user))
-        
+
     } catch (error) {
         next(ApiResult.badRequest(error.message))
     }
@@ -53,11 +53,12 @@ async function login(req, res, next) {
     const { login, password } = req.body
     const user = await User.findOne({ where: { login } })
     if (!user) {
-        return next(ApiResult.badRequest('user not found'))        
+        return next(ApiResult.badRequest('user not found'))
     }
     const isMatched = await bcrypt.compare(password, user.password)
     if (isMatched) {
-        return res.json(ApiResult.success('login OK!'))
+        const token = jwt.sign({ login, fullName: user.fullName, role: user.role }, process.env.JWT_SECRET, { expiresIn: '30d' })
+        return res.json(ApiResult.success(token))
     } else {
         return next(ApiResult.badRequest('wrong password'))
     }
