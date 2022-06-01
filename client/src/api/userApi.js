@@ -11,6 +11,8 @@ export const logout = async () => {
 }
 
 export const getAll = async () => {
+
     const response = await axios(`${host}/api/user/`)
     return response.data
+
 }

@@ -4,6 +4,7 @@ function useApiFetch(apiFunc) {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     const fetchServer = () => {
         // function for testing loading
@@ -15,16 +16,23 @@ function useApiFetch(apiFunc) {
     }
 
     async function apiFetch() {
-        const json = await apiFunc()
-        setData(json);
-        setLoading(false);
+        try {
+            const json = await apiFunc()
+            setData(json);
+        } catch (error) {
+            setError(true)
+        } finally {
+            setLoading(false);
+        }
     }
+
+    
 
     useEffect(() => {
         apiFetch();
     }, []);
 
-    return [data, loading];
+    return [data, loading, error];
 }
 
 export { useApiFetch };
