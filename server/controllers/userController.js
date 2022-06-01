@@ -7,7 +7,7 @@ const ApiError = require('../utils/ApiError')
 async function getAll(req, res, next) {
 
     try {
-        const users = await User.findAll()
+        const users = await User.findAll({ attributes: { exclude: ['password'] } })
         return res.json(users)
     } catch (error) {
         return next(ApiError.badRequest(error.message))
@@ -19,7 +19,7 @@ async function getOne(req, res, next) {
 
     const { id } = req.params
     try {
-        const user = await User.findOne({ where: { id } })
+        const user = await User.findOne({ where: { id }, attributes: { exclude: ['password'] } })
         return res.json(user)
     } catch (error) {
         return next(ApiError.badRequest(error.message))

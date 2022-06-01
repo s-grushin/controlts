@@ -34,7 +34,7 @@ function useApiFetch(apiFunc) {
         // eslint-disable-next-line
     }, []);
 
-    return [data, loading, error];
+    return [data, loading, error]
 }
 
 export { useApiFetch };

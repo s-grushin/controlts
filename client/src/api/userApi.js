@@ -16,3 +16,11 @@ export const getAll = async () => {
     return response.data
 
 }
+
+export const getOne = async (id) => {
+
+    const response = await axios(`${host}/api/user/${id}`)
+    return response.data
+
+}
+
