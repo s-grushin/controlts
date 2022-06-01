@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const mssql = require('./db/mssql')
 const appRouter = require('./router')
 const dotenv = require('dotenv')
@@ -13,6 +14,7 @@ const PORT = process.env.WEBSERVER_PORT || 5000
 const DBNAME = process.env.MSSQL_DBNAME
 
 const app = express()
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api', appRouter)

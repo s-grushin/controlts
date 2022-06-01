@@ -1,4 +1,4 @@
-const ApiResult = require('../utils/ApiResult')
+const ApiResult = require('../utils/ApiError')
 
 function apiErrorHandleMiddleware(err, req, res, next) {
 

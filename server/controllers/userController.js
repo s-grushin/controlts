@@ -1,16 +1,16 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const ApiResult = require('../utils/ApiResult')
+const ApiError = require('../utils/ApiError')
 
 
 async function getAll(req, res, next) {
 
     try {
         const users = await User.findAll()
-        return res.json(ApiResult.success(users))
+        return res.json(users)
     } catch (error) {
-        return next(ApiResult.badRequest(error.message))
+        return next(ApiError.badRequest(error.message))
     }
 
 }
@@ -20,9 +20,9 @@ async function getOne(req, res, next) {
     const { id } = req.params
     try {
         const user = await User.findOne({ where: { id } })
-        return res.json(ApiResult.success(user))
+        return res.json(user)
     } catch (error) {
-        return next(ApiResult.badRequest(error.message))
+        return next(ApiError.badRequest(error.message))
     }
 }
 
@@ -35,15 +35,15 @@ async function create(req, res, next) {
         let user
         user = await User.findOne({ where: { login } })
         if (user) {
-            return res.json(ApiResult.badRequest('that user is already exist'))
+            return res.json(ApiError.badRequest('that user is already exist'))
         }
 
         const hashedPassword = await bcrypt.hash(password, 5)
         user = await User.create({ ...req.body, password: hashedPassword })
-        return res.json(ApiResult.success(user))
+        return res.json(user)
 
     } catch (error) {
-        next(ApiResult.badRequest(error.message))
+        next(ApiError.badRequest(error.message))
     }
 
 }
@@ -53,14 +53,14 @@ async function login(req, res, next) {
     const { login, password } = req.body
     const user = await User.findOne({ where: { login } })
     if (!user) {
-        return next(ApiResult.badRequest('user not found'))
+        return next(ApiError.badRequest('user not found'))
     }
     const isMatched = await bcrypt.compare(password, user.password)
     if (isMatched) {
         const token = jwt.sign({ login, fullName: user.fullName, role: user.role }, process.env.JWT_SECRET, { expiresIn: '30d' })
-        return res.json(ApiResult.success(token))
+        return res.json(token)
     } else {
-        return next(ApiResult.badRequest('wrong password'))
+        return next(ApiError.badRequest('wrong password'))
     }
 }
 

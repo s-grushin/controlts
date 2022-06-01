@@ -25,11 +25,6 @@ const CatalogsPage = () => {
         navigate(selectedItem.path)
     }
 
-    useEffect(() => {
-        console.log(location);
-
-    }, [])
-
 
     return (
         <div>
