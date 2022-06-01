@@ -15,6 +15,7 @@ function useApiFetch(apiFunc) {
         })
     }
 
+
     async function apiFetch() {
         try {
             const json = await apiFunc()
@@ -26,10 +27,11 @@ function useApiFetch(apiFunc) {
         }
     }
 
-    
 
     useEffect(() => {
         apiFetch();
+        
+        // eslint-disable-next-line
     }, []);
 
     return [data, loading, error];

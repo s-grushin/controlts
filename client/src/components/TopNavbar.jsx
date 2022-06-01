@@ -25,7 +25,7 @@ const TopNavbar = () => {
                             </LinkContainer>
                             <NavDropdown title="Сервис" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Настройки</NavDropdown.Item>
-                                <LinkContainer to='/catalogs'>
+                                <LinkContainer to='/catalog'>
                                     <NavDropdown.Item>Справочники</NavDropdown.Item>
                                 </LinkContainer>
                                 {/* <NavDropdown.Divider />

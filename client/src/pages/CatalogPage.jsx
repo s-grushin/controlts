@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Row, Col, ListGroup } from 'react-bootstrap'
-import CatalogRouter from '../components/Catalogs/CatalogRouter'
+import CatalogRouter from '../components/Catalog/CatalogRouter'
 
-const CatalogsPage = () => {
+const CatalogPage = () => {
 
     const menuItems = [
-        { id: 1, name: 'services', path: '/catalogs/services', title: 'Услуги' },
-        { id: 2, name: 'companies', path: '/catalogs/companies', title: 'Компании' },
-        { id: 3, name: 'vehicles', path: '/catalogs/vehicles', title: 'Марки и модели авто' },
-        { id: 4, name: 'parkings', path: '/catalogs/parkings', title: 'Места стоянки' },
-        { id: 5, name: 'shippingTypes', path: '/catalogs/shippingTypes', title: 'Виды доставок' },
-        { id: 6, name: 'users', path: '/catalogs/users', title: 'Пользователи' },
+        { id: 1, name: 'services', path: '/catalog/services', title: 'Услуги' },
+        { id: 2, name: 'companies', path: '/catalog/companies', title: 'Компании' },
+        { id: 3, name: 'vehicles', path: '/catalog/vehicles', title: 'Марки и модели авто' },
+        { id: 4, name: 'parkings', path: '/catalog/parkings', title: 'Места стоянки' },
+        { id: 5, name: 'shippingTypes', path: '/catalog/shippingTypes', title: 'Виды доставок' },
+        { id: 6, name: 'users', path: '/catalog/users', title: 'Пользователи' },
     ]
 
     const [selectedItem, setSelectedItem] = useState(null)
@@ -29,7 +29,7 @@ const CatalogsPage = () => {
     return (
         <div>
             <Row className='mt-1'>
-                <h5 className='d-flex justify-content-center'>Справочники</h5>
+                <h5 className='d-flex justify-content-end'>Справочники</h5>
                 <Col md={3}>
                     <ListGroup>
                         {menuItems.map(item => (
@@ -44,8 +44,6 @@ const CatalogsPage = () => {
                 </Col>
 
                 <Col md={9}>
-                    {selectedItem === null ? 'Выберите справочник' : selectedItem.title}
-                    <hr />
                     <CatalogRouter />
                 </Col>
 
@@ -55,4 +53,4 @@ const CatalogsPage = () => {
     )
 }
 
-export default CatalogsPage
+export default CatalogPage
