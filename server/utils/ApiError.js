@@ -1,27 +1,27 @@
 class ApiError {
-    constructor(statusCode, payload) {
+    constructor(statusCode, message) {
         this.statusCode = statusCode
-        this.payload = payload
+        this.message = message
     }
 
-    static badRequest(payload) {
-        return new ApiError(400, payload)
+    static badRequest(message) {
+        return new ApiError(400, message)
     }
 
-    static unAuthorized(payload) {
-        return new ApiError(401, payload)
+    static unAuthorized(message) {
+        return new ApiError(401, message)
     }
 
-    static forbidden(payload) {
-        return new ApiError(403, payload)
+    static forbidden(message) {
+        return new ApiError(403, message)
     }
 
-    static notFound(payload) {
-        return new ApiError(404, payload)
+    static notFound(message) {
+        return new ApiError(404, message)
     }
 
-    static internalError(payload) {
-        return new ApiError(500, payload)
+    static internalError(message) {
+        return new ApiError(500, message)
     }
 
 }

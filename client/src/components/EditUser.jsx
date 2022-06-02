@@ -3,7 +3,7 @@ import { useParams, useNavigate, } from 'react-router-dom'
 import { Card, Form, Spinner } from 'react-bootstrap'
 import EntityBar from './EntityBar'
 import { useApiFetch } from '../hooks/useApiFetch'
-import { getOne } from '../api/userApi'
+import { getOne, update } from '../api/userApi'
 import { USER_ROLES } from '../constants/appConstants'
 
 
@@ -18,9 +18,9 @@ const EditUser = () => {
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const { id } = useParams()
   const navigate = useNavigate()
-
 
   useEffect(() => {
 
@@ -35,13 +35,25 @@ const EditUser = () => {
 
   const onChangeHandler = (event) => {
     const updatedUser = { ...user }
-    updatedUser[event.target.name] = event.target.value
+    if (event.target.type === 'checkbox') {
+      updatedUser[event.target.name] = event.target.checked
+    } else {
+      updatedUser[event.target.name] = event.target.value
+    }
     setUser(updatedUser)
   }
 
 
-  const saveHandler = () => {
-    console.log(user);
+  const saveHandler = async () => {
+    setIsSaving(true)
+    try {
+      const updated = await update(user)
+      navigate('/catalog/users')
+    } catch (error) {
+      alert(error)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const backHandler = () => {
@@ -101,24 +113,33 @@ const EditUser = () => {
                 {/* phoneNumber1 */}
                 <Form.Group className="mb-3">
                   <Form.Label>Номер телефона 1</Form.Label>
-                  <Form.Control type="text" placeholder="Номер телефона 1" size='sm' />
+                  <Form.Control type="text" placeholder="Номер телефона 1" size='sm' name='phoneNumber1'
+                    value={user.phoneNumber1 || ''}
+                    onChange={onChangeHandler}
+                  />
                 </Form.Group>
 
                 {/* phoneNumber2 */}
                 <Form.Group className="mb-3">
                   <Form.Label>Номер телефона 2</Form.Label>
-                  <Form.Control type="text" placeholder="Номер телефона 2" size='sm' />
+                  <Form.Control type="text" placeholder="Номер телефона 2" size='sm' name='phoneNumber2'
+                    value={user.phoneNumber2 || ''}
+                    onChange={onChangeHandler}
+                  />
                 </Form.Group>
 
                 {/* isActive */}
                 <Form.Group className="mb-3">
-                  <Form.Check label='Используется' />
+                  <Form.Check label='Используется' name='isActive'
+                    defaultChecked={user.isActive}
+                    onChange={onChangeHandler}
+                  />
                   <Form.Text className="text-muted">
                     снять галку если необходимо отключить пользователя
                   </Form.Text>
                 </Form.Group>
 
-                <EntityBar saveHandler={saveHandler} backHandler={backHandler} />
+                <EntityBar saveHandler={saveHandler} backHandler={backHandler} isSaving={isSaving} />
               </Card.Body>
             </Card>
       }

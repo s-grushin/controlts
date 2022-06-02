@@ -1,11 +1,23 @@
-import React from 'react'
-import { Button } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, Spinner } from 'react-bootstrap'
 
-const EntityBar = ({ saveHandler, backHandler }) => {
+const EntityBar = ({ saveHandler, backHandler, isSaving }) => {
+
     return (
         <>
-            <Button variant="outline-primary" size='sm' onClick={saveHandler}>Сохранить и выйти</Button>
+            <Button variant="outline-primary" size='sm' onClick={saveHandler} disabled={isSaving}>
+                {
+                    isSaving ?
+                        <>
+                            Сохраняется...
+                            <Spinner animation="grow" variant="primary" size='sm' className='mx-2' />
+                        </>
+                        :
+                        'Сохранить и выйти'
+                }
+            </Button>
             <Button variant="outline-primary" size='sm' className='mx-2' onClick={backHandler}>Назад</Button>
+
         </>
     )
 }

@@ -24,3 +24,17 @@ export const getOne = async (id) => {
 
 }
 
+export const update = async (user) => {
+
+    try {
+        const response = await axios(`${host}/api/user`, {
+            method: 'put',
+            data: user
+        })
+        return response.data
+
+    } catch (error) {
+        throw `Ошибка сохранения пользователя. ${error.response.data.message || error.message}`
+    }
+}
+

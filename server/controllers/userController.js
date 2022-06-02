@@ -48,6 +48,19 @@ async function create(req, res, next) {
 
 }
 
+async function update(req, res, next) {
+
+    const user = req.body
+    try {
+        const updated = await User.update(user, { where: { id: user.id } })
+        return res.json(updated)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+}
+
+
+
 async function login(req, res, next) {
 
     const { login, password } = req.body
@@ -67,4 +80,5 @@ async function login(req, res, next) {
 module.exports.getAll = getAll
 module.exports.getOne = getOne
 module.exports.create = create
+module.exports.update = update
 module.exports.login = login
