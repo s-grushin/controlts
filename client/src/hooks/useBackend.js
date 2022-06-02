@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-function useApiFetch(apiFunc) {
+function useBackend(apiFunc) {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    // function for testing loading
     const fetchServer = () => {
-        // function for testing loading
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(apiFunc())
@@ -37,4 +37,4 @@ function useApiFetch(apiFunc) {
     return [data, loading, error]
 }
 
-export { useApiFetch };
+export { useBackend };

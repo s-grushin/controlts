@@ -2,11 +2,11 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Table, Spinner, Button } from 'react-bootstrap'
 import { getAll } from '../../api/userApi'
-import { useApiFetch } from '../../hooks/useApiFetch'
+import { useBackend } from '../../hooks/useBackend'
 
 const Users = () => {
 
-    const [users, loading, error] = useApiFetch(getAll)
+    const [users, loading, error] = useBackend(getAll)
     const navigate = useNavigate()
 
     const openUserHandler = (id) => {

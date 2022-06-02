@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate, } from 'react-router-dom'
 import { Card, Form, Spinner } from 'react-bootstrap'
 import EntityBar from './EntityBar'
-import { useApiFetch } from '../hooks/useApiFetch'
+import { useApiFetch } from '../hooks/useBackend'
 import { getOne, update } from '../api/userApi'
 import { USER_ROLES } from '../constants/appConstants'
 
