@@ -25,10 +25,12 @@ const Services = () => {
         { id: 1, name: 'Наименование' },
         { id: 2, name: 'Цена' }
       ],
-      topBar: [
-        { name: 'add', text: 'Добавить', handler: addService },
-        { name: 'delete', text: 'Удалить', handler: deleteService }
-      ],
+      topBar: {
+        buttons: [
+          { name: 'add', text: 'Добавить', handler: addService },
+          { name: 'delete', text: 'Удалить', handler: deleteService }
+        ]
+      },
       state: {
         selectedEntities: [selectedServices, setSelectedServices]
       }

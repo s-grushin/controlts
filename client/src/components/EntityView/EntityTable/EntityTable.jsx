@@ -7,16 +7,10 @@ const EntityTable = ({ entities, columns, state }) => {
     const [selectedEntities, setSelectedEntities] = state.selectedEntities
 
 
-    const clickRowHandler = (id) => {
+    const clickRowHandler = (id, event) => {
 
-        const isAlreadySelected = selectedEntities.find(entity => entity.id === id)
-        if (isAlreadySelected) {
-            const filtered = selectedEntities.filter(selEntity => selEntity.id !== id)
-            setSelectedEntities(filtered)
-        } else {
-            const selectedRow = entities.find(entity => entity.id === id)
-            setSelectedEntities([...selectedEntities, selectedRow])
-        }
+        const selectedRow = entities.find(entity => entity.id === id)  
+        setSelectedEntities([selectedRow])
 
     }
 
@@ -45,7 +39,7 @@ const EntityTable = ({ entities, columns, state }) => {
                         <tr
                             className={setRowClass(entity)}
                             key={entity.name}
-                            onClick={() => clickRowHandler(entity.id)}
+                            onClick={(event) => clickRowHandler(entity.id, event)}
                         >
                             <td key={e_index}>{e_index + 1}</td>
                             {
