@@ -1,0 +1,11 @@
+.entityTable tbody tr {
+  cursor: pointer;  
+}
+
+.selectedRow {
+  background-color: lightblue;
+  color: white;
+}
+
+
+

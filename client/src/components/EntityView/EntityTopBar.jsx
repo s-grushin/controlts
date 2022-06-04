@@ -1,21 +1,22 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 
-const EntityActions = ({ actions }) => {
+const EntityTopBar = ({ topBar }) => {
 
     return (
         <>
-            {actions.map(action =>
-                <Button key={action.name}
+            {topBar.map(item =>
+                <Button key={item.name}
                     variant="outline-secondary"
                     size='sm'
-                    onClick={action.handler}
+                    className='me-2'
+                    onClick={item.handler}
                 >
-                    {action.text}
+                    {item.text}
                 </Button>
             )}
         </>
     )
 }
 
-export default EntityActions
+export default EntityTopBar

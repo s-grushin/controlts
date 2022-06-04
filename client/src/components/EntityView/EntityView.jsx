@@ -1,24 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import EntityActions from './EntityActions'
-import EntityTable from './EntityTable'
+import EntityTopBar from './EntityTopBar'
+import EntityTable from './EntityTable/EntityTable'
 
 
-const EntityList = ({ entities, columns, actions }) => {
+const EntityView = ({ props }) => {
   return (
     <>
       <div className='mb-2'>
-        <EntityActions actions={actions} />
+        <EntityTopBar topBar={props.topBar} state={props.state} />
       </div>
-      <EntityTable entities={entities} columns={columns} />
+      <EntityTable entities={props.entities} columns={props.columns} state={props.state} />
     </>
   )
 }
 
-EntityList.propTypes = {
-  entities: PropTypes.array,
-  columns: PropTypes.array,
-  actions: PropTypes.array,
+EntityView.propTypes = {
+  props: PropTypes.object
 }
 
-export default EntityList
+export default EntityView
