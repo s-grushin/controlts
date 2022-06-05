@@ -20,7 +20,7 @@ const EntityTopBar = ({ topBar, state }) => {
         <>
             {topBar.buttons.map(item =>
                 <Button key={item.name}
-                    variant="outline-secondary"
+                    variant={item.variant || "outline-secondary"}
                     size='sm'
                     className='me-2'
                     onClick={item.handler}

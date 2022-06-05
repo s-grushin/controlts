@@ -27,8 +27,8 @@ const Services = () => {
       ],
       topBar: {
         buttons: [
-          { name: 'add', text: 'Добавить', handler: addService },
-          { name: 'delete', text: 'Удалить', handler: deleteService }
+          { name: 'add', text: 'Добавить', variant:'outline-primary', handler: addService },
+          { name: 'delete', text: 'Удалить', variant:'outline-danger', handler: deleteService }
         ]
       },
       state: {
