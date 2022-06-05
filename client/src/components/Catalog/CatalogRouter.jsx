@@ -1,14 +1,16 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Services from './Services'
+import Services from './Services/Services'
 import Users from './Users'
 import EditUser from '../EditUser'
+import AddService from '../../components/Catalog/Services/AddService'
 
 const CatalogRouter = () => {
     return (
         <>
             <Routes>
                 <Route path='/services' element={<Services />} />
+                <Route path='/services/add' element={<AddService />} />
                 <Route path='/users' element={<Users />} />
                 <Route path='/users/:id' element={<EditUser />} />
             </Routes>

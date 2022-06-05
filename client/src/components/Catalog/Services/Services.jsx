@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
-import { useLoadData } from '../../hooks/backend.hook'
-import { getAll } from '../../api/backend/serviceApi'
-import EntityView from '../EntityView/EntityView'
+import { useLoadData } from '../../../hooks/backend.hook'
+import { getAll } from '../../../api/backend/serviceApi'
+import EntityView from '../../EntityView/EntityView'
 
 const Services = () => {
 
   const [isLoading, services, isError, errorMesage] = useLoadData(getAll)
   const [selectedServices, setSelectedServices] = useState([])
+  const navigate = useNavigate()
 
   const createEntityViewProps = () => {
 
     const addService = () => {
-      console.log('addService');
+      navigate('/catalog/services/add')
     }
 
     const deleteService = () => {
@@ -27,8 +29,8 @@ const Services = () => {
       ],
       topBar: {
         buttons: [
-          { name: 'add', text: 'Добавить', variant:'outline-primary', handler: addService },
-          { name: 'delete', text: 'Удалить', variant:'outline-danger', handler: deleteService }
+          { name: 'add', text: 'Добавить', variant: 'outline-primary', handler: addService },
+          { name: 'delete', text: 'Удалить', variant: 'outline-danger', handler: deleteService }
         ]
       },
       state: {
