@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import { Row, Col, ListGroup } from 'react-bootstrap'
-import CatalogRouter from '../components/Catalog/CatalogRouter'
-import AppRouter from '../components/AppRouter'
 
 const CatalogPage = () => {
 
@@ -18,7 +16,6 @@ const CatalogPage = () => {
     const [selectedItem, setSelectedItem] = useState(null)
 
     const navigate = useNavigate()
-    const location = useLocation()
 
     const clickMenuItemHandler = (id) => {
         const selectedItem = menuItems.find(item => item.id === id)

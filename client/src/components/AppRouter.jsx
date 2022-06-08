@@ -3,13 +3,12 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import AuthPage from '../pages/AuthPage'
 import WorkPage from '../pages/WorkPage'
-import VehicleCheckoutPage from '../pages/VehicleCheckoutPage'
 import CatalogPage from '../pages/CatalogPage'
 import Services from './Catalog/Services/Services'
-import Users from './Catalog/Users'
 import Layout from './Layout/Layout'
 import NotFoundPage from '../pages/NotFoundPage'
 import AddService from './Catalog/Services/AddService'
+import EditService from './Catalog/Services/EditService'
 
 const AppRouter = () => {
     const userState = useSelector(state => state.user)
@@ -24,7 +23,7 @@ const AppRouter = () => {
                     <Route path='catalog' element={<CatalogPage />}>
                         <Route path='services' element={<Services />} />
                         <Route path='services/add' element={<AddService />} />
-                        <Route path='services/:id' element={<p>Edit service</p>} />
+                        <Route path='services/:id' element={<EditService />} />
                     </Route>
                 </Route>
             </Routes>
