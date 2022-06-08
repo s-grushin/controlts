@@ -2,7 +2,7 @@ import React from 'react'
 import VehicleMovesJournal from '../components/VehicleMovesJournal'
 import VehicleMoveDetails from '../components/VehicleMoveDetails'
 
-const MainPage = () => {
+const WorkPage = () => {
   return (
     <div className="row">
       <div className="col-md-7 mt-1">
@@ -16,4 +16,4 @@ const MainPage = () => {
   )
 }
 
-export default MainPage
+export default WorkPage

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import { Row, Col, ListGroup } from 'react-bootstrap'
 import CatalogRouter from '../components/Catalog/CatalogRouter'
+import AppRouter from '../components/AppRouter'
 
 const CatalogPage = () => {
 
@@ -43,8 +44,8 @@ const CatalogPage = () => {
                     </ListGroup>
                 </Col>
 
-                <Col md={9}>                    
-                    <CatalogRouter />
+                <Col md={9}>
+                    <Outlet />
                 </Col>
 
             </Row>

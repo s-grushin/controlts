@@ -4,7 +4,6 @@ import { Spinner } from 'react-bootstrap'
 import { useLoadData } from '../../../hooks/backend.hook'
 import { getAll } from '../../../api/backend/serviceApi'
 import EntityListView from '../../EntityListView/EntityListView'
-import Add from '../../AppButtons/Add'
 
 const Services = () => {
 
