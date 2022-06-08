@@ -43,7 +43,7 @@ const CatalogPage = () => {
                     </ListGroup>
                 </Col>
 
-                <Col md={9}>
+                <Col md={9}>                    
                     <CatalogRouter />
                 </Col>
 

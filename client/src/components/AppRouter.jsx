@@ -15,7 +15,7 @@ const AppRouter = () => {
             <Routes>
                 <Route path='/' element={<MainPage />} />
                 <Route path='/checkout' element={<VehicleCheckoutPage />} />
-                <Route path='/catalog/*' element={<CatalogPage />} />
+                <Route path='/catalog/*' element={<CatalogPage />} children/>
                 <Route path='*' element={<Navigate to='/' />} />
             </Routes>
         )

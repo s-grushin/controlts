@@ -20,7 +20,9 @@ const Back = () => {
             variant='outline-secondary'
             size='sm'
             onClick={clickHandler}
-        >Назад</Button>
+        >
+            Назад
+        </Button>
     )
 }
 

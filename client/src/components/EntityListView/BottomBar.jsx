@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 
-const EntityBar = ({ saveHandler, backHandler, isSaving }) => {
+const EntityBottomBar = ({ saveHandler, isSaving }) => {
 
     return (
         <>
@@ -16,10 +16,8 @@ const EntityBar = ({ saveHandler, backHandler, isSaving }) => {
                         'Сохранить и выйти'
                 }
             </Button>
-            <Button variant="outline-primary" size='sm' className='mx-2' onClick={backHandler}>Назад</Button>
-
         </>
     )
 }
 
-export default EntityBar
+export default EntityBottomBar

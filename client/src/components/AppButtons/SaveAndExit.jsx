@@ -1,13 +1,20 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Spinner } from 'react-bootstrap'
 
-const SaveAndExit = ({ clickHandler }) => {
+const SaveAndExit = ({ clickHandler, isSaving }) => {
     return (
-        <Button
-            variant='outline-primary'
-            size='sm'
-            onClick={clickHandler}
-        >Сохранить и выйти</Button>
+
+        <Button variant="outline-primary" size='sm' onClick={clickHandler} disabled={isSaving}>
+            {
+                isSaving ?
+                    <>
+                        Сохраняется...
+                        <Spinner animation="grow" variant="primary" size='sm' className='mx-2' />
+                    </>
+                    :
+                    'Сохранить и выйти'
+            }
+        </Button>
     )
 }
 

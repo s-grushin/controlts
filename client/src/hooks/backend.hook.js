@@ -26,6 +26,14 @@ function useFetchBackend(apiFunc) {
     return [data, loading, error]
 }
 
+function fakeRequest() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('dummy data from server')
+        }, 2000);
+    })
+}
+
 function useLoadData(backendApiFunc) {
 
     const [isLoading, setIsLoading] = useState(true)
@@ -45,33 +53,32 @@ function useLoadData(backendApiFunc) {
         }
     }
 
-    /* function promisify(){
-        return new Promise((resolve)=>{
-            setTimeout(() => {
-                resolve(fetchBackend())   
-            }, 2000);
-        })
-    } */
 
     useEffect(() => {
         fetchBackend()
 
     }, [])
 
-
-
     return [isLoading, data, isError, errorMessage]
 }
 
-function useTest() {
+function useSaveData(data, backendApiFunc, navigatePath) {
 
-    useEffect(() => {
-
-        console.log('useTest');
-
-    }, [])
+    const [isSaving, setIsSaving] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
 
+    const saveData = async () => {
+
+        setIsSaving(true)
+        const response = await fakeRequest()
+        setIsSaving(false)
+
+    }
+
+    return [saveData, isSaving, isError, errorMessage]
 }
 
-export { useFetchBackend, useLoadData, useTest }
+
+export { useFetchBackend, useLoadData, useSaveData }

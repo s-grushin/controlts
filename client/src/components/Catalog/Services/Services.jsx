@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 import { useLoadData } from '../../../hooks/backend.hook'
 import { getAll } from '../../../api/backend/serviceApi'
-import EntityView from '../../EntityView/EntityView'
+import EntityListView from '../../EntityListView/EntityListView'
+import Add from '../../AppButtons/Add'
 
 const Services = () => {
 
@@ -11,14 +12,14 @@ const Services = () => {
   const [selectedServices, setSelectedServices] = useState([])
   const navigate = useNavigate()
 
-  const createEntityViewProps = () => {
+  const createOptions = () => {
 
-    const addService = () => {
+    const addEntity = () => {
       navigate('/catalog/services/add')
     }
 
-    const deleteService = () => {
-      console.log('deleteService');
+    const openEntity = (id, event) => {
+      navigate(`/catalog/services/${id}`)
     }
 
     return {
@@ -28,10 +29,14 @@ const Services = () => {
         { id: 2, name: 'Цена' }
       ],
       topBar: {
-        buttons: [
-          { name: 'add', text: 'Добавить', variant: 'outline-primary', handler: addService },
-          { name: 'delete', text: 'Удалить', variant: 'outline-danger', handler: deleteService }
-        ]
+        handlers: {
+          addEntity
+        }
+      },
+      table: {
+        handlers: {
+          openEntity
+        }
       },
       state: {
         selectedEntities: [selectedServices, setSelectedServices]
@@ -49,9 +54,7 @@ const Services = () => {
           isLoading ?
             <Spinner animation="border" variant="primary" />
             :
-            <>
-              <EntityView props={createEntityViewProps()} />
-            </>
+            <EntityListView options={createOptions()} />
 
       }
     </>
