@@ -8,7 +8,7 @@ const BottomBar = () => {
 
     return (
         <div className='d-flex justify-content-end mt-2'>
-            <SaveAndExit isSaving={context.state.isSaving} clickHandler={context.handlers.saveAndExitHandler} />
+            <SaveAndExit isSaving={context.state.isSaving} clickHandler={context.handlers.saveAndCloseHandler} />
         </div>
     )
 }

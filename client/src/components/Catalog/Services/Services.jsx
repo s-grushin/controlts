@@ -7,7 +7,7 @@ import EntityListView from '../../EntityListView/EntityListView'
 
 const Services = () => {
 
-  const [isLoading, services, isError, errorMesage] = useLoadData(getAll)
+  const [services, isLoading, errorMesage] = useLoadData(getAll)
   const [selectedServices, setSelectedServices] = useState([])
   const navigate = useNavigate()
 
@@ -47,14 +47,13 @@ const Services = () => {
   return (
     <>
       {
-        isError ?
+        errorMesage ?
           <div>{errorMesage}</div>
           :
           isLoading ?
             <Spinner animation="border" variant="primary" />
             :
             <EntityListView options={createOptions()} />
-
       }
     </>
   )

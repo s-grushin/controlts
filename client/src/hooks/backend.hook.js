@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from 'react-router-dom'
 
 function useFetchBackend(apiFunc) {
 
@@ -38,7 +39,6 @@ function useLoadData(backendApiFunc) {
 
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState([])
-    const [isError, setIsError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
     async function fetchBackend() {
@@ -46,7 +46,6 @@ function useLoadData(backendApiFunc) {
             const response = await backendApiFunc()
             setData(response)
         } catch (error) {
-            setIsError(true)
             setErrorMessage(error.message)
         } finally {
             setIsLoading(false)
@@ -55,19 +54,18 @@ function useLoadData(backendApiFunc) {
 
 
     useEffect(() => {
+        console.log('useeffect');
         fetchBackend()
 
     }, [])
 
-    return [isLoading, data, isError, errorMessage]
+    return [data, isLoading, errorMessage]
 }
 
 function useSaveData(backendApiFunc) {
 
     const [isSaving, setIsSaving] = useState(false)
-    const [isError, setIsError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
-
 
     const saveData = async (data) => {
 
@@ -76,7 +74,6 @@ function useSaveData(backendApiFunc) {
             const response = await backendApiFunc(data)
             return response
         } catch (error) {
-            setIsError(true)
             setErrorMessage(error.message)
         } finally {
             setIsSaving(false)
@@ -84,8 +81,10 @@ function useSaveData(backendApiFunc) {
 
     }
 
-    return [saveData, isSaving, isError, errorMessage]
+    return [saveData, isSaving, errorMessage]
 }
+
+
 
 
 export { useFetchBackend, useLoadData, useSaveData }

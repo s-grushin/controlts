@@ -7,8 +7,7 @@ import CatalogPage from '../pages/CatalogPage'
 import Services from './Catalog/Services/Services'
 import Layout from './Layout/Layout'
 import NotFoundPage from '../pages/NotFoundPage'
-import AddService from './Catalog/Services/AddService'
-import EditService from './Catalog/Services/EditService'
+import CreateUpdateService from './Catalog/Services/CreateUpdateService'
 
 const AppRouter = () => {
     const userState = useSelector(state => state.user)
@@ -22,8 +21,8 @@ const AppRouter = () => {
                     <Route path='*' element={<NotFoundPage />} />
                     <Route path='catalog' element={<CatalogPage />}>
                         <Route path='services' element={<Services />} />
-                        <Route path='services/add' element={<AddService />} />
-                        <Route path='services/:id' element={<EditService />} />
+                        <Route path='services/add' element={<CreateUpdateService />} />
+                        <Route path='services/:id' element={<CreateUpdateService isUpdateMode={true} />} />
                     </Route>
                 </Route>
             </Routes>

@@ -1,22 +1,16 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
 import { Card, Form } from 'react-bootstrap'
-import { useSaveData } from '../../../hooks/backend.hook'
-import { create } from '../../../api/backend/serviceApi'
+import useCreateUpdate from '../../../hooks/useCreateUpdate'
+import { create, update, getOne } from '../../../api/backend/serviceApi'
 import Entity from '../../Entity/Entity'
 
-const AddService = () => {
+const CreateUpdateService = ({ isUpdateMode }) => {
 
-    const [createService, isSaving, isError, errorMessage] = useSaveData(create)
-    const [formData, setFormData] = useState({ name: '', price: '' })
-    const navigate = useNavigate()
+    const initState = { name: '', price: '' }
 
-    const saveAndExitHandler = async () => {
-        const response = await createService(formData)
-        if (response) {
-            navigate(-1) 
-        }
-    }
+    const [formData, setFormData, isLoading, saveAndCloseHandler, isSaving, error]
+        = useCreateUpdate(initState, isUpdateMode, create, update, getOne)
+
 
     const inputHandler = (event) => {
         setFormData({
@@ -28,12 +22,12 @@ const AddService = () => {
     const createContext = () => {
         return {
             state: {
+                isLoading,
                 isSaving,
-                isError,
-                errorMessage
+                error,
             },
             handlers: {
-                saveAndExitHandler
+                saveAndCloseHandler
             }
         }
     }
@@ -67,4 +61,4 @@ const AddService = () => {
 
 }
 
-export default AddService
+export default CreateUpdateService
