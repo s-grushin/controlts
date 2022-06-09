@@ -4,11 +4,19 @@ import Topbar from './Topbar'
 import Context from './Context'
 
 const Entity = ({ children, context }) => {
+
     return (
         <Context.Provider value={context}>
             <Topbar />
-            {children}
-            <BottomBar />
+            {
+                context.state.isError ? context.state.errorMessage
+                    :
+                    <>
+                        {children}
+                        <BottomBar />
+                    </>
+            }
+
         </Context.Provider>
     )
 }

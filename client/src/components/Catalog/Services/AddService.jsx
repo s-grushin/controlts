@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-import { Card, Form, FloatingLabel } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { Card, Form } from 'react-bootstrap'
 import { useSaveData } from '../../../hooks/backend.hook'
+import { create } from '../../../api/backend/serviceApi'
 import Entity from '../../Entity/Entity'
 
 const AddService = () => {
 
-    const [saveData, isSaving, isError, errorMessage] = useSaveData({ test: '' })
+    const [createService, isSaving, isError, errorMessage] = useSaveData(create)
     const [formData, setFormData] = useState({ name: '', price: '' })
+    const navigate = useNavigate()
 
     const saveAndExitHandler = async () => {
-        //await saveData()
-        console.log(formData);
+        await createService(formData)
+        navigate(-1)
     }
 
     const inputHandler = (event) => {
@@ -23,7 +26,9 @@ const AddService = () => {
     const createContext = () => {
         return {
             state: {
-                isSaving
+                isSaving,
+                isError,
+                errorMessage
             },
             handlers: {
                 saveAndExitHandler
@@ -32,28 +37,30 @@ const AddService = () => {
     }
 
     return (
-        <Entity context={createContext()}>
-            <Card className='mt-2'>
-                <Card.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Наименование услуги</Form.Label>
-                            <Form.Control size='sm' type="text" onChange={inputHandler}
-                                placeholder="Наименование услуги"
-                                name="name"
-                                value={formData.name} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Цена</Form.Label>
-                            <Form.Control size='sm' type="number" onChange={inputHandler}
-                                placeholder="Цена"
-                                name="price"
-                                value={formData.price} />
-                        </Form.Group>
-                    </Form>
-                </Card.Body>
-            </Card>
-        </Entity>
+        <>
+            < Entity context={createContext()} >
+                <Card className='mt-2'>
+                    <Card.Body>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Наименование услуги</Form.Label>
+                                <Form.Control size='sm' type="text" onChange={inputHandler}
+                                    placeholder="Наименование услуги"
+                                    name="name"
+                                    value={formData.name} />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Цена</Form.Label>
+                                <Form.Control size='sm' type="number" onChange={inputHandler}
+                                    placeholder="Цена"
+                                    name="price"
+                                    value={formData.price} />
+                            </Form.Group>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </Entity >
+        </>
     )
 
 }

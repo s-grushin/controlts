@@ -62,18 +62,25 @@ function useLoadData(backendApiFunc) {
     return [isLoading, data, isError, errorMessage]
 }
 
-function useSaveData(data, backendApiFunc, navigatePath) {
+function useSaveData(backendApiFunc) {
 
     const [isSaving, setIsSaving] = useState(false)
     const [isError, setIsError] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
 
-    const saveData = async () => {
+    const saveData = async (data) => {
 
         setIsSaving(true)
-        const response = await fakeRequest()
-        setIsSaving(false)
+        try {
+            const response = await backendApiFunc(data)
+            return response
+        } catch (error) {
+            setIsError(true)
+            setErrorMessage(error.message)
+        } finally {
+            setIsSaving(false)
+        }
 
     }
 
