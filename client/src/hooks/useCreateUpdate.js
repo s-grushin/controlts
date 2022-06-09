@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-
+//eslint-disable-next-line
 function fakeRequest() {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -59,8 +59,8 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
         if (!isUpdateMode) {
             return
         }
-        const response = loadEntity()
-
+        loadEntity()
+        //eslint-disable-next-line
     }, [])
 
 
