@@ -12,8 +12,10 @@ const AddService = () => {
     const navigate = useNavigate()
 
     const saveAndExitHandler = async () => {
-        await createService(formData)
-        navigate(-1)
+        const response = await createService(formData)
+        if (response) {
+            navigate(-1) 
+        }
     }
 
     const inputHandler = (event) => {

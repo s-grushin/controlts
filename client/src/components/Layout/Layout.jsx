@@ -1,8 +1,8 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
 import { Outlet } from 'react-router-dom'
-import AppRouter from '../AppRouter'
-import TopNavbar from '../TopNavbar'
+import TopNavbar from './TopNavbar'
+import Footer from './Footer'
 
 const Layout = () => {
     return (
@@ -11,6 +11,7 @@ const Layout = () => {
             <Container fluid>
                 <Outlet />
             </Container>
+            <Footer />
         </>
     )
 }

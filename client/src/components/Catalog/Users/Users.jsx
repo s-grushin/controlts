@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Table, Spinner, Button } from 'react-bootstrap'
-import { getAll } from '../../api/backend/userApi'
-import { useFetchBackend } from '../../hooks/backend.hook'
+import { getAll } from '../../../api/backend/userApi'
+import { useFetchBackend } from '../../../hooks/backend.hook'
 
 const Users = () => {
 

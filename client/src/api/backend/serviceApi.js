@@ -14,8 +14,6 @@ export const getAll = async () => {
 }
 
 export const create = async (data) => {
-    console.log(data);
-
     try {
         const response = await axios(`${host}/api/service/`, {
             method: 'post',
@@ -25,5 +23,4 @@ export const create = async (data) => {
     } catch (error) {
         throw new Error(`Ошибка при создании услуги. ${error.message}. server: ${error.response.data.message}`)
     }
-
 }
