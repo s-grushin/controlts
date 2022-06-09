@@ -24,8 +24,8 @@ const Services = () => {
     return {
       entities: services,
       columns: [
-        { id: 1, name: 'Наименование' },
-        { id: 2, name: 'Цена' }
+        { id: 1, name: 'name', title: 'Наименование' },
+        { id: 2, name: 'price', title: 'Цена' }
       ],
       topBar: {
         handlers: {

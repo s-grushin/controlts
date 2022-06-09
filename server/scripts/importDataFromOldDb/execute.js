@@ -51,8 +51,7 @@ async function transferServices() {
     const data = tb_cost_sprv.map(item => {
         return {
             name: item.name,
-            costOver: item.cost_over,
-            costUnder: item.cost_under,
+            price: item.cost_over,
         }
     })
 

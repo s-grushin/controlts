@@ -30,27 +30,24 @@ const Table = () => {
                 <tr>
                     <th>№</th>
                     {context.columns.map(col => {
-                        return <th key={col.id}>{col.name}</th>
+                        return <th key={col.id}>{col.title}</th>
                     })}
                 </tr >
             </thead >
             <tbody>
                 {
-                    context.entities.map((entity, e_index) =>
+                    context.entities.map((entity, index) =>
 
                         <tr
                             className={setRowClass(entity)}
-                            key={entity.name}
+                            key={entity.id}
                             onClick={(event) => clickRowHandler(entity.id, event)}
                             onDoubleClick={(event) => context.table.handlers.openEntity(entity.id, event)}
                         >
-                            <td key={e_index}>{e_index + 1}</td>
+                            <td key={entity.id}>{index + 1}</td>
                             {
-                                Object.keys(entity).map((key, k_index) => {
-                                    if (key === 'id') {
-                                        return null
-                                    }
-                                    return <td key={k_index}>{entity[key]}</td>
+                                context.columns.map(col => {
+                                    return <td key={`${entity.id}${col.id}`}>{entity[col.name]}</td>
                                 })
                             }
                         </tr>

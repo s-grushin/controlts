@@ -6,14 +6,10 @@ const Service = db.define('Service', {
         allowNull: false,
         unique: true,
     },
-    costOver: {
+    price: {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0
     },
-    costUnder: {
-        type: DataTypes.DECIMAL(10, 2),
-        defaultValue: 0
-    }
 }, { underscored: true })
 
 
