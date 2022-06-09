@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, Form, FloatingLabel } from 'react-bootstrap'
 import { useSaveData } from '../../../hooks/backend.hook'
 import Entity from '../../Entity/Entity'
@@ -6,24 +6,19 @@ import Entity from '../../Entity/Entity'
 const AddService = () => {
 
     const [saveData, isSaving, isError, errorMessage] = useSaveData({ test: '' })
+    const [formData, setFormData] = useState({ name: '', price: '' })
 
     const saveAndExitHandler = async () => {
-
-        await saveData()
-
+        //await saveData()
+        console.log(formData);
     }
 
-    const Content = () => (<Card className='mt-2'>
-        <Card.Body>
-            <Form>
-                <Form.Group className="mb-3">
-                    <Form.Label>Наименование услуги</Form.Label>
-                    <Form.Control size='sm' type="text" placeholder="Наименование услуги" />
-                </Form.Group>
-            </Form>
-        </Card.Body>
-    </Card>)
-
+    const inputHandler = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
+    }
 
     const createContext = () => {
         return {
@@ -37,7 +32,28 @@ const AddService = () => {
     }
 
     return (
-        <Entity Content={Content} context={createContext()} />
+        <Entity context={createContext()}>
+            <Card className='mt-2'>
+                <Card.Body>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Наименование услуги</Form.Label>
+                            <Form.Control size='sm' type="text" onChange={inputHandler}
+                                placeholder="Наименование услуги"
+                                name="name"
+                                value={formData.name} />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Цена</Form.Label>
+                            <Form.Control size='sm' type="number" onChange={inputHandler}
+                                placeholder="Цена"
+                                name="price"
+                                value={formData.price} />
+                        </Form.Group>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Entity>
     )
 
 }

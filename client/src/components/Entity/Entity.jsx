@@ -3,11 +3,11 @@ import BottomBar from './BottomBar'
 import Topbar from './Topbar'
 import Context from './Context'
 
-const Entity = ({ Content, context }) => {
+const Entity = ({ children, context }) => {
     return (
         <Context.Provider value={context}>
             <Topbar />
-            <Content />
+            {children}
             <BottomBar />
         </Context.Provider>
     )
