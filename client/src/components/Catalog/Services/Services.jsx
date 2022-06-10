@@ -5,20 +5,30 @@ import useLoadList from '../../../hooks/useLoadList'
 import { getAll } from '../../../api/backend/serviceApi'
 import EntityListView from '../../EntityListView/EntityListView'
 
-const Services = () => {
 
+const Services = () => {
+  
   const [services, isLoading, error] = useLoadList(getAll)
   const [selectedServices, setSelectedServices] = useState([])
+
   const navigate = useNavigate()
 
-  const createOptions = () => {
+  const createContext = () => {
 
     const addEntity = () => {
       navigate('/catalog/services/add')
     }
 
-    const openEntity = (id, event) => {
+    const openEntity = (id) => {
       navigate(`/catalog/services/${id}`)
+    }
+
+    const deleteEntity = (id) => {
+      setShowModal(true)
+    }
+
+    const confirmDelete = () => {
+
     }
 
     return {
@@ -29,7 +39,8 @@ const Services = () => {
       ],
       topBar: {
         handlers: {
-          addEntity
+          addEntity,
+          deleteEntity,
         }
       },
       table: {
@@ -38,7 +49,13 @@ const Services = () => {
         }
       },
       state: {
-        selectedEntities: [selectedServices, setSelectedServices]
+        selectedEntities: [selectedServices, setSelectedServices],
+      },
+      modals: {
+        deleteEntity: {
+          title: 'Подтвердите удаление',
+
+        }
       }
     }
 
@@ -53,7 +70,10 @@ const Services = () => {
           isLoading ?
             <Spinner animation="border" variant="primary" />
             :
-            <EntityListView options={createOptions()} />
+            <>
+              <EntityListView context={createContext()} />
+
+            </>
       }
     </>
   )
