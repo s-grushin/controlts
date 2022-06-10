@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
-import { useLoadData } from '../../../hooks/backend.hook'
+import useLoadList from '../../../hooks/useLoadList'
 import { getAll } from '../../../api/backend/serviceApi'
 import EntityListView from '../../EntityListView/EntityListView'
 
 const Services = () => {
 
-  const [services, isLoading, errorMesage] = useLoadData(getAll)
+  const [services, isLoading, error] = useLoadList(getAll)
   const [selectedServices, setSelectedServices] = useState([])
   const navigate = useNavigate()
 
@@ -47,8 +47,8 @@ const Services = () => {
   return (
     <>
       {
-        errorMesage ?
-          <div>{errorMesage}</div>
+        error ?
+          <div>{error}</div>
           :
           isLoading ?
             <Spinner animation="border" variant="primary" />
