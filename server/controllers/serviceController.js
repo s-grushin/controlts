@@ -45,8 +45,21 @@ async function update(req, res, next) {
     }
 }
 
+async function deleteOne(req, res, next) {
+
+    const { id } = req.params
+
+    try {
+        const deleted = await Service.destroy({ where: { id } })
+        return res.json(deleted)
+    } catch (error) {
+        next(ApiError.internalError(error.message))
+    }
+}
+
 
 module.exports.getAll = getAll
 module.exports.getOne = getOne
 module.exports.create = create
 module.exports.update = update
+module.exports.deleteOne = deleteOne

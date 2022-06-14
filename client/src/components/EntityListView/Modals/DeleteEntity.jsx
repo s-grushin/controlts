@@ -1,28 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Confirmation from '../../Modals/Confirmation'
 import { useContext } from 'react'
 import Context from '../Context'
+import useDelete from '../../../hooks/useDelete'
+import { deleteOne } from '../../../api/backend/serviceApi'
 
-const DeleteEntity = () => {
+const DeleteEntityModal = () => {
 
-    const [show, setShow] = useState(false)
 
     const context = useContext(Context)
-    console.log(context);
+    const [selectedEntities, setSelectedEntities] = context.state.selectedEntities
+    const entity = selectedEntities.length > 0 ? selectedEntities[0] : null
 
     function confirm(params) {
-        setShow(false)
+        context.topBar.handlers.deleteEntity('confirm')
+    }
+
+    function cancel() {
+        context.topBar.handlers.deleteEntity('cancel')
     }
 
     return (
         <Confirmation
             title='Подтвердите удаление'
-            show={show}
+            show={context.modals.delete.show}
             confirmHandler={confirm}
+            cancelHandler={cancel}
+            isConfirming={context.modals.delete.isDeleting}
+            error={context.modals.delete.error}
         >
-            Удалить <b>{context.state.selectedEntities[0].length > 0 ? context.state.selectedEntities[0].name : ''}</b> ?
+            Удалить <b>{entity !== null ? entity.name : ''}</b> ?
         </Confirmation>
     )
 }
 
-export default DeleteEntity
+export default DeleteEntityModal

@@ -25,7 +25,7 @@ function useLoadList(getAll) {
 
         loadList()
 
-    }, [])
+    }, [list])
 
     return [list, isLoading, error]
 

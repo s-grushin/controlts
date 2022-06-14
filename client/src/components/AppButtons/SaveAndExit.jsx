@@ -13,6 +13,7 @@ const SaveAndExit = ({ clickHandler, isSaving }) => {
                     </>
                     :
                     'Сохранить и выйти'
+
             }
         </Button>
     )

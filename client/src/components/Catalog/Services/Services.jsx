@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 import useLoadList from '../../../hooks/useLoadList'
-import { getAll } from '../../../api/backend/serviceApi'
+import useDelete from '../../../hooks/useDelete'
+import { getAll, deleteOne } from '../../../api/backend/serviceApi'
 import EntityListView from '../../EntityListView/EntityListView'
 
 
 const Services = () => {
-  
+
   const [services, isLoading, error] = useLoadList(getAll)
   const [selectedServices, setSelectedServices] = useState([])
+  const [deleteService, isDeleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
 
   const navigate = useNavigate()
 
@@ -23,12 +25,24 @@ const Services = () => {
       navigate(`/catalog/services/${id}`)
     }
 
-    const deleteEntity = (id) => {
-      setShowModal(true)
-    }
+    const deleteEntity = async (mode) => {
 
-    const confirmDelete = () => {
+      switch (mode) {
+        case 'showModal':
+          setShowDeleteModal(true)
+          break;
+        case 'cancel':
+          setShowDeleteModal(false)
+          break;
+        case 'confirm':
+          await deleteService(selectedServices[0].id)
+          setShowDeleteModal(false)
+          setSelectedServices([])
+          break;
 
+        default:
+          break;
+      }
     }
 
     return {
@@ -52,9 +66,9 @@ const Services = () => {
         selectedEntities: [selectedServices, setSelectedServices],
       },
       modals: {
-        deleteEntity: {
-          title: 'Подтвердите удаление',
-
+        delete: {
+          show: showDeleteModal,
+          isDeleting
         }
       }
     }

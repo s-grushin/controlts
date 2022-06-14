@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-//eslint-disable-next-line
-function fakeRequest() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve('dummy data from server')
-        }, 2000);
-    })
-}
-
 function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
 
     const [formData, setFormData] = useState(initState)

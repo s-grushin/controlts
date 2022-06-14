@@ -45,3 +45,14 @@ export const update = async (data) => {
         throw new Error(`Ошибка при сохранении услуги. ${error.message}. server: ${error.response.data.message}`)
     }
 }
+
+export const deleteOne = async (id) => {
+    try {
+        const response = await axios(`${host}/api/service/${id}`, {
+            method: 'delete'
+        })
+        return response.data
+    } catch (error) {
+        throw new Error(`Ошибка при удалении услуги. ${error.message}. server: ${error.response.data.message}`)
+    }
+}

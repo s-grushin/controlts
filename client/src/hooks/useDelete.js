@@ -1,23 +1,28 @@
 import { useState } from 'react'
 
-function useDelete(id, deleteFunc) {
+function useDelete(deleteFunc) {
 
     const [isDeleting, setIsDeleting] = useState(false)
-    const [error, setError] = useState('')
-    const [modalShow, setModalShow] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
-    async function _delete() {
+    async function deleteEntity(id) {
+
+        if (!id) {
+            console.log('no id provided');
+            return            
+        }
+
         try {
             setIsDeleting(true)
-            deleteFunc(id)
+            await deleteFunc(id)
         } catch (error) {
-            setError(error.message)
+            alert(error.message)
         } finally {
             setIsDeleting(false)
         }
     }
 
-    return [_delete, isDeleting, error, modalShow, setModalShow]
+    return [deleteEntity, isDeleting, showModal, setShowModal]
 }
 
 export default useDelete
