@@ -61,7 +61,17 @@ async function update(req, res, next) {
     }
 }
 
+async function deleteOne(req, res, next) {
 
+    const { id } = req.body
+
+    try {
+        const deleted = await User.destroy({ where: { id } })
+        return res.json(deleted)
+    } catch (error) {
+        next(ApiError.internalError(error.message))
+    }
+}
 
 async function login(req, res, next) {
 
@@ -84,3 +94,4 @@ module.exports.getOne = getOne
 module.exports.create = create
 module.exports.update = update
 module.exports.login = login
+module.exports.deleteOne = deleteOne

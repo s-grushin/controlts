@@ -26,10 +26,10 @@ const TopBar = () => {
         <div className='mb-2'>
             <Back />
             <span className='ms-2'>
-                <Add clickHandler={context.topBar.handlers.addEntity} />
+                <Add clickHandler={context.handlers.addEntity} />
             </span>
             <span className='ms-2'>
-                <Delete clickHandler={() => context.topBar.handlers.deleteEntity('showModal')}
+                <Delete clickHandler={() => context.handlers.deleteEntity('showModal')}
                     disabled={selectedEntities.length === 0} />
             </span>
 

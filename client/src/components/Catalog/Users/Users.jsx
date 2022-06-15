@@ -9,28 +9,23 @@ import EntityListContext from '../../EntityListView/EntityListContext'
 
 const Users = () => {
 
-    const [users, isLoading, error] = useLoadList(getAll)
-    const [deleteUser, isDeleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
+    const [users, setUsers, isLoading, error] = useLoadList(getAll)
+    const [deleteFunc, isDeleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
 
     const [selectedUsers, setSelectedUsers] = useState([])
     const navigate = useNavigate()
 
-
-
-
-
-
     const createContext = () => {
 
-        const addEntity = () => {
+        const addUser = () => {
             navigate('/catalog/users/add')
         }
 
-        const openEntity = (id) => {
+        const editUser = (id) => {
             navigate(`/catalog/users/${id}`)
         }
 
-        const deleteEntity = async (mode) => {
+        const deleteUser = async (mode) => {
 
             switch (mode) {
                 case 'showModal':
@@ -40,11 +35,11 @@ const Users = () => {
                     setShowDeleteModal(false)
                     break;
                 case 'confirm':
-                    //await deleteUser(selectedUsers[0].id)
+                    const id = selectedUsers[0].id
+                    await deleteFunc(id)
+                    setUsers(users.filter(item => item.id !== id))
                     setShowDeleteModal(false)
-                    setSelectedUsers([])
                     break;
-
                 default:
                     break;
             }
@@ -59,9 +54,9 @@ const Users = () => {
         const context = new EntityListContext(columns)
         context.entities = users
         context.titlePropName = 'login'
-        context.topBar.handlers.addEntity = addEntity
-        context.topBar.handlers.deleteEntity = deleteEntity
-        context.table.handlers.openEntity = openEntity
+        context.handlers.addEntity = addUser
+        context.handlers.deleteEntity = deleteUser
+        context.handlers.editEntity = editUser
         context.state.selectedEntities = selectedUsers
         context.state.setSelectedEntities = setSelectedUsers
         context.modals.delete.isDeleting = isDeleting

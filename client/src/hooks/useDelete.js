@@ -8,8 +8,8 @@ function useDelete(deleteFunc) {
     async function deleteEntity(id) {
 
         if (!id) {
-            console.log('no id provided');
-            return            
+            alert('no id provided')
+            return
         }
 
         try {

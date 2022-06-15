@@ -19,15 +19,13 @@ function useLoadList(getAll) {
         }
 
     }
-
-
     useEffect(() => {
 
         loadList()
-
+        // eslint-disable-next-line
     }, [])
 
-    return [list, isLoading, error]
+    return [list, setList, isLoading, error]
 
 }
 

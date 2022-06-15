@@ -27,6 +27,7 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
             }
             navigate(-1)
         } catch (error) {
+            alert(error.message)
             setError(error.message)
         } finally {
             setIsSaving(false)

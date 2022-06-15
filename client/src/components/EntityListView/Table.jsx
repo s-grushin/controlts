@@ -44,7 +44,7 @@ const Table = () => {
                             className={setRowClass(entity)}
                             key={entity.id}
                             onClick={(event) => clickRowHandler(entity.id, event)}
-                            onDoubleClick={(event) => context.table.handlers.openEntity(entity.id, event)}
+                            onDoubleClick={(event) => context.handlers.editEntity(entity.id, event)}
                         >
                             <td key={entity.id}>{index + 1}</td>
                             {

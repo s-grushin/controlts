@@ -5,18 +5,17 @@ import Context from '../Context'
 
 const DeleteEntityModal = () => {
 
-
     const context = useContext(Context)
     const selectedEntities = context.state.selectedEntities
     const entity = selectedEntities.length > 0 ? selectedEntities[0] : null
     const entityTitle = entity !== null ? entity[context.titlePropName] : ''
 
     function confirm() {
-        context.topBar.handlers.deleteEntity('confirm')
+        context.handlers.deleteEntity('confirm')
     }
 
     function cancel() {
-        context.topBar.handlers.deleteEntity('cancel')
+        context.handlers.deleteEntity('cancel')
     }
 
     return (

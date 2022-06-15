@@ -7,22 +7,16 @@ class EntityListContext {
 
         this.columns = columns.map((col, index) => new EntityListColumn(index + 1, col.name, col.title))
 
-        this.topBar = {
-            handlers: {
-                addEntity() { },
-                deleteEntity() { }
-            }
-        }
 
-        this.table = {
-            handlers: {
-                openEntity() { }
-            }
+        this.handlers = {
+            addEntity: null,
+            deleteEntity: null,
+            editEntity: null
         }
 
         this.state = {
             selectedEntities: [],
-            setSelectedEntities() { }
+            setSelectedEntities: null
         }
 
         this.modals = {

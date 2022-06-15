@@ -40,8 +40,9 @@ export const update = async (user) => {
 
 export const deleteOne = async (id) => {
     try {
-        const response = await axios(`${host}/api/user/${id}`, {
-            method: 'delete'
+        const response = await axios(`${host}/api/user`, {
+            method: 'delete',
+            data: { id }
         })
         return response.data
     } catch (error) {

@@ -6,19 +6,9 @@ import Context from './Context'
 
 const Entity = ({ children, context }) => {
 
-
     if (context.state.isLoading) {
         return (
             <Spinner animation="border" variant="primary" />
-        )
-    }
-
-    if (context.state.error) {
-        return (
-            <>
-                <Topbar />
-                {context.state.error}
-            </>
         )
     }
 
