@@ -1,0 +1,165 @@
+import React from 'react'
+import { Card, Form } from 'react-bootstrap'
+import useCreateUpdate from '../../../hooks/useCreateUpdate'
+import { create, update, getOne } from '../../../api/backend/userApi'
+import Entity from '../../Entity/Entity'
+import { USER_ROLES } from '../../../constants/appConstants'
+import EntityContext from '../../Entity/EntityContext'
+
+const CreateUpdateUser = ({ isUpdateMode }) => {
+
+    const initState = {
+        login: '',
+        password: '',
+        repeatPassword: '',
+        fullName: '',
+        role: 'USER',
+        phoneNumber1: '',
+        phoneNumber2: '',
+        isActive: true
+    }
+
+    const [formData, setFormData, isLoading, saveAndCloseHandler, isSaving, error]
+        = useCreateUpdate(initState, isUpdateMode, create, update, getOne)
+
+
+    const inputHandler = (event) => {
+
+        const updatedFormData = { ...formData }
+        if (event.target.type === 'checkbox') {
+            updatedFormData[event.target.name] = event.target.checked
+        } else {
+            updatedFormData[event.target.name] = event.target.value
+        }
+        setFormData(updatedFormData)
+    }
+
+    const createContext = () => {
+
+        const context = new EntityContext()
+        context.state.isLoading = isLoading
+        context.state.isSaving = isSaving
+        context.state.error = error
+        context.handlers.saveAndCloseHandler = saveAndCloseHandler
+
+        return context
+    }
+
+    return (
+        <>
+            < Entity context={createContext()} >
+
+                <Card className='mt-2'>
+                    <Card.Body>
+                        <Card.Title>
+                            {isUpdateMode ?
+                                'Редактирование пользователя'
+                                :
+                                'Создание нового пользователя'}
+                        </Card.Title>
+                        <Form>
+
+                            {/* login */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Логин</Form.Label>
+                                <Form.Control type="text" placeholder="Логин" size='sm' name='login'
+                                    value={formData.login}
+                                    onChange={inputHandler}
+
+                                />
+                                < Form.Text className="text-muted">
+                                    имя для входа в программу
+                                </Form.Text>
+                            </Form.Group>
+
+                            {
+                                !isUpdateMode ?
+                                    <>
+                                        {/* password */}
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Пароль</Form.Label>
+                                            <Form.Control type="password" placeholder="Пароль" size='sm' name='password' role='presentation'
+                                                value={formData.password}
+                                                onChange={inputHandler}
+                                                autoComplete="new-password"
+                                            />
+                                        </Form.Group>
+
+                                        {/* repeat password */}
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>Повтор пароля</Form.Label>
+                                            <Form.Control type="password" placeholder="Повтор пароля" size='sm' name='repeatPassword'
+                                                value={formData.repeatPassword}
+                                                onChange={inputHandler}
+                                            />
+                                        </Form.Group>
+                                    </>
+                                    : ''
+                            }
+
+                            {/* fullName */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>ФИО</Form.Label>
+                                <Form.Control type="text" placeholder="ФИО" size='sm' name='fullName'
+                                    value={formData.fullName || ''}
+                                    onChange={inputHandler}
+                                />
+                                <Form.Text className="text-muted">
+                                    для вывода в документы
+                                </Form.Text>
+                            </Form.Group>
+
+                            {/* role */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Роль</Form.Label>
+                                <Form.Select size="sm" name='role'
+                                    defaultValue={formData.role}
+                                    onChange={inputHandler}>
+                                    {
+                                        USER_ROLES.map((role, index) => (
+                                            <option key={index}>{role}</option>
+                                        ))
+                                    }
+                                </Form.Select>
+                            </Form.Group>
+
+                            {/* phoneNumber1 */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Номер телефона 1</Form.Label>
+                                <Form.Control type="text" placeholder="Номер телефона 1" size='sm' name='phoneNumber1'
+                                    value={formData.phoneNumber1 || ''}
+                                    onChange={inputHandler}
+                                />
+                            </Form.Group>
+
+                            {/* phoneNumber2 */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Номер телефона 2</Form.Label>
+                                <Form.Control type="text" placeholder="Номер телефона 2" size='sm' name='phoneNumber2'
+                                    value={formData.phoneNumber2 || ''}
+                                    onChange={inputHandler}
+                                />
+                            </Form.Group>
+
+                            {/* isActive */}
+                            <Form.Group className="mb-3">
+                                <Form.Check label='Используется' name='isActive'
+                                    defaultChecked={formData.isActive}
+                                    onChange={inputHandler}
+                                />
+                                <Form.Text className="text-muted">
+                                    снять галку если необходимо отключить пользователя
+                                </Form.Text>
+                            </Form.Group>
+                        </Form>
+
+                    </Card.Body>
+                </Card>
+
+            </Entity >
+        </>
+    )
+
+}
+
+export default CreateUpdateUser

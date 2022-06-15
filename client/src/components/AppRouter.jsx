@@ -8,6 +8,8 @@ import Services from './Catalog/Services/Services'
 import Layout from './Layout/Layout'
 import NotFoundPage from '../pages/NotFoundPage'
 import CreateUpdateService from './Catalog/Services/CreateUpdateService'
+import Users from './Catalog/Users/Users'
+import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
 
 const AppRouter = () => {
     const userState = useSelector(state => state.user)
@@ -23,6 +25,9 @@ const AppRouter = () => {
                         <Route path='services' element={<Services />} />
                         <Route path='services/add' element={<CreateUpdateService />} />
                         <Route path='services/:id' element={<CreateUpdateService isUpdateMode={true} />} />
+                        <Route path='users' element={<Users />} />
+                        <Route path='users/add' element={<CreateUpdateUser />} />
+                        <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true}/>} />
                     </Route>
                 </Route>
             </Routes>

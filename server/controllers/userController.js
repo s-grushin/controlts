@@ -29,7 +29,6 @@ async function getOne(req, res, next) {
 async function create(req, res, next) {
 
     const { login, password } = req.body
-
     try {
 
         let user
@@ -50,9 +49,12 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
 
+    // ignore password
+    const fieldsToUpdate = Object.keys(req.body).filter(item => item !== 'password')
+
     const user = req.body
     try {
-        const updated = await User.update(user, { where: { id: user.id } })
+        const updated = await User.update(user, { where: { id: user.id }, fields: fieldsToUpdate })
         return res.json(updated)
     } catch (error) {
         next(ApiError.badRequest(error.message))

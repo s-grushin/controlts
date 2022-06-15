@@ -2,17 +2,16 @@ import React, { useState } from 'react'
 import Confirmation from '../../Modals/Confirmation'
 import { useContext } from 'react'
 import Context from '../Context'
-import useDelete from '../../../hooks/useDelete'
-import { deleteOne } from '../../../api/backend/serviceApi'
 
 const DeleteEntityModal = () => {
 
 
     const context = useContext(Context)
-    const [selectedEntities, setSelectedEntities] = context.state.selectedEntities
+    const selectedEntities = context.state.selectedEntities
     const entity = selectedEntities.length > 0 ? selectedEntities[0] : null
+    const entityTitle = entity !== null ? entity[context.titlePropName] : ''
 
-    function confirm(params) {
+    function confirm() {
         context.topBar.handlers.deleteEntity('confirm')
     }
 
@@ -29,7 +28,7 @@ const DeleteEntityModal = () => {
             isConfirming={context.modals.delete.isDeleting}
             error={context.modals.delete.error}
         >
-            Удалить <b>{entity !== null ? entity.name : ''}</b> ?
+            Удалить <b>{entityTitle}</b> ?
         </Confirmation>
     )
 }

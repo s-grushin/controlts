@@ -20,7 +20,7 @@ const TopBar = () => {
 
     } */
     const context = useContext(Context)
-    const [selectedEntities] = context.state.selectedEntities
+    const selectedEntities = context.state.selectedEntities
 
     return (
         <div className='mb-2'>

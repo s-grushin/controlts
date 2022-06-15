@@ -1,60 +1,93 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { Table, Spinner, Button } from 'react-bootstrap'
-import { getAll } from '../../../api/backend/userApi'
-import { useFetchBackend } from '../../../hooks/backend.hook'
+import { getAll, deleteOne } from '../../../api/backend/userApi'
+import useDelete from '../../../hooks/useDelete'
+import useLoadList from '../../../hooks/useLoadList'
+import EntityListView from '../../EntityListView/EntityListView'
+import EntityListContext from '../../EntityListView/EntityListContext'
 
 const Users = () => {
 
-    const [users, loading, error] = useFetchBackend(getAll)
+    const [users, isLoading, error] = useLoadList(getAll)
+    const [deleteUser, isDeleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
+
+    const [selectedUsers, setSelectedUsers] = useState([])
     const navigate = useNavigate()
 
-    const openUserHandler = (id) => {
-        navigate(`/catalog/users/${id}`)
+
+
+
+
+
+    const createContext = () => {
+
+        const addEntity = () => {
+            navigate('/catalog/users/add')
+        }
+
+        const openEntity = (id) => {
+            navigate(`/catalog/users/${id}`)
+        }
+
+        const deleteEntity = async (mode) => {
+
+            switch (mode) {
+                case 'showModal':
+                    setShowDeleteModal(true)
+                    break;
+                case 'cancel':
+                    setShowDeleteModal(false)
+                    break;
+                case 'confirm':
+                    //await deleteUser(selectedUsers[0].id)
+                    setShowDeleteModal(false)
+                    setSelectedUsers([])
+                    break;
+
+                default:
+                    break;
+            }
+
+        }
+
+        const columns = [
+            { id: 1, name: 'login', title: 'Логин' },
+            { id: 2, name: 'role', title: 'Роль' },
+            { id: 3, name: 'isActive', title: 'Используется' }]
+
+        const context = new EntityListContext(columns)
+        context.entities = users
+        context.titlePropName = 'login'
+        context.topBar.handlers.addEntity = addEntity
+        context.topBar.handlers.deleteEntity = deleteEntity
+        context.table.handlers.openEntity = openEntity
+        context.state.selectedEntities = selectedUsers
+        context.state.setSelectedEntities = setSelectedUsers
+        context.modals.delete.isDeleting = isDeleting
+        context.modals.delete.show = showDeleteModal
+
+        return context
+
     }
+
 
     return (
         <>
             {
-                error ? '<Ошибка при получении данных с сервера>'
+                error ?
+                    <div>{error}</div>
                     :
-                    loading ?
+                    isLoading ?
                         <Spinner animation="border" variant="primary" />
                         :
                         <>
-                            <div className='mb-2'>
-                                <Button variant="outline-secondary" size='sm'>Добавить</Button>
-                            </div>
-                            < Table responsive bordered hover size='sm' >
-                                < thead >
-                                    <tr>
-                                        <th>№</th>
-                                        <th>Логин</th>
-                                        <th>Роль</th>
-                                        <th>Используется</th>
-                                    </tr >
-                                </thead >
-                                <tbody>
-                                    {
-                                        users.map((user, index) =>
-                                            <tr
-                                                key={user.id}
-                                                style={{ cursor: 'pointer' }}
-                                                onClick={() => openUserHandler(user.id)}
-                                            >
-                                                <td>{index + 1}</td>
-                                                <td>{user.login}</td>
-                                                <td>{user.role}</td>
-                                                <td>{user.isActive ? 'да' : 'нет'}</td>
-                                            </tr>
-                                        )
+                            <EntityListView context={createContext()} />
 
-                                    }
-                                </tbody>
-                            </Table >
                         </>
             }
-        </>)
+        </>
+    )
 }
 
 export default Users

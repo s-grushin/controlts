@@ -2,11 +2,13 @@ import React, { useContext } from 'react'
 import Context from './Context'
 import { Table as BTable } from 'react-bootstrap'
 import classes from './Table.module.css'
+import { BsCheck } from 'react-icons/bs'
 
 const Table = () => {
 
     const context = useContext(Context)
-    const [selectedEntities, setSelectedEntities] = context.state.selectedEntities
+    const selectedEntities = context.state.selectedEntities
+    const setSelectedEntities = context.state.setSelectedEntities
 
 
     const clickRowHandler = (id, event) => {
@@ -47,7 +49,13 @@ const Table = () => {
                             <td key={entity.id}>{index + 1}</td>
                             {
                                 context.columns.map(col => {
-                                    return <td key={`${entity.id}${col.id}`}>{entity[col.name]}</td>
+                                    return (
+                                        <td key={`${entity.id}${col.id}`}>
+                                            {
+                                                entity[col.name] === true ? <BsCheck /> : entity[col.name]
+                                            }
+                                        </td>
+                                    )
                                 })
                             }
                         </tr>
