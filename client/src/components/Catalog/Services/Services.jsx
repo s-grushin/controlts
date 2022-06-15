@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate, use } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 import useLoadList from '../../../hooks/useLoadList'
 import useDelete from '../../../hooks/useDelete'
