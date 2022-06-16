@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Form } from 'react-bootstrap'
 import useCreateUpdate from '../../../hooks/useCreateUpdate'
+import useInputChange from '../../../hooks/useInputChange'
 import { create, update, getOne } from '../../../api/backend/userApi'
 import Entity from '../../Entity/Entity'
 import { USER_ROLES } from '../../../constants/appConstants'
@@ -22,17 +23,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
     const [formData, setFormData, isLoading, saveAndCloseHandler, isSaving, error]
         = useCreateUpdate(initState, isUpdateMode, create, update, getOne)
 
-
-    const inputHandler = (event) => {
-
-        const updatedFormData = { ...formData }
-        if (event.target.type === 'checkbox') {
-            updatedFormData[event.target.name] = event.target.checked
-        } else {
-            updatedFormData[event.target.name] = event.target.value
-        }
-        setFormData(updatedFormData)
-    }
+    const [inputChangeHandler] = useInputChange(formData, setFormData)
 
     const createContext = () => {
 
@@ -64,7 +55,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                 <Form.Label>Логин</Form.Label>
                                 <Form.Control type="text" placeholder="Логин" size='sm' name='login'
                                     value={formData.login}
-                                    onChange={inputHandler}
+                                    onChange={inputChangeHandler}
 
                                 />
                                 < Form.Text className="text-muted">
@@ -80,7 +71,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                             <Form.Label>Пароль</Form.Label>
                                             <Form.Control type="password" placeholder="Пароль" size='sm' name='password' role='presentation'
                                                 value={formData.password}
-                                                onChange={inputHandler}
+                                                onChange={inputChangeHandler}
                                                 autoComplete="new-password"
                                             />
                                         </Form.Group>
@@ -90,7 +81,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                             <Form.Label>Повтор пароля</Form.Label>
                                             <Form.Control type="password" placeholder="Повтор пароля" size='sm' name='repeatPassword'
                                                 value={formData.repeatPassword}
-                                                onChange={inputHandler}
+                                                onChange={inputChangeHandler}
                                             />
                                         </Form.Group>
                                     </>
@@ -102,7 +93,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                 <Form.Label>ФИО</Form.Label>
                                 <Form.Control type="text" placeholder="ФИО" size='sm' name='fullName'
                                     value={formData.fullName || ''}
-                                    onChange={inputHandler}
+                                    onChange={inputChangeHandler}
                                 />
                                 <Form.Text className="text-muted">
                                     для вывода в документы
@@ -114,7 +105,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                 <Form.Label>Роль</Form.Label>
                                 <Form.Select size="sm" name='role'
                                     defaultValue={formData.role}
-                                    onChange={inputHandler}>
+                                    onChange={inputChangeHandler}>
                                     {
                                         USER_ROLES.map((role, index) => (
                                             <option key={index}>{role}</option>
@@ -128,7 +119,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                 <Form.Label>Номер телефона 1</Form.Label>
                                 <Form.Control type="text" placeholder="Номер телефона 1" size='sm' name='phoneNumber1'
                                     value={formData.phoneNumber1 || ''}
-                                    onChange={inputHandler}
+                                    onChange={inputChangeHandler}
                                 />
                             </Form.Group>
 
@@ -137,7 +128,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                 <Form.Label>Номер телефона 2</Form.Label>
                                 <Form.Control type="text" placeholder="Номер телефона 2" size='sm' name='phoneNumber2'
                                     value={formData.phoneNumber2 || ''}
-                                    onChange={inputHandler}
+                                    onChange={inputChangeHandler}
                                 />
                             </Form.Group>
 
@@ -145,7 +136,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                             <Form.Group className="mb-3">
                                 <Form.Check label='Используется' name='isActive'
                                     defaultChecked={formData.isActive}
-                                    onChange={inputHandler}
+                                    onChange={inputChangeHandler}
                                 />
                                 <Form.Text className="text-muted">
                                     снять галку если необходимо отключить пользователя

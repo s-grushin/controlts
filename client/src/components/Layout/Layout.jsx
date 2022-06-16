@@ -10,7 +10,7 @@ const Layout = () => {
             <Container fluid>
                 <Outlet />
             </Container>
-            
+
         </>
     )
 }
