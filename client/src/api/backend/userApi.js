@@ -62,3 +62,15 @@ export const create = async (data) => {
     }
 }
 
+export const changePassword = async (data) => {
+    try {
+        const response = await axios(`${host}/api/user/${data.id}/password`, {
+            method: 'put',
+            data
+        })
+        return response.data
+    } catch (error) {
+        throw new Error(`Ошибка при изменении пароля. ${error.message}. server: ${error.response.data.message}`)
+    }
+}
+

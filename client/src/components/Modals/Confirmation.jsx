@@ -2,7 +2,6 @@ import React from 'react'
 import { Modal } from 'react-bootstrap'
 import Confirm from '../AppButtons/Confirm'
 import Cancel from '../AppButtons/Cancel'
-import AppError from '../AppError'
 
 
 const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, isConfirming }) => {

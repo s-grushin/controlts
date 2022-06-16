@@ -1,11 +1,13 @@
 import React from 'react'
-import { Card, Form } from 'react-bootstrap'
+import { Card, Form, Button } from 'react-bootstrap'
 import useCreateUpdate from '../../../hooks/useCreateUpdate'
 import useInputChange from '../../../hooks/useInputChange'
-import { create, update, getOne } from '../../../api/backend/userApi'
+import { create, update, getOne, changePassword } from '../../../api/backend/userApi'
 import Entity from '../../Entity/Entity'
 import { USER_ROLES } from '../../../constants/appConstants'
 import EntityContext from '../../Entity/EntityContext'
+import ChangePassword from './ChangePassword'
+import { useState } from 'react'
 
 const CreateUpdateUser = ({ isUpdateMode }) => {
 
@@ -25,6 +27,35 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
 
     const [inputChangeHandler] = useInputChange(formData, setFormData)
 
+    // password changing
+    const [showChangePassword, setShowChangePassword] = useState(false)
+    const [isPasswordChanging, setIsPasswordChanging] = useState(false)
+
+    const changePasswordHandler = async (mode = 'cancel', data) => {
+
+        if (mode === 'cancel') {
+            setShowChangePassword(false)
+            return
+        }
+
+        if (!data) {
+            alert('no data provided')
+            return
+        }
+
+        try {
+            data.id = formData.id
+            setIsPasswordChanging(true)
+            await changePassword(data)
+            setShowChangePassword(false)
+            alert('Пароль изменен')
+        } catch (error) {
+            alert(error.message)
+        } finally {
+            setIsPasswordChanging(false)
+        }
+    }
+
     const createContext = () => {
 
         const context = new EntityContext()
@@ -39,7 +70,6 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
     return (
         <>
             < Entity context={createContext()} >
-
                 <Card className='mt-2'>
                     <Card.Body>
                         <Card.Title>
@@ -64,7 +94,22 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                             </Form.Group>
 
                             {
-                                !isUpdateMode ?
+                                isUpdateMode ?
+                                    <>
+                                        {/* change password */}
+                                        <Form.Group className="mb-3">
+                                            <Button variant='outline-primary' size='sm'
+                                                onClick={() => setShowChangePassword(true)}
+                                            >Изменить пароль</Button>
+                                        </Form.Group>
+
+                                        <ChangePassword show={showChangePassword}
+                                            confirmHandler={changePasswordHandler}
+                                            cancelHandler={() => changePasswordHandler('cancel')}
+                                            isConfirming={isPasswordChanging}
+                                        />
+                                    </>
+                                    :
                                     <>
                                         {/* password */}
                                         <Form.Group className="mb-3">
@@ -85,7 +130,7 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
                                             />
                                         </Form.Group>
                                     </>
-                                    : ''
+
                             }
 
                             {/* fullName */}
@@ -146,7 +191,6 @@ const CreateUpdateUser = ({ isUpdateMode }) => {
 
                     </Card.Body>
                 </Card>
-
             </Entity >
         </>
     )

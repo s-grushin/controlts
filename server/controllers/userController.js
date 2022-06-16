@@ -89,9 +89,28 @@ async function login(req, res, next) {
     }
 }
 
+async function changePassword(req, res, next) {
+
+    const { id, password, repeatPassword } = req.body
+    if (password !== repeatPassword) {
+        return next(ApiError.badRequest('passwords not equals'))
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 5)
+
+    try {
+        const updated = await User.update({ password: hashedPassword }, { where: { id } })
+        return res.json(updated)
+    } catch (error) {
+        next(ApiError.badRequest(error.message))
+    }
+
+}
+
 module.exports.getAll = getAll
 module.exports.getOne = getOne
 module.exports.create = create
 module.exports.update = update
 module.exports.login = login
 module.exports.deleteOne = deleteOne
+module.exports.changePassword = changePassword
