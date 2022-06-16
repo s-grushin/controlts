@@ -1,7 +1,7 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import AuthPage from '../pages/AuthPage'
+import LoginPage from '../pages/LoginPage'
 import WorkPage from '../pages/WorkPage'
 import CatalogPage from '../pages/CatalogPage'
 import Services from './Catalog/Services/Services'
@@ -27,7 +27,7 @@ const AppRouter = () => {
                         <Route path='services/:id' element={<CreateUpdateService isUpdateMode={true} />} />
                         <Route path='users' element={<Users />} />
                         <Route path='users/add' element={<CreateUpdateUser />} />
-                        <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true}/>} />
+                        <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true} />} />
                     </Route>
                 </Route>
             </Routes>
@@ -36,8 +36,8 @@ const AppRouter = () => {
         // маршруты для НЕ авторизованого пользователя
         return (
             <Routes>
-                <Route path='/auth' element={<AuthPage />} />
-                <Route path='*' element={<Navigate to='/auth' />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route path='*' element={<Navigate to='/login' />} />
             </Routes>
         )
 

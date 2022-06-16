@@ -1,6 +1,6 @@
 const initialState = {
     userData: { username: 'root', fio: 'Фамилия И.О', role: 'ADMIN' },
-    isAuth: true
+    isAuth: false
 };
 
 export const ACTION_1 = 'ACTION_1'
