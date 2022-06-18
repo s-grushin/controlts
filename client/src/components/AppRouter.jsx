@@ -12,9 +12,10 @@ import Users from './Catalog/Users/Users'
 import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
 
 const AppRouter = () => {
-    const userState = useSelector(state => state.user)
+    
+    const isAuth = false
 
-    if (userState.isAuth) {
+    if (isAuth) {
         // маршруты для авторизованого пользователя
         return (
             <Routes>

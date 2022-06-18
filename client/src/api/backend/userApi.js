@@ -4,6 +4,14 @@ const host = `${process.env.REACT_APP_SERVER}`
 
 export const login = async (login, password) => {
 
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const response = await axios.post(`${host}/api/user/login`, { login, password }, config)
+
 }
 
 export const logout = async () => {
