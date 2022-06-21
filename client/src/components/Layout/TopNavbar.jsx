@@ -1,12 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { logout } from '../../redux/user/actions'
 
 const TopNavbar = () => {
-    const userState = useSelector(state => state.user)
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
+    const dispatch = useDispatch()
 
-    if (!userState.isAuth) {
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
+
+    if (!userInfo) {
         return <></>
     } else {
         return (
@@ -34,11 +41,11 @@ const TopNavbar = () => {
                         </Nav>
                         <Nav>
                             <Nav.Link href="#deets">
-                                {`${userState.userData.fio || userState.userData.username}`}
+                                {`${userInfo.login}`}
                             </Nav.Link>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#deets">Выйти</Nav.Link>
+                            <Nav.Link onClick={logoutHandler}>Выйти</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

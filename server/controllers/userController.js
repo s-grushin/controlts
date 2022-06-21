@@ -82,8 +82,14 @@ async function login(req, res, next) {
     }
     const isMatched = await bcrypt.compare(password, user.password)
     if (isMatched) {
-        const token = jwt.sign({ login, fullName: user.fullName, role: user.role }, process.env.JWT_SECRET, { expiresIn: '30d' })
-        return res.json(token)
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' })
+        return res.json({
+            id: user.id,
+            login,
+            fullName: user.fullName,
+            role: user.role,
+            token
+        })
     } else {
         return next(ApiError.badRequest('wrong password'))
     }
