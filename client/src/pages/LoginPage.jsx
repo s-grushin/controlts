@@ -1,35 +1,22 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
 import { Col, Row, Card, Form } from 'react-bootstrap'
-import { useSelector, useDispatch } from 'react-redux'
-import { login as loginFunc } from '../redux/user/actions'
+import useHttp from '../hooks/useHttp'
 import LoaderButton from '../components/AppButtons/LoaderButton'
+import { login as loginOnServer } from '../api/backend/userApi'
+import { AuthContext } from '../context/AuthProvider'
 
 const LoginPage = () => {
 
-  const [login, setLogin] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const navigate = useNavigate()
 
-  const userLogin = useSelector(state => state.userLogin)
-  const dispatch = useDispatch()
-  const { loading, error, userInfo } = userLogin
+  const { request, loading, error } = useHttp()
+  const auth = useContext(AuthContext)
 
-
-  function loginHandler(event) {
-    event.preventDefault()
-    dispatch(loginFunc(login, password))
+  async function loginHandler(event) {
+    const data = await request(() => loginOnServer(username, password))
+    auth.login(data.token, data.userInfo)
   }
-
-  useEffect(() => {
-
-    if (userInfo) {
-      navigate('/')
-    }
-
-  }, [userInfo])
-
 
   return (
     <Row >
@@ -37,11 +24,11 @@ const LoginPage = () => {
         <Card style={{ width: '18rem' }}>
           <Card.Body>
             <Card.Title>Вход в систему</Card.Title>
-            <Form onSubmit={loginHandler}>
+            <Form>
               <Form.Group className="mb-3">
                 <Form.Control type="text" placeholder="Логин" required
-                  value={login}
-                  onChange={(event) => setLogin(event.target.value)}
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
                   autoFocus />
               </Form.Group>
 

@@ -1,16 +1,15 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useContext } from 'react'
 import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { logout } from '../../redux/user/actions'
+import { AuthContext } from '../../context/AuthProvider'
 
 const TopNavbar = () => {
-    const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
-    const dispatch = useDispatch()
+
+    const authContext = useContext(AuthContext)
+    const { userInfo } = authContext
 
     const logoutHandler = () => {
-        dispatch(logout())
+        authContext.logout()
     }
 
     if (!userInfo) {

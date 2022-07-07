@@ -84,11 +84,14 @@ async function login(req, res, next) {
     if (isMatched) {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' })
         return res.json({
-            id: user.id,
-            login,
-            fullName: user.fullName,
-            role: user.role,
-            token
+            token,
+            userInfo: {
+                id: user.id,
+                login,
+                fullName: user.fullName,
+                role: user.role
+            }
+
         })
     } else {
         return next(ApiError.badRequest('wrong password'))
