@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -18,6 +19,7 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
     const { id } = useParams()
 
     async function saveAndCloseHandler() {
+        console.log(formData);
         setIsSaving(true)
         try {
             if (isUpdateMode) {
@@ -34,7 +36,7 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
         }
     }
 
-    async function loadEntity() {
+    const loadEntity = useCallback(async () => {
         try {
             const response = await getOne(id)
             setFormData(response)
@@ -43,7 +45,7 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [])
 
 
     useEffect(() => {
@@ -52,8 +54,8 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
             return
         }
         loadEntity()
-        //eslint-disable-next-line
-    }, [])
+
+    }, [loadEntity])
 
 
 

@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { getAll, deleteOne } from '../../../api/backend/userApi'
 import useDelete from '../../../hooks/useDelete'
-import useLoadList from '../../../hooks/useLoadList'
+import useLoadList from '../../../hooks/useLoadItems'
 import EntityListView from '../../EntityListView/EntityListView'
 import EntityListContext from '../../EntityListView/EntityListContext'
 

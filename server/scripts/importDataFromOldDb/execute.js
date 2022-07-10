@@ -4,6 +4,7 @@ const { QueryTypes, where } = require('sequelize');
 const dotenv = require('dotenv')
 const colors = require('colors')
 const Service = require('../../models/Service')
+const Company = require('../../models/Company')
 
 dotenv.config()
 
@@ -44,6 +45,7 @@ async function execute() {
 async function transferData() {
     console.log('Выполняется перенос данных. Подождите...'.green.bold);
     await transferServices()
+    await transferCompanies()
 }
 
 async function transferServices() {
@@ -58,6 +60,21 @@ async function transferServices() {
     await Service.destroy({ where: {} })
     await Service.bulkCreate(data)
 
+}
+
+
+async function transferCompanies() {
+    const tb_firms = await mssql_old.query("SELECT * FROM tb_firms", { type: QueryTypes.SELECT });
+    const data = tb_firms.filter(item => item.name_firm).map(item => {
+        return {
+            name: item.name_firm,
+            edrpou: item.okpo,
+        }
+    })
+
+    await Company.destroy({ where: {} })
+    await Company.bulkCreate(data)
+    
 }
 
 execute()

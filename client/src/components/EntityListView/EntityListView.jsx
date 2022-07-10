@@ -22,7 +22,7 @@ const EntityListView = ({ context }) => {
 }
 
 EntityListView.propTypes = {
-  options: PropTypes.object
+  context: PropTypes.object
 }
 
 export default EntityListView

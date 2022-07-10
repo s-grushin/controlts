@@ -1,6 +1,6 @@
 function useInputChange(state, setState) {
 
-    function inputChange(event) {
+    const inputChange = (event) => {
 
         const updatedState = { ...state }
         if (event.target.type === 'checkbox') {

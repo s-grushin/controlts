@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const useHttp = () => {
+const useHttp = (apiLoadFunc) => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')

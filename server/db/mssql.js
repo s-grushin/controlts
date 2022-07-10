@@ -17,7 +17,8 @@ const mssql = new Sequelize({
                 minVersion: 'TLSv1'
             }
         }
-    }
+    },
+    logging: false,
 
 })
 

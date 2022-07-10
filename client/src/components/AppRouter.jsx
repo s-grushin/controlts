@@ -10,6 +10,8 @@ import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
 import NotFoundPage from '../pages/NotFoundPage'
 import LoginPage from '../pages/LoginPage'
 import { AuthContext } from '../context/AuthProvider'
+import Companies from './Catalog/Companies/Companies'
+import CreateUpdateCompany from './Catalog/Companies/CreateUpdateCompany'
 
 const AppRouter = () => {
 
@@ -31,6 +33,9 @@ const AppRouter = () => {
                             <Route path='users' element={<Users />} />
                             <Route path='users/add' element={<CreateUpdateUser />} />
                             <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true} />} />
+                            <Route path='companies' element={<Companies />} />
+                            <Route path='companies/add' element={<CreateUpdateCompany />} />
+                            <Route path='companies/:id' element={<CreateUpdateCompany isUpdateMode={true} />} />
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />
                     </Route>

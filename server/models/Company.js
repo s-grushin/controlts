@@ -4,8 +4,16 @@ const Company = db.define('Company', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        validate: {
+            notEmpty: true
+        }
+    },
+    edrpou: {
+        type: DataTypes.STRING,
+    },
+    inn: {
+        type: DataTypes.STRING,
     }
-})
+}, { underscored: true })
 
 module.exports = Company

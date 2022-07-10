@@ -17,7 +17,8 @@ const mssqlOldDb = new Sequelize({
                 minVersion: 'TLSv1'
             }
         }
-    }
+    },
+    logging: false,
 
 })
 
