@@ -5,19 +5,20 @@ import TopBar from './TopBar'
 import Table from './Table'
 import Modals from './Modals'
 import DeleteEntity from './Modals/DeleteEntity'
+import Pagination from './Pagination'
 
 
 
 const EntityListView = ({ context }) => {
-
   return (
     <Context.Provider value={context}>
       <TopBar />
       <Table />
-      <Modals>
+      <Pagination options={context.pagination} />
+      < Modals >
         <DeleteEntity />
       </Modals>
-    </Context.Provider>
+    </Context.Provider >
   )
 }
 

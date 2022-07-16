@@ -23,9 +23,9 @@ export const logout = async () => {
 
 }
 
-export const getAll = async () => {
+export const getAll = async (limit, offset) => {
 
-    const response = await axios(`${host}/api/user/`)
+    const response = await axios(`${host}/api/user?limit=${limit}&offset=${offset}`)
     return response.data
 
 }

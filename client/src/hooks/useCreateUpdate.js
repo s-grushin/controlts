@@ -19,7 +19,6 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
     const { id } = useParams()
 
     async function saveAndCloseHandler() {
-        console.log(formData);
         setIsSaving(true)
         try {
             if (isUpdateMode) {

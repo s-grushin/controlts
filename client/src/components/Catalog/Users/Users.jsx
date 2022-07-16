@@ -3,29 +3,30 @@ import { Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { getAll, deleteOne } from '../../../api/backend/userApi'
 import useDelete from '../../../hooks/useDelete'
-import useLoadList from '../../../hooks/useLoadItems'
+import useLoadItems from '../../../hooks/useLoadItems'
 import EntityListView from '../../EntityListView/EntityListView'
 import EntityListContext from '../../EntityListView/EntityListContext'
 
 const Users = () => {
 
-    const [users, setUsers, isLoading, error] = useLoadList(getAll)
+    const [items, setItems, loading, error, currentPage, setCurrentPage, itemsCount, itemsOnPage]
+        = useLoadItems(getAll)
     const [deleteFunc, isDeleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
 
-    const [selectedUsers, setSelectedUsers] = useState([])
+    const [selectedItems, setSelectedItems] = useState([])
     const navigate = useNavigate()
 
     const createContext = () => {
 
-        const addUser = () => {
+        const addItem = () => {
             navigate('/catalog/users/add')
         }
 
-        const editUser = (id) => {
+        const editItem = (id) => {
             navigate(`/catalog/users/${id}`)
         }
 
-        const deleteUser = async (mode) => {
+        const deleteItem = async (mode) => {
 
             switch (mode) {
                 case 'showModal':
@@ -35,9 +36,9 @@ const Users = () => {
                     setShowDeleteModal(false)
                     break;
                 case 'confirm':
-                    const id = selectedUsers[0].id
+                    const id = selectedItems[0].id
                     await deleteFunc(id)
-                    setUsers(users.filter(item => item.id !== id))
+                    setItems(items.filter(item => item.id !== id))
                     setShowDeleteModal(false)
                     break;
                 default:
@@ -52,15 +53,19 @@ const Users = () => {
             { id: 3, name: 'isActive', title: 'Используется' }]
 
         const context = new EntityListContext(columns)
-        context.entities = users
+        context.entities = items
         context.titlePropName = 'login'
-        context.handlers.addEntity = addUser
-        context.handlers.deleteEntity = deleteUser
-        context.handlers.editEntity = editUser
-        context.state.selectedEntities = selectedUsers
-        context.state.setSelectedEntities = setSelectedUsers
+        context.handlers.addEntity = addItem
+        context.handlers.deleteEntity = deleteItem
+        context.handlers.editEntity = editItem
+        context.state.selectedEntities = selectedItems
+        context.state.setSelectedEntities = setSelectedItems
         context.modals.delete.isDeleting = isDeleting
         context.modals.delete.show = showDeleteModal
+        context.pagination.itemsQtyAll = itemsCount
+        context.pagination.itemsQtyOnPage = itemsOnPage
+        context.pagination.currentPage = currentPage
+        context.pagination.setCurrentPage = setCurrentPage
 
         return context
 
@@ -73,7 +78,7 @@ const Users = () => {
                 error ?
                     <div>{error}</div>
                     :
-                    isLoading ?
+                    loading ?
                         <Spinner animation="border" variant="primary" />
                         :
                         <>

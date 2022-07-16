@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
-import useLoadList from '../../../hooks/useLoadItems'
+import useLoadItems from '../../../hooks/useLoadItems'
 import useDelete from '../../../hooks/useDelete'
 import { getAll, deleteOne } from '../../../api/backend/serviceApi'
 import EntityListView from '../../EntityListView/EntityListView'
@@ -10,23 +10,24 @@ import EntityListContext from '../../EntityListView/EntityListContext'
 
 const Services = () => {
 
-  const [services, setServices, isLoading, error] = useLoadList(getAll)
-  const [selectedServices, setSelectedServices] = useState([])
+  const [items, setItems, loading, error, currentPage, setCurrentPage, itemsCount, itemsOnPage]
+    = useLoadItems(getAll)
+  const [selectedItems, setSelectedItems] = useState([])
   const [deleteFunc, isDeleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
 
   const navigate = useNavigate()
 
   const createContext = () => {
 
-    const addService = () => {
+    const addItem = () => {
       navigate('/catalog/services/add')
     }
 
-    const editService = (id) => {
+    const editItem = (id) => {
       navigate(`/catalog/services/${id}`)
     }
 
-    const deleteService = async (mode) => {
+    const deleteItem = async (mode) => {
 
       switch (mode) {
         case 'showModal':
@@ -36,9 +37,9 @@ const Services = () => {
           setShowDeleteModal(false)
           break;
         case 'confirm':
-          const id = selectedServices[0].id
+          const id = selectedItems[0].id
           await deleteFunc(id)
-          setServices(services.filter(item => item.id !== id))
+          setItems(items.filter(item => item.id !== id))
           setShowDeleteModal(false)
           break;
         default:
@@ -51,14 +52,18 @@ const Services = () => {
       { id: 2, name: 'price', title: 'Цена' }
     ]
     const context = new EntityListContext(columns)
-    context.entities = services
-    context.handlers.addEntity = addService
-    context.handlers.deleteEntity = deleteService
-    context.handlers.editEntity = editService
-    context.state.selectedEntities = selectedServices
-    context.state.setSelectedEntities = setSelectedServices
+    context.entities = items
+    context.handlers.addEntity = addItem
+    context.handlers.deleteEntity = deleteItem
+    context.handlers.editEntity = editItem
+    context.state.selectedEntities = selectedItems
+    context.state.setSelectedEntities = setSelectedItems
     context.modals.delete.show = showDeleteModal
     context.modals.delete.isDeleting = isDeleting
+    context.pagination.itemsQtyAll = itemsCount
+    context.pagination.itemsQtyOnPage = itemsOnPage
+    context.pagination.currentPage = currentPage
+    context.pagination.setCurrentPage = setCurrentPage
 
     return context
   }
@@ -69,7 +74,7 @@ const Services = () => {
         error ?
           <div>{error}</div>
           :
-          isLoading ?
+          loading ?
             <Spinner animation="border" variant="primary" />
             :
             <>

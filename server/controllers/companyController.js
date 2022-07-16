@@ -3,9 +3,12 @@ const ApiError = require('../utils/ApiError')
 
 async function getAll(req, res, next) {
 
+    let limit = parseInt(req.query.limit) || 0
+    let offset = parseInt(req.query.offset) || 0
+
     try {
-        const companies = await Company.findAll()
-        return res.json(companies)
+        const data = await Company.findAndCountAll({ limit, offset })
+        return res.json(data)
     } catch (error) {
         return next(ApiError.internalError(error.message))
     }
@@ -16,8 +19,8 @@ async function getOne(req, res, next) {
 
     const { id } = req.params
     try {
-        const company = await Company.findOne({ where: { id } })
-        return res.json(company)
+        const data = await Company.findOne({ where: { id } })
+        return res.json(data)
     } catch (error) {
         return next(ApiError.internalError(error.message))
     }
@@ -26,8 +29,8 @@ async function getOne(req, res, next) {
 async function create(req, res, next) {
 
     try {
-        const company = await Company.create(req.body)
-        return res.json(company)
+        const data = await Company.create(req.body)
+        return res.json(data)
     } catch (error) {
         next(ApiError.internalError(error.message))
     }
@@ -36,9 +39,9 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
 
-    const company = req.body
+    const data = req.body
     try {
-        const updated = await Company.update(company, { where: { id: company.id } })
+        const updated = await Company.update(data, { where: { id: data.id } })
         return res.json(updated)
     } catch (error) {
         next(ApiError.internalError(error.message))

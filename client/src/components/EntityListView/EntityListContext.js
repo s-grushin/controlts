@@ -25,6 +25,13 @@ class EntityListContext {
                 isDeleting: false
             }
         }
+
+        this.pagination = {
+            currentPage: 1,
+            setCurrentPage: null,
+            itemsQtyAll: 0,
+            itemsQtyOnPage: 0,
+        }
     }
 
 

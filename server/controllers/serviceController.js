@@ -3,8 +3,11 @@ const ApiError = require('../utils/ApiError')
 
 async function getAll(req, res, next) {
 
+    let limit = parseInt(req.query.limit) || 0
+    let offset = parseInt(req.query.offset) || 0
+
     try {
-        const services = await Service.findAll()
+        const services = await Service.findAndCountAll({ limit, offset })
         return res.json(services)
     } catch (error) {
         return next(ApiError.internalError(error.message))

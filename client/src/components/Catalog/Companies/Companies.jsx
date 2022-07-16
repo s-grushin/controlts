@@ -10,7 +10,8 @@ import { getAll, deleteOne } from '../../../api/backend/companyApi'
 
 const Companies = () => {
 
-  const [items, setItems, loading, error] = useLoadItems(getAll)
+  const [items, setItems, loading, error, currentPage, setCurrentPage, itemsCount, itemsOnPage]
+    = useLoadItems(getAll)
   const [selectedItems, setSelectedItems] = useState([])
   const [deleteFunc, deleting, showDeleteModal, setShowDeleteModal] = useDelete(deleteOne)
 
@@ -60,6 +61,10 @@ const Companies = () => {
     context.state.setSelectedEntities = setSelectedItems
     context.modals.delete.show = showDeleteModal
     context.modals.delete.isDeleting = deleting
+    context.pagination.itemsQtyAll = itemsCount
+    context.pagination.itemsQtyOnPage = itemsOnPage
+    context.pagination.currentPage = currentPage
+    context.pagination.setCurrentPage = setCurrentPage
 
     return context
   }

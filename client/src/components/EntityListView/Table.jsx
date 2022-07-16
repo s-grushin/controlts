@@ -10,7 +10,6 @@ const Table = () => {
     const selectedEntities = context.state.selectedEntities
     const setSelectedEntities = context.state.setSelectedEntities
 
-
     const clickRowHandler = (id, event) => {
 
         const selectedRow = context.entities.find(entity => entity.id === id)
@@ -46,7 +45,7 @@ const Table = () => {
                             onClick={(event) => clickRowHandler(entity.id, event)}
                             onDoubleClick={(event) => context.handlers.editEntity(entity.id, event)}
                         >
-                            <td key={entity.id}>{index + 1}</td>
+                            <td key={entity.id}>{index + 1 + context.pagination.itemsQtyOnPage * (context.pagination.currentPage - 1)}</td>
                             {
                                 context.columns.map(col => {
                                     return (

@@ -2,10 +2,10 @@ import axios from 'axios'
 
 const host = `${process.env.REACT_APP_SERVER}`
 
-export const getAll = async () => {
+export const getAll = async (limit, offset) => {
 
     try {
-        const response = await axios(`${host}/api/service/`)
+        const response = await axios(`${host}/api/service?limit=${limit}&offset=${offset}`)
         return response.data
     } catch (error) {
         throw new Error(`Ошибка при получении списка услуг. ${error.message}. server: ${error.response.data.message}`)

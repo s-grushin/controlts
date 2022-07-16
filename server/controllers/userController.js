@@ -6,8 +6,11 @@ const ApiError = require('../utils/ApiError')
 
 async function getAll(req, res, next) {
 
+    let limit = parseInt(req.query.limit) || 0
+    let offset = parseInt(req.query.offset) || 0
+
     try {
-        const users = await User.findAll({ attributes: { exclude: ['password'] } })
+        const users = await User.findAndCountAll({ attributes: { exclude: ['password'] }, limit, offset })
         return res.json(users)
     } catch (error) {
         return next(ApiError.badRequest(error.message))
