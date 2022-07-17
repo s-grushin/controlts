@@ -5,6 +5,8 @@ const dotenv = require('dotenv')
 const colors = require('colors')
 const Service = require('../../models/Service')
 const Company = require('../../models/Company')
+const VehicleBrand = require('../../models/VehicleBrand')
+const VehicleModel = require('../../models/VehicleModel')
 
 dotenv.config()
 
@@ -44,8 +46,9 @@ async function execute() {
 
 async function transferData() {
     console.log('Выполняется перенос данных. Подождите...'.green.bold);
-    await transferServices()
-    await transferCompanies()
+    //await transferServices()
+    //await transferCompanies()
+    await transferVehicles()
 }
 
 async function transferServices() {
@@ -62,7 +65,6 @@ async function transferServices() {
 
 }
 
-
 async function transferCompanies() {
     const tb_firms = await mssql_old.query("SELECT * FROM tb_firms", { type: QueryTypes.SELECT });
     const data = tb_firms.filter(item => item.name_firm).map(item => {
@@ -74,7 +76,34 @@ async function transferCompanies() {
 
     await Company.destroy({ where: {} })
     await Company.bulkCreate(data)
-    
+
+}
+
+async function transferVehicles() {
+
+    await VehicleBrand.destroy({ where: {} })
+    await VehicleModel.destroy({ where: {} })
+
+    const tb_name_ts = await mssql_old.query(`select max(id_name_ts) as id_name_ts, name, sum(1) as cnt from tb_name_ts 
+    where name is not null and name <> ''
+    group by name
+    having sum(1) = 1`, { type: QueryTypes.SELECT });
+    const tb_mod_ts = await mssql_old.query(`select * from tb_mod_ts where id_name is not null and mod_name <> ''`, { type: QueryTypes.SELECT });
+
+    for (const brand of tb_name_ts) {
+
+        const newBrand = await VehicleBrand.create({ name: brand.name.trim() })
+        const models = tb_mod_ts.filter(item => item.id_name === brand.id_name_ts).map(item => {
+            return {
+                name: item.mod_name.trim(),
+                weight: item.weight,
+                isTruck: item.is_truck,
+                brandId: newBrand.id
+            }
+        })
+
+        const result = await VehicleModel.bulkCreate(models)
+    }
 }
 
 execute()

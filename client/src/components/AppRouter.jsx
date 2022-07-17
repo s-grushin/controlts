@@ -12,6 +12,7 @@ import LoginPage from '../pages/LoginPage'
 import { AuthContext } from '../context/AuthProvider'
 import Companies from './Catalog/Companies/Companies'
 import CreateUpdateCompany from './Catalog/Companies/CreateUpdateCompany'
+import Vehicles from './Catalog/Vehicles/Vehicles'
 
 const AppRouter = () => {
 
@@ -36,6 +37,7 @@ const AppRouter = () => {
                             <Route path='companies' element={<Companies />} />
                             <Route path='companies/add' element={<CreateUpdateCompany />} />
                             <Route path='companies/:id' element={<CreateUpdateCompany isUpdateMode={true} />} />
+                            <Route path='vehicles' element={<Vehicles />} />
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />
                     </Route>
