@@ -5,6 +5,7 @@ const companyRouter = require('./company.router')
 const vehicleRouter = require('./vehicle.router')
 const brandRouter = require('./brand.router')
 const modelRouter = require('./model.router')
+const parkingRouter = require('./parking.router')
 
 const router = Router()
 router.use('/user', userRouter)
@@ -13,6 +14,8 @@ router.use('/company', companyRouter)
 router.use('/vehicle', vehicleRouter)
 router.use('/vehicle/brand', brandRouter)
 router.use('/vehicle/model', modelRouter)
+router.use('/parking', parkingRouter)
+
 
 
 module.exports = router

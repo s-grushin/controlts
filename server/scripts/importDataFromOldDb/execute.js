@@ -7,6 +7,8 @@ const Service = require('../../models/Service')
 const Company = require('../../models/Company')
 const VehicleBrand = require('../../models/VehicleBrand')
 const VehicleModel = require('../../models/VehicleModel')
+const Parking = require('../../models/Parking')
+
 
 dotenv.config()
 
@@ -48,7 +50,8 @@ async function transferData() {
     console.log('Выполняется перенос данных. Подождите...'.green.bold);
     //await transferServices()
     //await transferCompanies()
-    await transferVehicles()
+    //await transferVehicles()
+    await transferParkings()
 }
 
 async function transferServices() {
@@ -104,6 +107,22 @@ async function transferVehicles() {
 
         const result = await VehicleModel.bulkCreate(models)
     }
+}
+
+async function transferParkings() {
+
+    const tb_stay = await mssql_old.query("select * from tb_stay where id_proc is not null", { type: QueryTypes.SELECT });
+    const data = tb_stay.map(item => {
+        return {
+            name: item.name,
+            isBusy: item.buzy,
+            number: item.num_stay,
+        }
+    })
+
+    await Parking.destroy({ where: {} })
+    await Parking.bulkCreate(data)
+
 }
 
 execute()
