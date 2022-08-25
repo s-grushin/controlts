@@ -17,6 +17,9 @@ import CreateUpdateBrand from './Catalog/Vehicles/CreateUpdateBrand'
 import CreateUpdateModel from './Catalog/Vehicles/CreateUpdateModel'
 import Parkings from './Catalog/Parkings/Parkings'
 import CreateUpdateParking from './Catalog/Parkings/CreateUpdateParking'
+import DeliveryTypes from './Catalog/DeliveryTypes/DeliveryTypes'
+import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDeliveryType'
+
 
 const AppRouter = () => {
 
@@ -49,6 +52,9 @@ const AppRouter = () => {
                             <Route path='parkings' element={<Parkings />} />
                             <Route path='parkings/add' element={<CreateUpdateParking />} />
                             <Route path='parkings/:id' element={<CreateUpdateParking isUpdateMode={true} />} />
+                            <Route path='deliveryTypes' element={<DeliveryTypes />} />
+                            <Route path='deliveryTypes/add' element={<CreateUpdateDeliveryType />} />
+                            <Route path='deliveryTypes/:id' element={<CreateUpdateDeliveryType isUpdateMode={true} />} />
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />
                     </Route>

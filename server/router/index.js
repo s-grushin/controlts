@@ -6,6 +6,7 @@ const vehicleRouter = require('./vehicle.router')
 const brandRouter = require('./brand.router')
 const modelRouter = require('./model.router')
 const parkingRouter = require('./parking.router')
+const deliveryTypeRouter = require('./deliveryType.router')
 
 const router = Router()
 router.use('/user', userRouter)
@@ -15,6 +16,7 @@ router.use('/vehicle', vehicleRouter)
 router.use('/vehicle/brand', brandRouter)
 router.use('/vehicle/model', modelRouter)
 router.use('/parking', parkingRouter)
+router.use('/deliveryType', deliveryTypeRouter)
 
 
 

@@ -8,6 +8,7 @@ const Company = require('../../models/Company')
 const VehicleBrand = require('../../models/VehicleBrand')
 const VehicleModel = require('../../models/VehicleModel')
 const Parking = require('../../models/Parking')
+const DeliveryType = require('../../models/DeliveryType')
 
 
 dotenv.config()
@@ -51,7 +52,8 @@ async function transferData() {
     //await transferServices()
     //await transferCompanies()
     //await transferVehicles()
-    await transferParkings()
+    //await transferParkings()
+    await transferDeliveryTypes()
 }
 
 async function transferServices() {
@@ -122,6 +124,20 @@ async function transferParkings() {
 
     await Parking.destroy({ where: {} })
     await Parking.bulkCreate(data)
+
+}
+
+async function transferDeliveryTypes() {
+
+    const tb_stay = await mssql_old.query("select * from tb_in_type", { type: QueryTypes.SELECT });
+    const data = tb_stay.map(item => {
+        return {
+            name: item.type_input,
+        }
+    })
+
+    await DeliveryType.destroy({ where: {} })
+    await DeliveryType.bulkCreate(data)
 
 }
 

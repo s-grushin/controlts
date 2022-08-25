@@ -9,7 +9,7 @@ const CatalogPage = () => {
         { id: 2, name: 'companies', path: '/catalog/companies', title: 'Компании' },
         { id: 3, name: 'vehicles', path: '/catalog/vehicles', title: 'Марки и модели авто' },
         { id: 4, name: 'parkings', path: '/catalog/parkings', title: 'Места стоянки' },
-        { id: 5, name: 'shippingTypes', path: '/catalog/shippingTypes', title: 'Виды доставок' },
+        { id: 5, name: 'deliveryTypes', path: '/catalog/deliveryTypes', title: 'Виды доставок' },
         { id: 6, name: 'users', path: '/catalog/users', title: 'Пользователи' },
     ]
 
