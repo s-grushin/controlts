@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const useHttp = (apiLoadFunc) => {
+const useHttp = () => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -8,6 +8,7 @@ const useHttp = (apiLoadFunc) => {
     const request = async (apiFunc) => {
 
         setLoading(true)
+        setError('')
         try {
             const data = await apiFunc()
             return data

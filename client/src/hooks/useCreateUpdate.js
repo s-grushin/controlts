@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
+function useCreateUpdate(initState, isUpdateMode, create, update, getOne, onMountHandler = null) {
 
     const [formData, setFormData] = useState(initState)
     const navigate = useNavigate()
@@ -39,6 +39,9 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
         try {
             const response = await getOne(id)
             setFormData(response)
+            if (onMountHandler) {
+                onMountHandler(response)
+            }
         } catch (error) {
             setError(error.message)
         } finally {
@@ -54,7 +57,7 @@ function useCreateUpdate(initState, isUpdateMode, create, update, getOne) {
         }
         loadEntity()
 
-    }, [loadEntity])
+    }, [loadEntity, isUpdateMode])
 
 
 

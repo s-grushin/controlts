@@ -13,6 +13,8 @@ import { AuthContext } from '../context/AuthProvider'
 import Companies from './Catalog/Companies/Companies'
 import CreateUpdateCompany from './Catalog/Companies/CreateUpdateCompany'
 import Vehicles from './Catalog/Vehicles/Vehicles'
+import CreateUpdateBrand from './Catalog/Vehicles/CreateUpdateBrand'
+import CreateUpdateModel from './Catalog/Vehicles/CreateUpdateModel'
 
 const AppRouter = () => {
 
@@ -38,6 +40,10 @@ const AppRouter = () => {
                             <Route path='companies/add' element={<CreateUpdateCompany />} />
                             <Route path='companies/:id' element={<CreateUpdateCompany isUpdateMode={true} />} />
                             <Route path='vehicles' element={<Vehicles />} />
+                            <Route path='vehicles/brands/add' element={<CreateUpdateBrand />} />
+                            <Route path='vehicles/brands/:id' element={<CreateUpdateBrand isUpdateMode={true} />} />
+                            <Route path='vehicles/models/add' element={<CreateUpdateModel />} />
+                            <Route path='vehicles/models/:id' element={<CreateUpdateModel isUpdateMode={true} />} />
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />
                     </Route>
