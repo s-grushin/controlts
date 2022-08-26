@@ -1,11 +1,21 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 const Driver = db.define('Driver', {
-    name: {
+    fullName: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
+        validate: {
+            notEmpty: true
+        }
+    },
+    phoneNumber1: {
+        type: DataTypes.STRING
+    },
+    phoneNumber2: {
+        type: DataTypes.STRING
+    },
+    comment: {
+        type: DataTypes.STRING
     }
-})
+}, { underscored: true, timestamps: false })
 
 module.exports = Driver

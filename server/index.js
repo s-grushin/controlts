@@ -6,6 +6,7 @@ const dotenv = require('dotenv')
 const colors = require('colors')
 const errorHandleMiddleware = require('./middleware/apiErrorHandleMiddleware')
 const dbInit = require('./db/init')
+const DriverHistory = require('./models/DriverHistory')
 
 
 dotenv.config()
