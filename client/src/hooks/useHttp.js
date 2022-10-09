@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 const useHttp = () => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    const request = async (apiFunc) => {
+    const request = useCallback(async (apiFunc) => {
 
         setLoading(true)
         setError('')
@@ -18,7 +18,7 @@ const useHttp = () => {
             setLoading(false)
         }
 
-    }
+    }, [])
 
     const clearError = () => setError('')
 

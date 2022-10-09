@@ -2,10 +2,10 @@ import axios from 'axios'
 
 const host = `${process.env.REACT_APP_SERVER}`
 
-export const getAll = async (limit, offset) => {
+export const getAll = async (limit, offset, searchValue) => {
 
     try {
-        const response = await axios(`${host}/api/company?limit=${limit}&offset=${offset}`)
+        const response = await axios(`${host}/api/company?limit=${limit}&offset=${offset}&searchValue=${searchValue}`)
         return response.data
     } catch (error) {
         throw new Error(`Ошибка при получении списка компаний. ${error.message}. server: ${error.response.data.message}`)

@@ -19,6 +19,7 @@ import Parkings from './Catalog/Parkings/Parkings'
 import CreateUpdateParking from './Catalog/Parkings/CreateUpdateParking'
 import DeliveryTypes from './Catalog/DeliveryTypes/DeliveryTypes'
 import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDeliveryType'
+import CheckoutPage from '../pages/CheckoutPage/CheckoutPage'
 
 
 const AppRouter = () => {
@@ -34,6 +35,7 @@ const AppRouter = () => {
                     <Route path='/' element={<Layout />}>
                         <Route index element={<WorkPage />} />
                         <Route path='login' element={<Navigate to={'/'} />} />
+                        <Route path='checkout' element={<CheckoutPage />} />
                         <Route path='catalog' element={<CatalogPage />}>
                             <Route path='services' element={<Services />} />
                             <Route path='services/add' element={<CreateUpdateService />} />

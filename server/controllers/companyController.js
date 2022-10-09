@@ -1,13 +1,15 @@
-const Company = require('../models/Company')
 const ApiError = require('../utils/ApiError')
+const Company = require('../models/Company')
+const { Op } = require('sequelize')
 
 async function getAll(req, res, next) {
 
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
+    let searchValue = req.query.searchValue || ''
 
     try {
-        const data = await Company.findAndCountAll({ limit, offset })
+        const data = await Company.findAndCountAll({ limit, offset, where: { name: { [Op.substring]: searchValue } }, order: [['name']] })
         return res.json(data)
     } catch (error) {
         return next(ApiError.internalError(error.message))

@@ -2,3 +2,8 @@
   background-color: lightblue;
   color: white;
 }
+
+.tableInput {
+  border: 0;
+  width: 100%;
+}
