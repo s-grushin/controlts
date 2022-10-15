@@ -27,7 +27,6 @@ const CatalogPage = () => {
     return (
         <div>
             <Row className='mt-1'>
-                <h5 className='d-flex justify-content-end'>Справочники</h5>
                 <Col md={3}>
                     <ListGroup>
                         {menuItems.map(item => (

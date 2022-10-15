@@ -7,11 +7,11 @@ async function init() {
     let rootUser
 
     try {
-        rootUser = await User.findOne({ where: { login: 'admin' } })
+        rootUser = await User.findOne({ where: { username: 'admin' } })
         if (!rootUser) {
             const hashedPassword = await bcrypt.hash('admin', 5)
             rootUser = await User.create({
-                login: 'admin',
+                username: 'admin',
                 password: hashedPassword,
                 role: 'ADMIN',
             })

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Context from './Context'
-import Back from '../AppButtons/Back'
-import Add from '../AppButtons/Add'
-import Delete from '../AppButtons/Delete'
-
+import Button from '../Button'
 
 const TopBar = () => {
+
+    const navigate = useNavigate()
 
     /* const setDisabled = (action) => {
 
@@ -24,13 +24,13 @@ const TopBar = () => {
 
     return (
         <div className='mb-2'>
-            <Back />
+            <Button title='Назад' clickHandler={navigate('/')} />
             <span className='ms-2'>
-                <Add clickHandler={context.handlers.addEntity} />
+                <Button clickHandler={context.handlers.addEntity} title='Добавить' />
             </span>
             <span className='ms-2'>
-                <Delete clickHandler={() => context.handlers.deleteEntity('showModal')}
-                    disabled={selectedEntities.length === 0} />
+                <Button clickHandler={() => context.handlers.deleteEntity('showModal')}
+                    disabled={selectedEntities.length === 0} title='Удалить' />
             </span>
 
         </div>

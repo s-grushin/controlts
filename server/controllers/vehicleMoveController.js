@@ -1,4 +1,3 @@
-const ApiError = require('../utils/ApiError')
 const db = require('../db/mssql')
 const VehicleBrand = require('../models/VehicleBrand')
 const DeliveryType = require('../models/DeliveryType')

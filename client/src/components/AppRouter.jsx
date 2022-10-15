@@ -20,6 +20,7 @@ import CreateUpdateParking from './Catalog/Parkings/CreateUpdateParking'
 import DeliveryTypes from './Catalog/DeliveryTypes/DeliveryTypes'
 import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDeliveryType'
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage'
+import UsersList from './Catalog/Users/UsersList'
 
 
 const AppRouter = () => {
@@ -40,9 +41,11 @@ const AppRouter = () => {
                             <Route path='services' element={<Services />} />
                             <Route path='services/add' element={<CreateUpdateService />} />
                             <Route path='services/:id' element={<CreateUpdateService isUpdateMode={true} />} />
-                            <Route path='users' element={<Users />} />
-                            <Route path='users/add' element={<CreateUpdateUser />} />
-                            <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true} />} />
+                            <Route path='users'>
+                                <Route index element={<UsersList />} />
+                                <Route path='users/add' element={<CreateUpdateUser />} />
+                                <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true} />} />
+                            </Route>
                             <Route path='companies' element={<Companies />} />
                             <Route path='companies/add' element={<CreateUpdateCompany />} />
                             <Route path='companies/:id' element={<CreateUpdateCompany isUpdateMode={true} />} />

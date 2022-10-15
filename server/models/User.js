@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 const User = db.define('User', {
-    login: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,

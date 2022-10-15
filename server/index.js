@@ -4,7 +4,7 @@ const mssql = require('./db/mssql')
 const appRouter = require('./router')
 const dotenv = require('dotenv')
 const colors = require('colors')
-const errorHandleMiddleware = require('./middleware/apiErrorHandleMiddleware')
+const handleErrorMiddleware = require('./middleware/handleErrorMiddleware')
 const dbInit = require('./db/init')
 const DriverHistory = require('./models/DriverHistory')
 
@@ -19,7 +19,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api', appRouter)
-app.use(errorHandleMiddleware)
+app.use(handleErrorMiddleware)
 
 
 

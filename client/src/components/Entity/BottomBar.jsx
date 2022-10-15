@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Context from './Context'
-import SaveAndExit from '../AppButtons/SaveAndExit'
+import Button from '../Button'
 
 const BottomBar = () => {
 
@@ -8,7 +8,7 @@ const BottomBar = () => {
 
     return (
         <div className='d-flex justify-content-end mt-2'>
-            <SaveAndExit isSaving={context.state.isSaving} clickHandler={context.handlers.saveAndCloseHandler} />
+            <Button isSaving={context.state.isSaving} clickHandler={context.handlers.saveAndCloseHandler} title='Сохранить и выйти' />
         </div>
     )
 }

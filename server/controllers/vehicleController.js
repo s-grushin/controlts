@@ -1,6 +1,5 @@
 const VehicleBrand = require('../models/VehicleBrand')
 const VehicleModel = require('../models/VehicleModel')
-const ApiError = require('../utils/ApiError')
 
 async function getAll(req, res, next) {
 

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Spinner, Table } from 'react-bootstrap'
-import { BsCheck } from 'react-icons/bs'
 import { getAll, deleteBrand } from '../../../api/backend/vehiclesApi'
 import { Row, Col, ListGroup } from 'react-bootstrap'
 import css from './Vehicles.module.css'
 import useHttp from '../../../hooks/useHttp'
-import Back from '../../AppButtons/Back'
-import Add from '../../AppButtons/Add'
-import Delete from '../../AppButtons/Delete'
+import Button from '../../Button'
 import Confirmation from '../../Modals/Confirmation'
 
 const Vehicles = () => {
@@ -96,10 +93,10 @@ const Vehicles = () => {
                             <Row className={css.vehicles}>
                                 <Col md={3}>
                                     <div className='vstack gap-1'>
-                                        <Back />
+                                        <Button title='Назад' clickHandler={navigate('/')} />
                                         <b>Марки ТС</b>
-                                        <Add clickHandler={createBrandHandler} />
-                                        < Delete clickHandler={deleteBrandHandler} disabled={selectedBrandId === null} />
+                                        <Button clickHandler={createBrandHandler} title='Добавить' />
+                                        <Button clickHandler={deleteBrandHandler} title='Удалить' disabled={selectedBrandId === null} />
                                     </div>
                                 </Col>
                                 <Col md={9}>
@@ -128,11 +125,12 @@ const Vehicles = () => {
                                 <Col md={9}>
                                     <b>Модели ТС</b>
                                     <div className='my-2'>
-                                        <Add clickHandler={createModelHandler}
+                                        <Button clickHandler={createModelHandler}
                                             disabled={selectedBrandId === null}
+                                            title='Добавить'
                                         />
                                         <span className='ms-2'>
-                                            <Delete clickHandler={deleteModel} disabled={selectedModelId === null} />
+                                            <Button clickHandler={deleteModel} disabled={selectedModelId === null} title='Удалить' />
                                         </span>
                                     </div>
                                     < Table responsive bordered hover size='sm'>
@@ -157,7 +155,7 @@ const Vehicles = () => {
                                                         <td>{index + 1}</td>
                                                         <td>{item.name}</td>
                                                         <td>{item.weight}</td>
-                                                        <td>{item.isTruck === true ? <BsCheck /> : false}</td>
+                                                        <td>{item.isTruck === true ? 'ok' : false}</td>
                                                     </tr>
                                                 )
 

@@ -1,5 +1,4 @@
 const Parking = require('../models/Parking')
-const ApiError = require('../utils/ApiError')
 
 async function getAll(req, res, next) {
 

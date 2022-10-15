@@ -11,7 +11,7 @@ export const login = async (login, password) => {
     }
 
     try {
-        const response = await axios.post(`${host}/api/user/login`, { login, password }, config)
+        const response = await axios.post(`${host}/api/users/login`, { login, password }, config)
         return response.data
     } catch (error) {
         throw new Error(`Ошибка при логине пользователя. ${error.response.data.message || error.message}`)

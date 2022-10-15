@@ -1,4 +1,3 @@
-const ApiError = require('../utils/ApiError')
 const Company = require('../models/Company')
 const { Op } = require('sequelize')
 

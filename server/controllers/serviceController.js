@@ -1,5 +1,4 @@
 const Service = require('../models/Service')
-const ApiError = require('../utils/ApiError')
 
 async function getAll(req, res, next) {
 

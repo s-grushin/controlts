@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Col, Row, Card, Form } from 'react-bootstrap'
 import useHttp from '../hooks/useHttp'
-import LoaderButton from '../components/AppButtons/LoaderButton'
-import { login as loginOnServer } from '../api/backend/userApi'
+import Button from '../components/Button'
 import { AuthContext } from '../context/AuthProvider'
 
 const LoginPage = () => {
@@ -14,7 +13,7 @@ const LoginPage = () => {
   const auth = useContext(AuthContext)
 
   async function loginHandler(event) {
-    const data = await request(() => loginOnServer(username, password))
+    const data = await request('/users/login', 'post', { login: username, password })
     auth.login(data.token, data.userInfo)
   }
 
@@ -40,7 +39,7 @@ const LoginPage = () => {
               </Form.Group>
 
               <div className='d-flex justify-content-end'>
-                <LoaderButton variant='primary' text="Войти" isLoading={loading} clickHandler={loginHandler} />
+                <Button variant='primary' title="Войти" isLoading={loading} clickHandler={loginHandler} />
               </div>
             </Form>
           </Card.Body>

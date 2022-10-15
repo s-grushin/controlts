@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Form, Stack, Table, Spinner, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { Row, Col, Form, Stack, Table, Spinner } from 'react-bootstrap'
 import { getCheckoutData } from '../../api/backend/checkoutApi'
 import { getBrand } from '../../api/backend/vehiclesApi'
 import { getAll as getCompanies } from '../../api/backend/companyApi'
-import Back from '../../components/AppButtons/Back'
+import Button from '../../components/Button'
 import useInputChange from '../../hooks/useInputChange'
 import useHttp from '../../hooks/useHttp'
 import ReactSelect from 'react-select'
 import AsyncSelect from 'react-select/async-creatable'
-import LoaderButton from '../../components/AppButtons/LoaderButton'
 
 const CheckoutPage = () => {
 
@@ -33,6 +33,8 @@ const CheckoutPage = () => {
 
     const { request, loading, error } = useHttp()
     const [requestType, setRequestType] = useState('initial')
+
+    const navigate = useNavigate()
 
     const options = [
         { value: 'chocolate', label: 'Chocolate' },
@@ -104,7 +106,7 @@ const CheckoutPage = () => {
     return (
         <Row className='d-flex justify-content-center'>
             <div className='mt-2'>
-                <Back />
+                <Button title='Назад' clickHandler={navigate('/')} />
             </div>
 
             {
@@ -224,7 +226,7 @@ const CheckoutPage = () => {
                                     <Stack gap={2}>
                                         <div className="bg-light border">
                                             <div className="d-grid gap-2">
-                                                <LoaderButton isLoading={false} text='Получить данные с весов и камер' />
+                                                <Button isLoading={false} withSpinner={true} title='Получить данные с весов и камер' />
                                             </div>
                                         </div>
                                         <div className="bg-light border">

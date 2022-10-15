@@ -1,7 +1,6 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
-import Confirm from '../AppButtons/Confirm'
-import Cancel from '../AppButtons/Cancel'
+import Button from '../Button'
 
 
 const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, isConfirming }) => {
@@ -19,8 +18,8 @@ const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, is
                 {children}
             </Modal.Body>
             <Modal.Footer>
-                <Cancel clickHandler={cancelHandler} />
-                <Confirm clickHandler={confirmHandler} isConfirming={isConfirming} />
+                <Button clickHandler={cancelHandler} title='Отмена' />
+                <Button clickHandler={confirmHandler} title='Подтвердить' withSpinner={true} />
             </Modal.Footer>
         </Modal>
     )

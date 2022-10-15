@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import Context from './Context'
 import { Table as BTable } from 'react-bootstrap'
 import classes from './Table.module.css'
-import { BsCheck } from 'react-icons/bs'
 
 const Table = () => {
 
@@ -51,7 +50,7 @@ const Table = () => {
                                     return (
                                         <td key={`${entity.id}${col.id}`}>
                                             {
-                                                entity[col.name] === true ? <BsCheck /> : entity[col.name]
+                                                entity[col.name] === true ? 'ok' : entity[col.name]
                                             }
                                         </td>
                                     )
