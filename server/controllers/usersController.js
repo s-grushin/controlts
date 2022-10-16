@@ -24,16 +24,20 @@ async function getUserById(req, res) {
 
 async function createUser(req, res) {
 
-    const { username, password } = req.body
+    const { username, password, role } = req.body
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'all fields are required' })
+    }
 
     let user
     user = await User.findOne({ where: { username } })
     if (user) {
-        return res.status(400).json('that user is already exist')
+        return res.status(400).json({ message: 'user is already exist' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 5)
-    user = await User.create({ ...req.body, password: hashedPassword })
+    user = await User.create({ ...req.body, password: hashedPassword, role })
     res.status(200).json({ message: 'user created' })
 }
 

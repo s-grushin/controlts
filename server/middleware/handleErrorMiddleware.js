@@ -1,13 +1,13 @@
 
 function handleErrorMiddleware(err, req, res, next) {
 
-    const statusCode = res.statusCode ? res.statusCode : 500
+    let statusCode = res.statusCode ? res.statusCode : 500
     const message = err.message || 'unknown error'
-
-    console.log(err);
+    if (statusCode === 200 && message) {
+        statusCode = 500
+    }
 
     res.status(statusCode).json({ message })
-
 }
 
 module.exports = handleErrorMiddleware

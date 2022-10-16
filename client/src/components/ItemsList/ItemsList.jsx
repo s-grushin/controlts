@@ -10,7 +10,7 @@ import ConfirmModal from '../ConfirmModal'
 const itemsQtyOnPage = 20
 const currentPage = 1
 
-const ItemsList = ({ fetchUrl, deleteUrl, fields, presentationField }) => {
+const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
 
     const { request, loading } = useHttp()
     const [items, setItems] = useState([])
@@ -23,14 +23,20 @@ const ItemsList = ({ fetchUrl, deleteUrl, fields, presentationField }) => {
         setSelectedItemId(id)
     }
 
+    // back
+    const backHandler = () => {
+        navigate(-1)
+    }
+
+
     // create
     const createHandler = () => {
-        console.log('createHandler');
+        navigate(`${path}/create`)
     }
 
     // edit
     const editHandler = () => {
-        console.log('editHandler');
+        navigate(`${path}/${selectedItemId}`)
     }
 
     // delete
@@ -45,8 +51,13 @@ const ItemsList = ({ fetchUrl, deleteUrl, fields, presentationField }) => {
         }
 
         if (action === 'ok') {
-            const res = await request(deleteUrl, 'delete', { id: selectedItemId })
-            console.log(res);
+            const res = await request(fetchUrl, 'delete', { id: selectedItemId })
+            if (res) {
+                //deleted successfully
+                setShowModal(false)
+                setItems(items.filter(item => item.id !== selectedItemId))
+                setSelectedItemId(null)
+            }
         }
     }
 
@@ -67,8 +78,8 @@ const ItemsList = ({ fetchUrl, deleteUrl, fields, presentationField }) => {
     return (
         <>
             <Topbar
-                itemSelected={selectedItemId}
-                backHandler={() => navigate('/catalog')}
+                itemSelected={!!selectedItemId}
+                backHandler={backHandler}
                 createHandler={createHandler}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}
@@ -81,7 +92,7 @@ const ItemsList = ({ fetchUrl, deleteUrl, fields, presentationField }) => {
                 currentPage={currentPage}
             />
             {/* <Pagination /> */}
-            <ConfirmModal show={showModal} handleClose={closeModalHandler}>
+            <ConfirmModal show={showModal} handleClose={closeModalHandler} loading={loading}>
                 <p>
                     Удалить <b>{selecteditemName}</b> ?
                 </p>

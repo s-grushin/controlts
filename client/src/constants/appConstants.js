@@ -1,1 +1,5 @@
-export const USER_ROLES = ['USER', 'ADMIN', 'AUDITOR']
+export const USER_ROLES = {
+    admin: 'ADMIN',
+    user: 'USER',
+    inspector: 'INSPECTOR'
+}

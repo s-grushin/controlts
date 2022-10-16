@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Form } from 'react-bootstrap'
-import useInputChange from '../../../hooks/useInputChange'
+import useInputChange from '../../../hooks/DELETEuseInputChange'
 import Confirmation from '../../Modals/Confirmation'
 
 const ChangePassword = ({ show, cancelHandler, confirmHandler, isConfirming }) => {

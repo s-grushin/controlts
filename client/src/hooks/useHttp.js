@@ -19,7 +19,11 @@ const useHttp = () => {
         }
     }, [])
 
-    return { request, loading, error }
+    const clearError = () => {
+        setError('')
+    }
+
+    return { request, loading, error, clearError }
 }
 
 export default useHttp

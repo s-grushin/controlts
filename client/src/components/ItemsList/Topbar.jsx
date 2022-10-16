@@ -2,7 +2,7 @@ import { Stack } from 'react-bootstrap'
 import Button from '../Button'
 
 const Topbar = ({ itemSelected, backHandler, createHandler, editHandler, deleteHandler }) => {
-
+  
   return (
     <div className='mb-2'>
       <Stack direction='horizontal' gap={2}>

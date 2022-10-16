@@ -4,10 +4,10 @@ import { Button as BootstrapButton, Spinner } from 'react-bootstrap'
 const Button = ({ children, variant, title, size, withSpinner, loading, disabled, clickHandler }) => {
     return (
         <BootstrapButton variant={variant} size={size} disabled={loading || disabled} onClick={clickHandler}>
-            {withSpinner &&
+            {withSpinner && loading &&
                 <Spinner
                     as="span"
-                    animation="border"
+                    animation="grow"
                     size={size}
                     role="status"
                     aria-hidden="true"

@@ -10,7 +10,12 @@ const UsersList = () => {
     ]
 
     return (
-        <ItemsList fetchUrl='/users/' fields={fieldsDisplay} presentationField='username' />
+        <ItemsList
+            fetchUrl='/users/'
+            path='/catalog/users'
+            fields={fieldsDisplay}
+            presentationField='username'
+        />
     )
 }
 

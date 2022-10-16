@@ -5,8 +5,6 @@ import WorkPage from '../pages/WorkPage'
 import CatalogPage from '../pages/CatalogPage'
 import Services from './Catalog/Services/Services'
 import CreateUpdateService from './Catalog/Services/CreateUpdateService'
-import Users from './Catalog/Users/Users'
-import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
 import NotFoundPage from '../pages/NotFoundPage'
 import LoginPage from '../pages/LoginPage'
 import { AuthContext } from '../context/AuthProvider'
@@ -21,6 +19,7 @@ import DeliveryTypes from './Catalog/DeliveryTypes/DeliveryTypes'
 import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDeliveryType'
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage'
 import UsersList from './Catalog/Users/UsersList'
+import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
 
 
 const AppRouter = () => {
@@ -43,8 +42,8 @@ const AppRouter = () => {
                             <Route path='services/:id' element={<CreateUpdateService isUpdateMode={true} />} />
                             <Route path='users'>
                                 <Route index element={<UsersList />} />
-                                <Route path='users/add' element={<CreateUpdateUser />} />
-                                <Route path='users/:id' element={<CreateUpdateUser isUpdateMode={true} />} />
+                                <Route path='create' element={<CreateUpdateUser variant='create' />} />
+                                <Route path=':id' element={<CreateUpdateUser variant='update' />} />
                             </Route>
                             <Route path='companies' element={<Companies />} />
                             <Route path='companies/add' element={<CreateUpdateCompany />} />
