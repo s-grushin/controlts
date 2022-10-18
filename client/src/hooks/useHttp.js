@@ -23,6 +23,17 @@ const useHttp = () => {
         setError('')
     }
 
+    //test
+    // eslint-disable-next-line
+    const requestWithDelay = useCallback((url, method, data, delay = 10000) => {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                const res = await axios.request({ url, method, data })
+                resolve(res)
+            }, delay)
+        })
+    }, [])
+
     return { request, loading, error, clearError }
 }
 

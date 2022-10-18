@@ -19,6 +19,7 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
 
     const navigate = useNavigate()
 
+
     const selectRowHandler = (id) => {
         setSelectedItemId(id)
     }

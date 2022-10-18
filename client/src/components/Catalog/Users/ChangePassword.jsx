@@ -1,28 +1,54 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Form } from 'react-bootstrap'
-import useInputChange from '../../../hooks/DELETEuseInputChange'
-import Confirmation from '../../Modals/Confirmation'
+import useHttp from '../../../hooks/useHttp'
+import useInputChange from '../../../hooks/useInputChange'
+import ConfirmModal from '../../ConfirmModal'
+import AppAlert from '../../AppAlert'
 
-const ChangePassword = ({ show, cancelHandler, confirmHandler, isConfirming }) => {
 
-    const [formData, setFormData] = useState({ password: '', repeatPassword: '' })
-    const [inputChangeHandler] = useInputChange(formData, setFormData)
+const ChangePassword = ({ show, close, userId }) => {
+
+    const [password, setPassword] = useState('')
+    const [repeatPassword, setRepeatPassword] = useState('')
+    const inputChange = useInputChange()
+
+    const { request, loading, error, clearError } = useHttp()
+
+    const closeForm = () => {
+        setPassword('')
+        setRepeatPassword('')
+        clearError()
+        close()
+    }
+
+    const saveHandler = async (action) => {
+        if (action === 'cancel') {
+            closeForm()
+        }
+
+        if (action === 'ok') {
+            const res = await request('/users/changePassword', 'put', { id: userId, password, repeatPassword })
+            if (res) {
+                closeForm()
+            }
+        }
+    }
 
     return (
-        <Confirmation
-            title='Изменение пароля'
+        <ConfirmModal
             show={show}
-            confirmHandler={() => confirmHandler('confirm', formData)}
-            cancelHandler={cancelHandler}
-            isConfirming={isConfirming}
+            handleClose={saveHandler}
+            loading={loading}
+            title='Изменение пароля'
         >
             <Form autoComplete="off">
+                <AppAlert text={error} show={!!error} clear={clearError} />
                 {/* password */}
                 <Form.Group className="mb-3">
                     <Form.Label>Новый пароль</Form.Label>
                     <Form.Control type="password" placeholder="Новый пароль" size='sm' name='password'
-                        value={formData.password}
-                        onChange={inputChangeHandler}
+                        value={password}
+                        onChange={(e) => inputChange(e, setPassword)}
                     />
                 </Form.Group>
 
@@ -30,13 +56,13 @@ const ChangePassword = ({ show, cancelHandler, confirmHandler, isConfirming }) =
                 <Form.Group className="mb-3">
                     <Form.Label>Повтор пароля</Form.Label>
                     <Form.Control type="password" placeholder="Повтор пароля" size='sm' name='repeatPassword'
-                        value={formData.repeatPassword}
-                        onChange={inputChangeHandler}
+                        value={repeatPassword}
+                        onChange={(e) => inputChange(e, setRepeatPassword)}
                     />
                 </Form.Group>
             </Form>
+        </ConfirmModal>
 
-        </Confirmation>
     )
 }
 

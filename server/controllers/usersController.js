@@ -41,7 +41,7 @@ async function createUser(req, res) {
     res.status(200).json({ message: 'user created' })
 }
 
-async function updateUser(req, res, next) {
+async function updateUser(req, res) {
 
     // ignore password
     const fieldsToUpdate = Object.keys(req.body).filter(item => item !== 'password')
@@ -92,9 +92,11 @@ async function login(req, res, next) {
 async function changePassword(req, res, next) {
 
     const { id, password, repeatPassword } = req.body
-    if (password !== repeatPassword) {
-        return res.status(400).json({ message: 'passwords not equals' })
+    console.log({id, password, repeatPassword});
+    if (password !== repeatPassword || !password) {
+        return res.status(400).json({ message: 'passwords not equals or empty' })
     }
+
 
     const hashedPassword = await bcrypt.hash(password, 5)
 

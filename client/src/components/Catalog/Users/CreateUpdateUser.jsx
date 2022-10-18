@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import { Card, Form } from 'react-bootstrap'
 import Button from '../../Button'
 import CreateUpdateItem from '../../Item/CreateUpdateItem'
@@ -16,14 +17,20 @@ const CreateUpdateUser = ({ variant }) => {
     const [phoneNumber1, setPhoneNumber1] = useState('')
     const [phoneNumber2, setPhoneNumber2] = useState('')
     const [isActive, setIsActive] = useState(true)
+    const [showChangePassword, setShowChangePassword] = useState(false)
 
     const inputChangeHandler = useInputChange()
 
-    const isUpdateMode = false
+    const userId = useParams().id
 
-    const foo = () => {
-
-    }
+    const updateOptions = useMemo(() => [
+        { field: 'username', setState: setUsername },
+        { field: 'fullName', setState: setFullName },
+        { field: 'role', setState: setSelectedRole },
+        { field: 'phoneNumber1', setState: setPhoneNumber1 },
+        { field: 'phoneNumber2', setState: setPhoneNumber2 },
+        { field: 'isActive', setState: setIsActive },
+    ], [])
 
     const roleOptions = Object.keys(USER_ROLES).map(key => <option key={key} value={USER_ROLES[key]}>{USER_ROLES[key]}</option>)
 
@@ -32,17 +39,18 @@ const CreateUpdateUser = ({ variant }) => {
             variant={variant}
             fetchUrl='/users'
             data={{ username, fullName, password, role: selectedRole, phoneNumber1, phoneNumber2, isActive }}
+            updateOptions={updateOptions}
         >
             <Card className='mt-2'>
                 <Card.Body>
                     <Card.Title>
-                        Создание нового пользователя
+                        {variant === 'create' ? 'Создать пользователя' : 'Редактировать пользователя'}
                     </Card.Title>
                     <Form>
 
                         {/* login */}
                         <Form.Group className="mb-3">
-                            <Form.Label>Логин</Form.Label>
+                            <Form.Label>Имя пользователя</Form.Label>
                             <Form.Control type="text" placeholder="Логин" size='sm' name='login'
                                 value={username}
                                 onChange={e => inputChangeHandler(e, setUsername)}
@@ -53,19 +61,17 @@ const CreateUpdateUser = ({ variant }) => {
                         </Form.Group>
 
                         {
-                            isUpdateMode ?
+                            variant === 'update' ?
                                 <>
                                     {/* change password */}
                                     <Form.Group className="mb-3">
-                                        <Button variant='outline-primary' size='sm'
-                                            onClick={() => foo(true)}
-                                        >Изменить пароль</Button>
+                                        <Button title='Изменить пароль' clickHandler={() => setShowChangePassword(true)} />
                                     </Form.Group>
 
-                                    <ChangePassword show={foo}
-                                        confirmHandler={foo}
-                                        cancelHandler={() => foo('cancel')}
-                                        isConfirming={false}
+                                    <ChangePassword
+                                        show={showChangePassword}
+                                        close={() => setShowChangePassword(false)}
+                                        userId={userId}
                                     />
                                 </>
                                 :
@@ -108,7 +114,7 @@ const CreateUpdateUser = ({ variant }) => {
                         <Form.Group className="mb-3">
                             <Form.Label>Роль</Form.Label>
                             <Form.Select size="sm" name='role'
-                                defaultValue={USER_ROLES.user}
+                                defaultValue={selectedRole}
                                 onChange={e => inputChangeHandler(e, setSelectedRole)}
                             >
                                 {roleOptions}
