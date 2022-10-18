@@ -21,7 +21,7 @@ const CreateUpdateUser = ({ variant }) => {
 
     const inputChangeHandler = useInputChange()
 
-    const userId = useParams().id
+    const { id } = useParams()
 
     const updateOptions = useMemo(() => [
         { field: 'username', setState: setUsername },
@@ -71,7 +71,7 @@ const CreateUpdateUser = ({ variant }) => {
                                     <ChangePassword
                                         show={showChangePassword}
                                         close={() => setShowChangePassword(false)}
-                                        userId={userId}
+                                        userId={id}
                                     />
                                 </>
                                 :

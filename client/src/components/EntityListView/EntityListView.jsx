@@ -5,7 +5,7 @@ import TopBar from './TopBar'
 import Table from './Table'
 import Modals from './Modals'
 import DeleteEntity from './Modals/DeleteEntity'
-import Pagination from './Pagination'
+import Pagination from '../Pagination'
 
 
 

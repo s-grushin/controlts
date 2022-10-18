@@ -5,6 +5,8 @@ import BottomBar from './BottomBar'
 import useHttp from '../../hooks/useHttp'
 import AppAlert from '../AppAlert'
 
+//data - данные формы которые нужно отправлять на сервер
+//updateOptions - массив, где каждый элемент это имя поля данных формы и функция setState
 const CreateUpdateItem = ({ children, fetchUrl, data, variant, updateOptions }) => {
 
     const { request, loading, error, clearError } = useHttp()
@@ -40,7 +42,7 @@ const CreateUpdateItem = ({ children, fetchUrl, data, variant, updateOptions }) 
         const fetchItem = async () => {
             if (variant !== 'update') return
             const data = await request(`${fetchUrl}/${id}`, 'get', {})
-            updateOptions.forEach(option => option.setState(data[option.field]))
+            updateOptions.forEach(option => option.setState(data[option.field] || ''))
         }
 
         fetchItem()

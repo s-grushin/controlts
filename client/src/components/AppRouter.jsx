@@ -8,8 +8,6 @@ import CreateUpdateService from './Catalog/Services/CreateUpdateService'
 import NotFoundPage from '../pages/NotFoundPage'
 import LoginPage from '../pages/LoginPage'
 import { AuthContext } from '../context/AuthProvider'
-import Companies from './Catalog/Companies/Companies'
-import CreateUpdateCompany from './Catalog/Companies/CreateUpdateCompany'
 import Vehicles from './Catalog/Vehicles/Vehicles'
 import CreateUpdateBrand from './Catalog/Vehicles/CreateUpdateBrand'
 import CreateUpdateModel from './Catalog/Vehicles/CreateUpdateModel'
@@ -20,6 +18,8 @@ import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDelive
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage'
 import UsersList from './Catalog/Users/UsersList'
 import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
+import CompaniesList from './Catalog/Companies/CompaniesList'
+import CreateUpdateCompany from './Catalog/Companies/CreateUpdateCompany'
 
 
 const AppRouter = () => {
@@ -45,9 +45,11 @@ const AppRouter = () => {
                                 <Route path='create' element={<CreateUpdateUser variant='create' />} />
                                 <Route path=':id' element={<CreateUpdateUser variant='update' />} />
                             </Route>
-                            <Route path='companies' element={<Companies />} />
-                            <Route path='companies/add' element={<CreateUpdateCompany />} />
-                            <Route path='companies/:id' element={<CreateUpdateCompany isUpdateMode={true} />} />
+                            <Route path='companies'>
+                                <Route index element={<CompaniesList />} />
+                                <Route path='create' element={<CreateUpdateCompany variant='create' />} />
+                                <Route path=':id' element={<CreateUpdateCompany variant='update' />} />
+                            </Route>
                             <Route path='vehicles' element={<Vehicles />} />
                             <Route path='vehicles/brands/add' element={<CreateUpdateBrand />} />
                             <Route path='vehicles/brands/:id' element={<CreateUpdateBrand isUpdateMode={true} />} />

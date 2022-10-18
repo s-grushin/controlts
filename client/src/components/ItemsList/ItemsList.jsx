@@ -4,16 +4,17 @@ import ItemsTable from './ItemsTable'
 import useHttp from '../../hooks/useHttp'
 import Spinner from '../Spinner'
 import Topbar from './Topbar'
-// import Pagination from './Pagination'
+import Pagination from '../Pagination'
 import ConfirmModal from '../ConfirmModal'
 
 const itemsQtyOnPage = 20
-const currentPage = 1
 
 const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
 
     const { request, loading } = useHttp()
     const [items, setItems] = useState([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [itemsQtyAll, setItemsQtyAll] = useState(0) // quantity of all rows in db table
     const [selectedItemId, setSelectedItemId] = useState(null)
     const [showModal, setShowModal] = useState(false)
 
@@ -62,17 +63,26 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
         }
     }
 
+    //const response = await getAll(itemsOnPage, currentPage * itemsOnPage - itemsOnPage)
+
+
     useEffect(() => {
         const fetchItems = async () => {
-            const data = await request(fetchUrl, 'get', {})
+            const limit = itemsQtyOnPage
+            const offset = currentPage * itemsQtyOnPage - itemsQtyOnPage
+            const data = await request(`${fetchUrl}/?limit=${limit}&offset=${offset}`, 'get', {})
             setItems(data.rows)
+            setItemsQtyAll(data.count)
         }
         fetchItems()
-    }, [request, fetchUrl])
+    }, [request, fetchUrl, currentPage])
 
-
-    const selecteditemName = selectedItemId ? items.find(item => item.id === selectedItemId)[presentationField] : 'Не выбрано'
-
+    const getSelecteditemName = () => {
+        if (selectedItemId) {
+            const item = items.find(item => item.id === selectedItemId)
+            if (item) return item[presentationField]
+        }               
+    }
 
     if (loading) return <Spinner />
 
@@ -92,10 +102,10 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
                 itemsQtyOnPage={itemsQtyOnPage}
                 currentPage={currentPage}
             />
-            {/* <Pagination /> */}
+            <Pagination options={{ currentPage, setCurrentPage, itemsQtyAll, itemsQtyOnPage }} />
             <ConfirmModal show={showModal} handleClose={closeModalHandler} loading={loading}>
                 <p>
-                    Удалить <b>{selecteditemName}</b> ?
+                    Удалить <b>{getSelecteditemName()}</b> ?
                 </p>
             </ConfirmModal>
         </>
