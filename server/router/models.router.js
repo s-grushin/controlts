@@ -6,6 +6,6 @@ router.get('/', getAllModels)
 router.get('/:id', getModel)
 router.post('/', createModel)
 router.put('/', updateModel)
-router.delete('/:id', deleteModel)
+router.delete('/', deleteModel)
 
 module.exports = router

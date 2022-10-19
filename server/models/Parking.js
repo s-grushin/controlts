@@ -11,9 +11,6 @@ const Parking = db.define('Parking', {
     isBusy: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-    },
-    number: {
-        type: DataTypes.STRING,
     }
 }, { underscored: true, tableName: 'parkings' })
 

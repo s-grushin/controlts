@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express()
-const { getAll, getOne, create, update, deleteOne } = require('../controllers/parkingController')
+const { getAll, getById, create, update, deleteOne } = require('../controllers/parkingsController')
 
 router.get('/', getAll)
-router.get('/:id', getOne)
+router.get('/:id', getById)
 router.post('/', create)
 router.put('/', update)
-router.delete('/:id', deleteOne)
+router.delete('/', deleteOne)
 
 module.exports = router

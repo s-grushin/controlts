@@ -6,6 +6,6 @@ router.get('/', getAllBrands)
 router.get('/:id', getBrand)
 router.post('/', createBrand)
 router.put('/', updateBrand)
-router.delete('/:id', deleteBrand)
+router.delete('/', deleteBrand)
 
 module.exports = router

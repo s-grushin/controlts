@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ItemsTable from './ItemsTable'
 import useHttp from '../../hooks/useHttp'
@@ -81,8 +81,10 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
         if (selectedItemId) {
             const item = items.find(item => item.id === selectedItemId)
             if (item) return item[presentationField]
-        }               
+        }
     }
+
+    const paginationOptions = useMemo(() => ({ currentPage, setCurrentPage, itemsQtyAll, itemsQtyOnPage }), [currentPage, itemsQtyAll])
 
     if (loading) return <Spinner />
 
@@ -102,7 +104,7 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
                 itemsQtyOnPage={itemsQtyOnPage}
                 currentPage={currentPage}
             />
-            <Pagination options={{ currentPage, setCurrentPage, itemsQtyAll, itemsQtyOnPage }} />
+            <Pagination options={paginationOptions} />
             <ConfirmModal show={showModal} handleClose={closeModalHandler} loading={loading}>
                 <p>
                     Удалить <b>{getSelecteditemName()}</b> ?

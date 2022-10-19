@@ -1,54 +1,40 @@
-import React from 'react'
+import { useState, useMemo } from 'react'
 import { Card, Form } from 'react-bootstrap'
-import useCreateUpdate from '../../../hooks/useCreateUpdate'
+import CreateUpdateItem from '../../Item/CreateUpdateItem'
 import useInputChange from '../../../hooks/useInputChange'
-import { create, update, getOne } from '../../../api/backend/deliveryTypesApi'
-import Entity from '../../Entity/Entity'
 
-const CreateUpdateDeliveryType = ({ isUpdateMode }) => {
+const CreateUpdateDeliveryType = ({ variant }) => {
 
-    const initState = { name: '' }
+    const [name, setName] = useState('')
 
-    const [formData, setFormData, isLoading, saveAndCloseHandler, isSaving, error]
-        = useCreateUpdate(initState, isUpdateMode, create, update, getOne)
+    const inputChangeHandler = useInputChange()
 
-    const [inputChangeHandler] = useInputChange(formData, setFormData)
-
-    const createContext = () => {
-        return {
-            state: {
-                isLoading,
-                isSaving,
-                error,
-            },
-            handlers: {
-                saveAndCloseHandler
-            }
-        }
-    }
+    const updateOptions = useMemo(() => [
+        { field: 'name', setState: setName },
+    ], [])
 
     return (
-        <>
-            < Entity context={createContext()} >
-                <Card className='mt-2'>
-                    <Card.Body>
-                        <Form>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label>Наименование вида доставки</Form.Label>
-                                <Form.Control size='sm' type="text" onChange={inputChangeHandler}
-                                    placeholder="Наименование вида доставки"
-                                    name="name"
-                                    value={formData.name} />
-                            </Form.Group>
-
-                        </Form>
-                    </Card.Body>
-                </Card>
-            </Entity >
-        </>
+        <CreateUpdateItem
+            variant={variant}
+            fetchUrl='/deliveryTypes'
+            data={{ name }}
+            updateOptions={updateOptions}
+        >
+            <Card className='mt-2'>
+                <Card.Body>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Наименование вида доставки</Form.Label>
+                            <Form.Control size='sm' type="text" onChange={e => inputChangeHandler(e, setName)}
+                                placeholder="Наименование вида доставки"
+                                name="name"
+                                value={name} />
+                        </Form.Group>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </CreateUpdateItem>
     )
-
 }
 
 export default CreateUpdateDeliveryType

@@ -1,10 +1,9 @@
-import React from 'react'
+import { memo } from 'react'
 import { Pagination as BsPagination } from 'react-bootstrap'
 
 const Pagination = ({ options }) => {
 
     const { currentPage, setCurrentPage, itemsQtyAll, itemsQtyOnPage } = options
-
     const siblingPages = 3
 
     const pagesCount = Math.ceil(itemsQtyAll / itemsQtyOnPage)
@@ -68,4 +67,5 @@ const Pagination = ({ options }) => {
     )
 }
 
-export default Pagination
+
+export default memo(Pagination)
