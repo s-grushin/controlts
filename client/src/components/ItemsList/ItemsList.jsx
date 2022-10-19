@@ -9,7 +9,12 @@ import ConfirmModal from '../ConfirmModal'
 
 const itemsQtyOnPage = 20
 
-const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
+//fetchUrl - [required] - backend path
+//path -     [required] - frontend path
+//fields -   [required] - field to visualize
+//presentationField - field which presentate item
+//assosiation - needed for assosiations.
+const ItemsList = ({ fetchUrl, path, fields, presentationField, showButtonBack, assosiation }) => {
 
     const { request, loading } = useHttp()
     const [items, setItems] = useState([])
@@ -20,9 +25,13 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
 
     const navigate = useNavigate()
 
+    console.log(assosiation);
+    const { ownerSelectedHandler, ownerId, fkName } = assosiation
+
 
     const selectRowHandler = (id) => {
         setSelectedItemId(id)
+        if (ownerSelectedHandler) ownerSelectedHandler(id)
     }
 
     // back
@@ -63,19 +72,23 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
         }
     }
 
-    //const response = await getAll(itemsOnPage, currentPage * itemsOnPage - itemsOnPage)
-
-
     useEffect(() => {
         const fetchItems = async () => {
+            if (fkName && !ownerId) {
+                // owner id not selected
+                return
+            }
+
             const limit = itemsQtyOnPage
             const offset = currentPage * itemsQtyOnPage - itemsQtyOnPage
-            const data = await request(`${fetchUrl}/?limit=${limit}&offset=${offset}`, 'get', {})
+            //fkfilter used only for assosiation (one to many visualization)
+            const fkfilter = fkName ? `${fkName}=${ownerId}` : ''
+            const data = await request(`${fetchUrl}/?${fkfilter}&limit=${limit}&offset=${offset}`, 'get', {})
             setItems(data.rows)
             setItemsQtyAll(data.count)
         }
         fetchItems()
-    }, [request, fetchUrl, currentPage])
+    }, [request, fetchUrl, currentPage, fkName, ownerId])
 
     const getSelecteditemName = () => {
         if (selectedItemId) {
@@ -96,6 +109,7 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
                 createHandler={createHandler}
                 editHandler={editHandler}
                 deleteHandler={deleteHandler}
+                showButtonBack={showButtonBack}
             />
             <ItemsTable
                 items={items}
@@ -115,7 +129,13 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField }) => {
 }
 
 ItemsList.defaultProps = {
-    presentationField: 'name'
+    presentationField: 'name',
+    showButtonBack: true,
+    assosiation: {
+        selectedOwnerHandler: () => { },
+        ownerId: null,
+        field: ''
+    }
 }
 
 export default ItemsList
