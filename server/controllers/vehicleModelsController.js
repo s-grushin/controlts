@@ -30,6 +30,7 @@ async function getById(req, res) {
 
 async function create(req, res) {
 
+    console.log(req.body)
     const data = await VehicleModel.create(req.body)
     return res.status(200).json({ message: 'created' })
 

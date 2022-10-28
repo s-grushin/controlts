@@ -1,6 +1,5 @@
 Required:
-MSSQL version >=2014
-
+-MSSQL version >=2014
 
 
 

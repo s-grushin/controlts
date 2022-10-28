@@ -1,44 +1,33 @@
-import { useState } from 'react'
-import { Row, Col } from 'react-bootstrap'
-import ItemsList from '../../../components/ItemsList/ItemsList'
+import OneToManyList from '../../OneToManyList/OneToManyList'
 
 const VehicleBrandsList = () => {
 
-    const [ownerId, setOwnerId] = useState(null)
+    const oneOptions = {
+        oneTitle: 'Марки',
+        oneFields: [
+            { id: 1, name: 'name', title: 'Наименование' }
+        ],
+        oneFetchUrl: '/vehicle/brands',
+        onePath: '/catalog/vehicleBrands'
+    }
 
-    const fieldsDisplayBrands = [
-        { id: 1, name: 'name', title: 'Наименование' }
-    ]
-
-    const ownerSelectedHandler = (id) => {
-        setOwnerId(id)
+    const manyOptions = {
+        manyTitle: 'Модели',
+        manyFields: [
+            { id: 1, name: 'name', title: 'Наименование' },
+            { id: 2, name: 'weight', title: 'Грузоподъемность' },
+            { id: 3, name: 'isTruck', title: 'Грузовой' }
+        ],
+        manyFetchUrl: '/vehicle/models',
+        manyPath: '/catalog/vehicleBrands/models',
+        fkName: 'brandId'
     }
 
     return (
-        <Row>
-            <Col sm={4}>
-                <b>Марки</b>
-                <hr />
-                <ItemsList
-                    fetchUrl='/vehicle/brands'
-                    path='/catalog/vehicleBrands'
-                    fields={fieldsDisplayBrands}
-                    assosiation={{ ownerSelectedHandler }}
-                />
-            </Col>
-            <Col sm={8} className=''>
-                <b>Модели</b>
-                <hr />
-                <ItemsList
-                    fetchUrl='/vehicle/models'
-                    path='/catalog/vehicleBrands'
-                    fields={fieldsDisplayBrands}
-                    assosiation={{ ownerId, fkName: 'brandId' }}
-                    showButtonBack={false}
-                />
-            </Col>
-        </Row>
-
+        <OneToManyList
+            oneOptions={oneOptions}
+            manyOptions={manyOptions}
+        />
     )
 }
 

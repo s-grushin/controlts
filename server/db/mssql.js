@@ -15,7 +15,7 @@ const mssql = new Sequelize({
             enableArithAbort: false,
             cryptoCredentialsDetails: {
                 minVersion: 'TLSv1'
-            }
+            },            
         }
     },
     logging: false,

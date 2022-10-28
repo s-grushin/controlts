@@ -3,7 +3,7 @@ import { Card, Form } from 'react-bootstrap'
 import CreateUpdateItem from '../../Item/CreateUpdateItem'
 import useInputChange from '../../../hooks/useInputChange'
 
-const CreateUpdateService = ({ variant }) => {
+const CreateUpdateVehicleBrand = ({ variant }) => {
 
     const [name, setName] = useState('')
 
@@ -24,9 +24,9 @@ const CreateUpdateService = ({ variant }) => {
                 <Card.Body>
                     <Form>
                         <Form.Group className="mb-3">
-                            <Form.Label>Наименование услуги</Form.Label>
+                            <Form.Label>Наименование марки ТС</Form.Label>
                             <Form.Control size='sm' type="text" onChange={e => inputChangeHandler(e, setName)}
-                                placeholder="Наименование услуги"
+                                placeholder="Наименование марки ТС"
                                 name="name"
                                 value={name} />
                         </Form.Group>
@@ -37,4 +37,4 @@ const CreateUpdateService = ({ variant }) => {
     )
 }
 
-export default CreateUpdateService
+export default CreateUpdateVehicleBrand

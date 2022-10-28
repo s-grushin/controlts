@@ -9,11 +9,11 @@ const LoginPage = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { request, loading, error } = useHttp()
+  const { request, loading } = useHttp()
   const auth = useContext(AuthContext)
 
   async function loginHandler(event) {
-    const data = await request('/users/login', 'post', { login: username, password })
+    const data = await request('/users/login', 'post', { username, password })
     auth.login(data.token, data.userInfo)
   }
 

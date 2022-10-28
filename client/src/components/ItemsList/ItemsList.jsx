@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ItemsTable from './ItemsTable'
 import useHttp from '../../hooks/useHttp'
@@ -6,43 +6,64 @@ import Spinner from '../Spinner'
 import Topbar from './Topbar'
 import Pagination from '../Pagination'
 import ConfirmModal from '../ConfirmModal'
+import { STORAGE_KEYS } from '../../constants/appConstants'
 
 const itemsQtyOnPage = 20
+
 
 //fetchUrl - [required] - backend path
 //path -     [required] - frontend path
 //fields -   [required] - field to visualize
 //presentationField - field which presentate item
-//assosiation - needed for assosiations.
-const ItemsList = ({ fetchUrl, path, fields, presentationField, showButtonBack, assosiation }) => {
+//oneToMany - needed for oneToManys.
+const ItemsList = ({
+    fetchUrl,
+    path,
+    fields,
+    presentationField,
+    relationType,
+    fkName,
+    setSelectedOneId,
+    selectedOneId,
+    showButtonBack }) => {
 
     const { request, loading } = useHttp()
     const [items, setItems] = useState([])
-    const [currentPage, setCurrentPage] = useState(1)
-    const [itemsQtyAll, setItemsQtyAll] = useState(0) // quantity of all rows in db table
     const [selectedItemId, setSelectedItemId] = useState(null)
+    const [currentPage, setCurrentPage] = useState(() => parseInt(localStorage.getItem(STORAGE_KEYS.catalogPage)) || 1)
+    const [itemsQtyAll, setItemsQtyAll] = useState(0) // quantity of all rows in db table
     const [showModal, setShowModal] = useState(false)
 
     const navigate = useNavigate()
 
-    console.log(assosiation);
-    const { ownerSelectedHandler, ownerId, fkName } = assosiation
-
-
-    const selectRowHandler = (id) => {
+    const selectRowHandler = useCallback((id) => {
         setSelectedItemId(id)
-        if (ownerSelectedHandler) ownerSelectedHandler(id)
-    }
+
+        if (relationType === 'one') {
+            localStorage.setItem(STORAGE_KEYS.catalogSelectedRowId, id)
+            setSelectedOneId(id)
+        }
+
+        if (relationType === null) {
+            localStorage.setItem(STORAGE_KEYS.catalogSelectedRowId, id)
+        }
+
+    }, [relationType, setSelectedOneId])
+
+    const setCurrentPageHandler = useCallback((currPage) => {
+        localStorage.setItem(STORAGE_KEYS.catalogPage, currPage)
+        setCurrentPage(currPage)
+    }, [])
 
     // back
     const backHandler = () => {
         navigate(-1)
     }
 
-
     // create
     const createHandler = () => {
-        navigate(`${path}/create`)
+        const link = `${path}/create${relationType === 'many' ? `?${fkName}=${selectedOneId}` : ''}`
+        navigate(link)
     }
 
     // edit
@@ -74,21 +95,34 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField, showButtonBack, 
 
     useEffect(() => {
         const fetchItems = async () => {
-            if (fkName && !ownerId) {
-                // owner id not selected
+
+            if (relationType === 'many' && !selectedOneId) {
                 return
             }
 
+            let cachedId
+            if (relationType === null || relationType === 'one') {
+                cachedId = parseInt(localStorage.getItem(STORAGE_KEYS.catalogSelectedRowId))
+            }
+
+            if (cachedId) {
+                selectRowHandler(cachedId)
+            }
+
+
             const limit = itemsQtyOnPage
             const offset = currentPage * itemsQtyOnPage - itemsQtyOnPage
-            //fkfilter used only for assosiation (one to many visualization)
-            const fkfilter = fkName ? `${fkName}=${ownerId}` : ''
+            //fkfilter used only for oneToMany (one to many visualization)
+            const fkfilter = fkName ? `${fkName}=${selectedOneId}` : ''
             const data = await request(`${fetchUrl}/?${fkfilter}&limit=${limit}&offset=${offset}`, 'get', {})
             setItems(data.rows)
             setItemsQtyAll(data.count)
+
         }
+
         fetchItems()
-    }, [request, fetchUrl, currentPage, fkName, ownerId])
+
+    }, [request, fetchUrl, currentPage, fkName, relationType, selectedOneId, selectRowHandler])
 
     const getSelecteditemName = () => {
         if (selectedItemId) {
@@ -97,7 +131,7 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField, showButtonBack, 
         }
     }
 
-    const paginationOptions = useMemo(() => ({ currentPage, setCurrentPage, itemsQtyAll, itemsQtyOnPage }), [currentPage, itemsQtyAll])
+    const paginationOptions = useMemo(() => ({ currentPage, setCurrentPage: setCurrentPageHandler, itemsQtyAll, itemsQtyOnPage }), [currentPage, itemsQtyAll, setCurrentPageHandler])
 
     if (loading) return <Spinner />
 
@@ -131,11 +165,7 @@ const ItemsList = ({ fetchUrl, path, fields, presentationField, showButtonBack, 
 ItemsList.defaultProps = {
     presentationField: 'name',
     showButtonBack: true,
-    assosiation: {
-        selectedOwnerHandler: () => { },
-        ownerId: null,
-        field: ''
-    }
+    relationType: null
 }
 
 export default ItemsList

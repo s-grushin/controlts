@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Outlet } from 'react-router-dom'
 import { Row, Col, ListGroup } from 'react-bootstrap'
+import { STORAGE_KEYS } from '../constants/appConstants'
 
 const CatalogPage = () => {
 
@@ -18,6 +19,8 @@ const CatalogPage = () => {
     const navigate = useNavigate()
 
     const clickMenuItemHandler = (id) => {
+        localStorage.removeItem(STORAGE_KEYS.catalogSelectedRowId)
+        localStorage.removeItem(STORAGE_KEYS.catalogPage)
         const selectedItem = menuItems.find(item => item.id === id)
         setSelectedItem(selectedItem)
         navigate(selectedItem.path)

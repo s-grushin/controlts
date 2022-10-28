@@ -64,7 +64,7 @@ async function deleteUser(req, res, next) {
 
 }
 
-async function login(req, res, next) {
+async function login(req, res) {
 
     const { username, password } = req.body
     const user = await User.findOne({ where: { username } })

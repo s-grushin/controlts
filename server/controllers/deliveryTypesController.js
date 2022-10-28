@@ -4,8 +4,6 @@ const DeliveryType = require('../models/DeliveryType')
 
 async function getAll(req, res) {
 
-    console.log('getAll');
-
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 

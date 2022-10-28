@@ -40,7 +40,7 @@ const TopNavbar = () => {
                         </Nav>
                         <Nav>
                             <Nav.Link href="#deets">
-                                {`${userInfo.login}`}
+                                {`${userInfo.username}`}
                             </Nav.Link>
                         </Nav>
                         <Nav>
