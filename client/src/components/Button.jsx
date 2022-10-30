@@ -1,9 +1,9 @@
 import { Button as BootstrapButton, Spinner } from 'react-bootstrap'
 
 
-const Button = ({ children, variant, title, size, withSpinner, loading, disabled, clickHandler }) => {
+const Button = ({ children, variant, title, size, withSpinner, loading, disabled, clickHandler, ...props }) => {
     return (
-        <BootstrapButton variant={variant} size={size} disabled={loading || disabled} onClick={clickHandler}>
+        <BootstrapButton {...props} variant={variant} size={size} disabled={loading || disabled} onClick={clickHandler}>
             {withSpinner && loading &&
                 <Spinner
                     as="span"

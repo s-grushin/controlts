@@ -1,271 +1,178 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Row, Col, Form, Stack, Table, Spinner } from 'react-bootstrap'
-import { getCheckoutData } from '../../api/backend/checkoutApi'
-import { getBrand } from '../../api/backend/vehiclesApi'
-import { getAll as getCompanies } from '../../api/backend/companyApi'
+import { useState, useEffect } from 'react'
+import { Row, Col, Form, Stack } from 'react-bootstrap'
 import Button from '../../components/Button'
-import useInputChange from '../../hooks/useInputChange'
+import Table from '../../components/Table'
+import Spinner from '../../components/Spinner'
+import Selector from '../../components/Selector'
 import useHttp from '../../hooks/useHttp'
-import ReactSelect from 'react-select'
-import AsyncSelect from 'react-select/async-creatable'
 
 const CheckoutPage = () => {
 
-    const [formData, setFormData] = useState({
-        brandId: null,
-        modelId: null,
-        weight: 0,
-        driver: null,
-        deliveryType: null,
-        parking: null,
-        company: null,
-        isOwnCompany: false
-    })
+    const [brandOptions, setBrandOptions] = useState([])
+    const [modelOptions, setModelOptions] = useState([])
+    const [selectedBrandId, setSelectedBrandId] = useState(null)
+    const [selectedModelId, setSelectedModelId] = useState(null)
+    const [formIsLoaded, setFormIsLoaded] = useState(false)
 
-    const [brands, setBrands] = useState([])
-    const [models, setModels] = useState([])
-    const [parkings, setParkings] = useState([])
-    const [deliveryTypes, setDeliveryTypes] = useState([])
+    const { request, loading } = useHttp()
 
-
-    const [inputChangeHandler] = useInputChange(formData, setFormData)
-
-    const { request, loading, error } = useHttp()
-    const [requestType, setRequestType] = useState('initial')
-
-    const navigate = useNavigate()
-
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-    ]
-
-    const selectHandler = (value, action) => {
-
-        console.log(action);
-
-        if (action.action === 'select-option') {
-            setFormData({ ...formData, [action.name]: value.value })
-            if (action.name === 'brandId') {
-                // Если марка изменяется, то очистим выбранную модель
-                setFormData(formData => ({ ...formData, modelId: null }))
-            }
-
-        } else if (action.action === 'clear') {
-            setFormData(formData => ({ ...formData, [action.name]: null }))
-            if (action.name === 'brandId') {
-                // Если марка очищается то очистим модели
-                setModels([])
-                setFormData(formData => ({ ...formData, brandId: null, modelId: null }))
-            }
-        }
-    }
-
-    const loadOptionsCompany = async (searchValue, callback) => {
-        const filteredOptions = await getCompanies(null, null, searchValue)
-        callback(refactorItems(filteredOptions.rows))
+    const submitHandler = (e) => {
+        e.preventDefault()
+        console.log({ brand: selectedBrandId, model: selectedModelId });
     }
 
     useEffect(() => {
-
-        const loadData = async () => {
-            const { brands, parkings, deliveryTypes } = await request(getCheckoutData)
-            setBrands(refactorItems(brands))
-            setParkings(refactorItems(parkings))
-            setDeliveryTypes(refactorItems(deliveryTypes))
+        const getCheckoutData = async () => {
+            const { brands } = await request('/vehicleMoves/getCheckoutData')
+            setBrandOptions(brands)
+            setFormIsLoaded(true)
         }
-
-        loadData()
-
-    }, [])
+        getCheckoutData()
+    }, [request])
 
     useEffect(() => {
-
-        const onBrandChanged = async () => {
-            if (formData.brandId) {
-                setRequestType('fetchModels')
-                const brand = await request(() => getBrand(formData.brandId))
-                setModels(refactorItems(brand.models))
+        // При изменении бренда, получим модели с сервера
+        const fetchModels = async (brandId) => {
+            if (!brandId) {
+                return
             }
-
+            const { rows } = await request(`/vehicle/models?brandId=${brandId}`)
+            setModelOptions(rows)
         }
-
-        onBrandChanged()
-
-    }, [formData.brandId])
+        fetchModels(selectedBrandId)
+    }, [selectedBrandId, request])
 
 
-    const refactorItems = (arr) => {
-        return arr.map((item) => {
-            return { value: item.id, label: item.name }
-        })
+    if (loading && !formIsLoaded) {
+        return (
+            <div className='mx-auto mt-5 d-flex justify-content-center'>
+                <Spinner />
+            </div>
+        )
     }
 
     return (
-        <Row className='d-flex justify-content-center'>
-            <div className='mt-2'>
-                <Button title='Назад' clickHandler={navigate('/')} />
-            </div>
+        <Row className='mt-2'>
+            <Form onSubmit={submitHandler}>
+                <Col md={8} className='mx-auto'>
+                    <Row>
+                        <Col md={4}>
 
-            {
-                loading && requestType === 'initial' ?
-                    <Spinner animation="border" variant="primary" />
-                    :
-                    error ? error
-                        :
-                        <Col md={8}>
-                            <Row>
-                                <Col>
+                            {/* Марка авто */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Марка авто</Form.Label>
+                                <Selector
+                                    options={brandOptions}
+                                    setSelectedId={setSelectedBrandId}
+                                />
+                            </Form.Group>
 
-                                    {/* Марка авто */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Марка авто</Form.Label>
-                                        <ReactSelect
-                                            options={brands}
-                                            isClearable
-                                            placeholder='Выбрать'
-                                            onChange={selectHandler}
-                                            name='brandId'
-                                            value={brands.find(brand => brand.value === formData.brandId)}
-                                        />
-                                    </Form.Group>
+                            {/* Модель авто */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Модель авто</Form.Label>
+                                <Selector
+                                    options={modelOptions}
+                                    setSelectedId={setSelectedModelId}
+                                    selectedId={selectedModelId}
+                                    isDisabled={!selectedBrandId}
+                                    isLoading={loading}
+                                />
+                            </Form.Group>
 
-                                    {/* Модель авто */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Модель авто</Form.Label>
-                                        <ReactSelect
-                                            options={models}
-                                            isClearable
-                                            placeholder='Выбрать'
-                                            onChange={selectHandler}
-                                            name='modelId'
-                                            value={formData.modelId ? models.find(model => model.value === formData.modelId) : null}
-                                            isDisabled={!formData.brandId}
-                                            isLoading={loading && requestType === 'fetchModels'}
-                                        />
-                                    </Form.Group>
+                            {/* Вес */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Вес, кг</Form.Label>
+                                <Form.Control size='sm' type="number"
+                                    placeholder="Вес"
+                                    name="weight"
+                                    value={''}
+                                    onChange={() => { }}
+                                />
+                            </Form.Group>
 
-                                    {/* Вес */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Вес, кг</Form.Label>
-                                        <Form.Control size='sm' type="number" onChange={inputChangeHandler}
-                                            placeholder="Вес"
-                                            name="weight"
-                                            value={formData.weight} />
-                                    </Form.Group>
-
-                                </Col>
-                                <Col>
-
-                                    {/* ФИО водителя */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>ФИО водителя</Form.Label>
-                                        <ReactSelect options={options} isClearable placeholder='Выбрать' />
-                                    </Form.Group>
-
-                                    {/* Вид доставки */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Вид доставки</Form.Label>
-                                        <ReactSelect
-                                            options={deliveryTypes}
-                                            isClearable
-                                            placeholder='Выбрать'
-                                            onChange={selectHandler}
-                                            name='deliveryType'
-                                        />
-                                    </Form.Group>
-
-                                    {/* Место стоянки */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Место стоянки</Form.Label>
-                                        <ReactSelect
-                                            options={parkings}
-                                            isClearable
-                                            placeholder='Выбрать'
-                                            onChange={selectHandler}
-                                            name='parking'
-                                        />
-                                    </Form.Group>
-
-                                </Col>
-                                <Col>
-                                    {/* Код ЕДРПОУ */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Код ЕДРПОУ</Form.Label>
-                                        <ReactSelect options={options} isClearable placeholder='Выбрать' />
-                                    </Form.Group>
-
-                                    {/* Компания - получатель */}
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>Компания - получатель</Form.Label>
-                                        <AsyncSelect
-                                            isClearable
-                                            placeholder='Выбрать'
-                                            loadOptions={loadOptionsCompany}
-                                            formatCreateLabel={(inputValue) => `Создать "${inputValue}"`}
-                                            createOptionPosition='first'
-                                            onChange={selectHandler}
-                                            name='company'
-                                        />
-                                    </Form.Group>
-
-                                    {/* Клиент ХФК-Биокон */}
-                                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                                        <Form.Check label='Клиент ХФК-Биокон' name='isOwnCompany'
-                                            defaultChecked={formData.isOwnCompany}
-                                            onChange={inputChangeHandler}
-                                        />
-                                    </Form.Group>
-
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col md={8}>
-                                    <Stack gap={2}>
-                                        <div className="bg-light border">
-                                            <div className="d-grid gap-2">
-                                                <Button isLoading={false} withSpinner={true} title='Получить данные с весов и камер' />
-                                            </div>
-                                        </div>
-                                        <div className="bg-light border">
-                                            <Table responsive bordered hover size='sm'>
-                                                < thead >
-                                                    <tr>
-                                                        <th>Гос. знак</th>
-                                                        <th>Тип</th>
-                                                    </tr >
-                                                </thead >
-
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <input type="text" className='tableInput' value={'AA 5555 EE'} onChange={inputChangeHandler} />
-                                                        </td>
-                                                        <td>
-                                                            <select size='' className='tableInput'>
-                                                                <option value="123">Тягач</option>
-                                                                <option value="123">Прицеп</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-
-                                            </Table>
-                                        </div>
-                                    </Stack>
-                                </Col>
-                                <Col md={4}>
-
-
-                                </Col>
-                            </Row>
                         </Col>
+                        <Col md={4}>
+                            {/* ФИО водителя */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>ФИО водителя</Form.Label>
+                                <Selector options={[]} />
+                            </Form.Group>
 
-            }
+                            {/* Вид доставки */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Вид доставки</Form.Label>
+                                <Selector options={[]} />
+                            </Form.Group>
 
+                            {/* Место стоянки */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Место стоянки</Form.Label>
+                                <Selector options={[]} />
+                            </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                            {/* Код ЕДРПОУ */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Код ЕДРПОУ</Form.Label>
+                                <Selector options={[]} />
+                            </Form.Group>
 
+                            {/* Компания - получатель */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Компания - получатель</Form.Label>
+                                <Selector options={[]} />
+                            </Form.Group>
+
+                            {/* Клиент ХФК-Биокон */}
+                            <Form.Group className="mb-3" controlId="isOwnCompany">
+                                <Form.Check label='Клиент ХФК-Биокон' name='isOwnCompany'
+                                    defaultChecked={false}
+                                    onChange={() => { }}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={8}>
+                            <Stack gap={2}>
+                                <div className="bg-light border">
+                                    <div className="d-grid gap-2">
+                                        <Button type='submit' title='Получить данные с весов и камер' />
+                                    </div>
+                                </div>
+                                <div className="bg-light border">
+                                    <Table>
+                                        < thead >
+                                            <tr>
+                                                <th>Гос. знак</th>
+                                                <th>Тип</th>
+                                            </tr >
+                                        </thead >
+
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" className='tableInput' value={'AA 5555 EE'} onChange={() => { }} />
+                                                </td>
+                                                <td>
+                                                    <select size='' className='tableInput'>
+                                                        <option value="123">Тягач</option>
+                                                        <option value="123">Прицеп</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </Table>
+                                </div>
+                            </Stack>
+                        </Col>
+                        <Col md={4}>
+
+                        </Col>
+                    </Row>
+                </Col>
+            </Form>
         </Row>
 
     )
