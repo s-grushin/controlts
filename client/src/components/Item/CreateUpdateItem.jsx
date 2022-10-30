@@ -44,7 +44,6 @@ const CreateUpdateItem = ({ children, fetchUrl, data, variant, updateOptions, on
         const fetchItem = async () => {
             if (variant === 'create' && oneSetter) {
                 const data = await request(oneFetchUrl)
-                console.log(data);
                 oneSetter(data)
             }
             if (variant === 'update') {

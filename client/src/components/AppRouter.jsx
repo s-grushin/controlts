@@ -66,7 +66,7 @@ const AppRouter = () => {
                                 <Route index element={<VehicleBrandsList />} />
                                 <Route path='create' element={<CreateUpdateVehicleBrand variant='create' />} />
                                 <Route path=':id' element={<CreateUpdateVehicleBrand variant='update' />} />
-                                <Route path='models/create' element={<CreateUpdateVehicleModel variant='create' />} />
+                                <Route path='models/create/:brandId' element={<CreateUpdateVehicleModel variant='create' />} />
                                 <Route path='models/:id' element={<CreateUpdateVehicleModel variant='update' />} />
                             </Route>
                         </Route>

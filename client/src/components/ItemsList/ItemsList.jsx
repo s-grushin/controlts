@@ -62,7 +62,12 @@ const ItemsList = ({
 
     // create
     const createHandler = () => {
-        const link = `${path}/create${relationType === 'many' ? `?${fkName}=${selectedOneId}` : ''}`
+
+        if (relationType === 'many' && !selectedOneId) {
+            return alert('Выберите марку')
+        }
+
+        const link = `${path}/create${relationType === 'many' ? `/${selectedOneId}` : ''}`
         navigate(link)
     }
 

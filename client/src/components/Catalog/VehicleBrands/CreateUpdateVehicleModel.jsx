@@ -12,7 +12,6 @@ const CreateUpdateVehicleModel = ({ variant }) => {
     const [isTruck, setIsTruck] = useState(false)
 
     const { brandId } = useParams()
-    console.log(brandId);
 
     const inputChangeHandler = useInputChange()
 
