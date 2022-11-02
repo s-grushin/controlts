@@ -1,30 +1,54 @@
 import { useState, useEffect } from 'react'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
+import useInputChange from '../../hooks/useInputChange'
 import Button from '../../components/Button'
 import Table from '../../components/Table'
 import Spinner from '../../components/Spinner'
-import Selector from '../../components/Selector'
+import Selector from '../../components/Selectors/Selector'
+import AsyncSelector from '../../components/Selectors/AsyncSelector'
 import useHttp from '../../hooks/useHttp'
 
 const CheckoutPage = () => {
 
     const [brandOptions, setBrandOptions] = useState([])
     const [modelOptions, setModelOptions] = useState([])
+    const [deliveryTypesOptions, setDeliveryTypesOptions] = useState([])
+    const [parkingOptions, setParkingOptions] = useState([])
+    const [companyOptions, setCompanyOptions] = useState([{ value: 1, label: 'company1' }, { value: 2, label: 'company2' }])
+
+
     const [selectedBrandId, setSelectedBrandId] = useState(null)
     const [selectedModelId, setSelectedModelId] = useState(null)
+    const [weight, setWeight] = useState(0)
+    const [selectedDriverId, setSelectedDriverId] = useState(null)
+    const [selectedDeliveryTypeId, setSelectedDeliveryTypeId] = useState(null)
+    const [selectedParkingId, setSelectedParkingId] = useState(null)
+    const [isOwnCompany, setIsOwnCompany] = useState(false)
+
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
     const { request, loading } = useHttp()
+    const inputChangeHandler = useInputChange()
 
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log({ brand: selectedBrandId, model: selectedModelId });
+        console.log({
+            brandId: selectedBrandId,
+            modelId: selectedModelId,
+            weight,
+            driverId: selectedDriverId,
+            deliveryTypeId: selectedDeliveryTypeId,
+            parkingId: selectedParkingId,
+            isOwnCompany,
+        });
     }
 
     useEffect(() => {
         const getCheckoutData = async () => {
-            const { brands } = await request('/vehicleMoves/getCheckoutData')
+            const { brands, deliveryTypes, parkings } = await request('/vehicleMoves/getCheckoutData')
             setBrandOptions(brands)
+            setDeliveryTypesOptions(deliveryTypes)
+            setParkingOptions(parkings)
             setFormIsLoaded(true)
         }
         getCheckoutData()
@@ -33,11 +57,14 @@ const CheckoutPage = () => {
     useEffect(() => {
         // При изменении бренда, получим модели с сервера
         const fetchModels = async (brandId) => {
+            //при изменении бренда очистим селектор выбора моделей
+            setSelectedModelId(null)
             if (!brandId) {
                 return
             }
             const { rows } = await request(`/vehicle/models?brandId=${brandId}`)
             setModelOptions(rows)
+
         }
         fetchModels(selectedBrandId)
     }, [selectedBrandId, request])
@@ -63,6 +90,7 @@ const CheckoutPage = () => {
                                 <Form.Label>Марка авто</Form.Label>
                                 <Selector
                                     options={brandOptions}
+                                    selectedId={selectedBrandId}
                                     setSelectedId={setSelectedBrandId}
                                 />
                             </Form.Group>
@@ -72,10 +100,11 @@ const CheckoutPage = () => {
                                 <Form.Label>Модель авто</Form.Label>
                                 <Selector
                                     options={modelOptions}
-                                    setSelectedId={setSelectedModelId}
                                     selectedId={selectedModelId}
+                                    setSelectedId={setSelectedModelId}
                                     isDisabled={!selectedBrandId}
                                     isLoading={loading}
+                                    test='models'
                                 />
                             </Form.Group>
 
@@ -85,8 +114,8 @@ const CheckoutPage = () => {
                                 <Form.Control size='sm' type="number"
                                     placeholder="Вес"
                                     name="weight"
-                                    value={''}
-                                    onChange={() => { }}
+                                    value={weight}
+                                    onChange={(e) => inputChangeHandler(e, setWeight)}
                                 />
                             </Form.Group>
 
@@ -95,39 +124,53 @@ const CheckoutPage = () => {
                             {/* ФИО водителя */}
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
-                                <Selector options={[]} />
+                                <Selector
+                                    options={[]}
+                                    selectedId={selectedDriverId}
+                                    setSelectedId={setSelectedDriverId}
+                                />
                             </Form.Group>
 
                             {/* Вид доставки */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Вид доставки</Form.Label>
-                                <Selector options={[]} />
+                                <Selector
+                                    options={deliveryTypesOptions}
+                                    selectedId={selectedDeliveryTypeId}
+                                    setSelectedId={setSelectedDeliveryTypeId}
+                                />
                             </Form.Group>
 
                             {/* Место стоянки */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Место стоянки</Form.Label>
-                                <Selector options={[]} />
+                                <Selector
+                                    options={parkingOptions}
+                                    selectedId={selectedParkingId}
+                                    setSelectedId={setSelectedParkingId}
+                                />
                             </Form.Group>
                         </Col>
                         <Col md={4}>
                             {/* Код ЕДРПОУ */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Код ЕДРПОУ</Form.Label>
-                                <Selector options={[]} />
+                                <AsyncSelector defaultOptions={[]} />
                             </Form.Group>
 
                             {/* Компания - получатель */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Компания - получатель</Form.Label>
-                                <Selector options={[]} />
+                                <AsyncSelector
+                                    defaultOptions={companyOptions}
+                                />
                             </Form.Group>
 
                             {/* Клиент ХФК-Биокон */}
                             <Form.Group className="mb-3" controlId="isOwnCompany">
                                 <Form.Check label='Клиент ХФК-Биокон' name='isOwnCompany'
-                                    defaultChecked={false}
-                                    onChange={() => { }}
+                                    defaultChecked={isOwnCompany}
+                                    onChange={e => inputChangeHandler(e, setIsOwnCompany)}
                                 />
                             </Form.Group>
                         </Col>
