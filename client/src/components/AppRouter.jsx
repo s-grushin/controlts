@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './Layout/Layout'
-import WorkPage from '../pages/WorkPage'
 import CatalogPage from '../pages/CatalogPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import LoginPage from '../pages/LoginPage'
@@ -20,6 +19,7 @@ import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDelive
 import VehicleBrandsList from './Catalog/VehicleBrands/VehicleBrandsList'
 import CreateUpdateVehicleBrand from './Catalog/VehicleBrands/CreateUpdateVehicleBrand'
 import CreateUpdateVehicleModel from './Catalog/VehicleBrands/CreateUpdateVehicleModel'
+import Dashboard from '../pages/Dashboard'
 
 
 const AppRouter = () => {
@@ -33,7 +33,7 @@ const AppRouter = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' element={<Layout />}>
-                        <Route index element={<WorkPage />} />
+                        <Route index element={<Dashboard />} />
                         <Route path='login' element={<Navigate to={'/'} />} />
                         <Route path='checkout' element={<CheckoutPage />} />
                         <Route path='catalog' element={<CatalogPage />}>

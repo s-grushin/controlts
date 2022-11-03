@@ -14,8 +14,6 @@ const CheckoutPage = () => {
     const [modelOptions, setModelOptions] = useState([])
     const [deliveryTypesOptions, setDeliveryTypesOptions] = useState([])
     const [parkingOptions, setParkingOptions] = useState([])
-    const [companyOptions, setCompanyOptions] = useState([{ value: 1, label: 'company1' }, { value: 2, label: 'company2' }])
-
 
     const [selectedBrandId, setSelectedBrandId] = useState(null)
     const [selectedModelId, setSelectedModelId] = useState(null)
@@ -23,6 +21,7 @@ const CheckoutPage = () => {
     const [selectedDriverId, setSelectedDriverId] = useState(null)
     const [selectedDeliveryTypeId, setSelectedDeliveryTypeId] = useState(null)
     const [selectedParkingId, setSelectedParkingId] = useState(null)
+    const [selectedCompanyId, setSelectedCompanyId] = useState(null)
     const [isOwnCompany, setIsOwnCompany] = useState(false)
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
@@ -39,9 +38,11 @@ const CheckoutPage = () => {
             driverId: selectedDriverId,
             deliveryTypeId: selectedDeliveryTypeId,
             parkingId: selectedParkingId,
+            companyId: selectedCompanyId,
             isOwnCompany,
         });
     }
+
 
     useEffect(() => {
         const getCheckoutData = async () => {
@@ -155,14 +156,19 @@ const CheckoutPage = () => {
                             {/* Код ЕДРПОУ */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Код ЕДРПОУ</Form.Label>
-                                <AsyncSelector defaultOptions={[]} />
+                                <AsyncSelector
+                                    fetchUrl='/companies'
+                                    setSelectedId={setSelectedCompanyId}
+                                    searchField='edrpou'
+                                />
                             </Form.Group>
 
                             {/* Компания - получатель */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Компания - получатель</Form.Label>
                                 <AsyncSelector
-                                    defaultOptions={companyOptions}
+                                    fetchUrl='/companies'
+                                    setSelectedId={setSelectedCompanyId}
                                 />
                             </Form.Group>
 

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Table } from 'react-bootstrap'
+import Table from '../components/Table'
 
-const VehicleMovesJournal = () => {
+const VehicleMovesList = () => {
   return (
-    <Table  responsive bordered hover size='sm'>
+    <Table>
       <thead>
         <tr>
           <th>ФИО водителя</th>
@@ -14,7 +14,7 @@ const VehicleMovesJournal = () => {
           <th>Место стоянки</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody style={{ fontSize: '14px' }}>
         <tr>
           <td>Скребантович Олександр</td>
           <td>ВС0420СМ</td>
@@ -44,4 +44,4 @@ const VehicleMovesJournal = () => {
   )
 }
 
-export default VehicleMovesJournal
+export default VehicleMovesList
