@@ -5,11 +5,21 @@ import useHttp from '../../hooks/useHttp'
 import { mapValues } from './utils'
 
 //поиск по вводу с запросом на сервер
-const AsyncSelector = (props) => {
-    const { fetchUrl, searchField, setSelectedId, defaultOptions, placeholder, isCreatable, isClearable } = props
+const AsyncSelector = ({
+    fetchUrl,
+    searchField,
+    presentationField,
+    setSelectedId,
+    defaultOptions,
+    placeholder,
+    isCreatable,
+    isClearable
+}) => {
+
+
 
     const debounce = useDebounce()
-    const { request } = useHttp()
+    const { request, loading } = useHttp()
 
     const loadOptions = (inputValue, callback) => {
         if (inputValue.length < 2) {
@@ -18,11 +28,19 @@ const AsyncSelector = (props) => {
         }
         debounce(async () => {
             const { rows } = await request(`${fetchUrl}?${searchField}=${inputValue}`)
-            callback(mapValues(rows))
+            callback(mapValues(rows, 0, presentationField))
         })
     }
 
-    const onChangeHandler = (selectedValue) => {
+    const onChangeHandler = async (selectedValue) => {
+
+        if (selectedValue?.__isNew__) {
+            if (createUrl) {
+                const res = await request(createUrl, 'post', createData)
+                console.log(res);
+            }
+        }
+
         if (!selectedValue) {
             return setSelectedId(null)
         }
@@ -37,6 +55,8 @@ const AsyncSelector = (props) => {
                 isClearable={isClearable}
                 loadOptions={loadOptions}
                 onChange={onChangeHandler}
+                formatCreateLabel={(inputValue) => `Создать "${inputValue}"`}
+                isLoading={loading}
             />
         )
     } else {
@@ -56,6 +76,7 @@ const AsyncSelector = (props) => {
 
 AsyncSelector.defaultProps = {
     searchField: 'searchValue',
+    presentationField: 'name',
     defaultOptions: [],
     isClearable: true,
     isCreatable: true,

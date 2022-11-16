@@ -13,6 +13,16 @@ const Company = db.define('Company', {
     },
     inn: {
         type: DataTypes.STRING,
+    },
+    fullName: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            if (this.edrpou) {
+                return `${this.name} (${this.edrpou})`
+            } else {
+                return this.name
+            }
+        }
     }
 }, { underscored: true })
 

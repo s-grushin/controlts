@@ -7,8 +7,27 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
     let searchValue = req.query.searchValue || ''
+    //let edrpou = req.query.edrpou || ''
 
-    const data = await Company.findAndCountAll({ limit, offset, where: { name: { [Op.substring]: searchValue } }, order: [['name']] })
+    // const where = {
+    //     [Op.and]: [
+    //         { name: { [Op.substring]: searchValue } },
+    //         { edrpou: { [Op.substring]: edrpou } },
+    //     ]
+    // }
+
+    const data = await Company.findAndCountAll(
+        {
+            limit,
+            offset,
+            where: {
+                [Op.or]: [
+                    { name: { [Op.substring]: searchValue } },
+                    { edrpou: { [Op.substring]: searchValue } },
+                ]
+            },
+            order: [['name']]
+        })
     return res.status(200).json(data)
 }
 

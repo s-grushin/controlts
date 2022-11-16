@@ -9,7 +9,7 @@ const VehicleBrand = db.define('VehicleBrand', {
     }
 }, { underscored: true })
 
-VehicleBrand.hasMany(VehicleModel, { as: 'models', foreignKey: 'brandId', onDelete: 'CASCADE' })
+VehicleBrand.hasMany(VehicleModel, { as: 'models', foreignKey: 'brandId', onDelete: 'CASCADE', foreignKeyConstraint: {} })
 VehicleModel.belongsTo(VehicleBrand, { as: 'brand' })
 
 module.exports = VehicleBrand

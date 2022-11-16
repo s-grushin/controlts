@@ -7,7 +7,7 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 
-    const data = await VehicleBrand.findAndCountAll({ limit, offset })
+    const data = await VehicleBrand.findAndCountAll({ limit, offset, order: [['name']] })
     return res.json(data)
 }
 
@@ -26,7 +26,7 @@ async function getById(req, res) {
 async function create(req, res) {
 
     const data = await VehicleBrand.create(req.body)
-    return res.status(200).json({ message: 'created' })
+    return res.status(200).json({ message: 'created', data })
 
 }
 

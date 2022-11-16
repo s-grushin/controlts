@@ -1,10 +1,12 @@
+import { useState, useEffect } from 'react'
 import CreatableSelect from 'react-select/creatable'
 import Select from 'react-select'
 import { mapValues } from './utils'
+import useHttp from '../../hooks/useHttp'
 
-const Selector = (props) => {
-
-  const { options,
+const Selector = (
+  {
+    options,
     setSelectedId,
     selectedId,
     isCreatable,
@@ -14,14 +16,35 @@ const Selector = (props) => {
     isDisabled,
     isLoading,
     noOptionsMessage,
-  } = props
+    name,
+    parentId,
+    createUrl,
+    createData
+  }) => {
+
+  const [extraOptions, setExtraOptions] = useState([])
+
+  const { request, loading: requestLoading, error, clearError } = useHttp()
 
   const mapOptions = (options) => {
-    //return options.map(item => ({ value: item.id, label: item.name }))
     return mapValues(options)
   }
 
-  const onChangeHandler = (selectedValue) => {
+
+  if (error) {
+    alert(error)
+    clearError()
+  }
+
+  const onChangeHandler = async (selectedValue) => {
+
+    if (selectedValue?.__isNew__) {
+      const res = await request(createUrl, 'post', { name: selectedValue.value, ...createData })
+      setExtraOptions([...extraOptions, res.data])
+      setSelectedId(res.data.id)
+      return
+    }
+
     if (!selectedValue) {
       return setSelectedId(null)
     }
@@ -29,34 +52,41 @@ const Selector = (props) => {
   }
 
   const mappedOptions = mapOptions(options)
+  const mappedExtraOptions = mapOptions(extraOptions)
 
-  const setValue = () => {
+  const getValue = () => {
     if (!selectedId) {
       return null
     }
-    return mappedOptions.find(item => item.value === selectedId)
-
+    const value = mappedOptions.find(item => item.value === selectedId)
+    return value
   }
+
+  useEffect(() => {
+    setExtraOptions([])
+  }, [parentId])
+
 
   if (isCreatable) {
     return (
       <CreatableSelect
-        options={mappedOptions}
-        value={setValue()}
+        options={[...mappedOptions, ...mappedExtraOptions]}
+        value={getValue()}
         isClearable={isClearable}
         isSearchable={isSearchable}
         placeholder={placeholder}
         onChange={onChangeHandler}
-        isDisabled={isDisabled || isLoading}
-        isLoading={isLoading}
+        isDisabled={isDisabled || isLoading || requestLoading}
+        isLoading={isLoading || requestLoading}
         noOptionsMessage={() => noOptionsMessage}
+        formatCreateLabel={(inputValue) => `Создать "${inputValue}"`}
       />
     )
   } else {
     return (
       <Select
-        options={mappedOptions}
-        value={setValue()}
+        options={[...mappedOptions, ...mappedExtraOptions]}
+        value={getValue()}
         isClearable={isClearable}
         isSearchable={isSearchable}
         placeholder={placeholder}
@@ -78,6 +108,7 @@ Selector.defaultProps = {
   isDisabled: false,
   isLoading: false,
   noOptionsMessage: 'Не найдено',
+  createData: {},
 }
 
 export default Selector

@@ -12,7 +12,7 @@ async function getAll(req, res) {
     const brandId = parseInt(req.query.brandId)
     if (brandId) where.brandId = brandId
 
-    const data = await VehicleModel.findAndCountAll({ where, limit, offset })
+    const data = await VehicleModel.findAndCountAll({ where, limit, offset, order: [['name']] })
     return res.json(data)
 }
 
@@ -30,10 +30,8 @@ async function getById(req, res) {
 
 async function create(req, res) {
 
-    console.log(req.body)
     const data = await VehicleModel.create(req.body)
-    return res.status(200).json({ message: 'created' })
-
+    return res.status(200).json({ message: 'created', data })
 }
 
 async function update(req, res) {

@@ -93,6 +93,7 @@ const CheckoutPage = () => {
                                     options={brandOptions}
                                     selectedId={selectedBrandId}
                                     setSelectedId={setSelectedBrandId}
+                                    createUrl='/vehicle/brands'
                                 />
                             </Form.Group>
 
@@ -105,7 +106,9 @@ const CheckoutPage = () => {
                                     setSelectedId={setSelectedModelId}
                                     isDisabled={!selectedBrandId}
                                     isLoading={loading}
-                                    test='models'
+                                    parentId={selectedBrandId}
+                                    createUrl='/vehicle/models'
+                                    createData={{ brandId: selectedBrandId }}
                                 />
                             </Form.Group>
 
@@ -153,22 +156,25 @@ const CheckoutPage = () => {
                             </Form.Group>
                         </Col>
                         <Col md={4}>
-                            {/* Код ЕДРПОУ */}
+                            {/* Код ЕДРПОУ
                             <Form.Group className="mb-3">
                                 <Form.Label>Код ЕДРПОУ</Form.Label>
                                 <AsyncSelector
                                     fetchUrl='/companies'
+                                    presentationField='edrpou'
                                     setSelectedId={setSelectedCompanyId}
                                     searchField='edrpou'
                                 />
-                            </Form.Group>
+                            </Form.Group> */}
 
                             {/* Компания - получатель */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Компания - получатель</Form.Label>
                                 <AsyncSelector
                                     fetchUrl='/companies'
+                                    presentationField='fullName'
                                     setSelectedId={setSelectedCompanyId}
+                                    placeholder='Поиск по ЕДРПОУ или названию'
                                 />
                             </Form.Group>
 
