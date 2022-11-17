@@ -10,7 +10,7 @@ const Service = db.define('Service', {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0
     },
-}, { underscored: true, tableName: 'Services' })
+}, { tableName: 'Services' })
 
 
 module.exports = Service

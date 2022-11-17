@@ -1,33 +1,47 @@
-const db = require('../db/mssql')
+const asyncHandler = require('express-async-handler')
 const VehicleBrand = require('../models/VehicleBrand')
 const DeliveryType = require('../models/DeliveryType')
+const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
+const Driver = require('../models/Driver')
+const DriverHistory = require('../models/DriverHistory')
 
-async function getCheckoutData(req, res, next) {
+async function getCheckoutData(req, res) {
 
-    try {
-        const brands = await VehicleBrand.findAll({})
-        const deliveryTypes = await DeliveryType.findAll({})
-        const parkings = await Parking.findAll({ where: { isBusy: false } })
-        return res.json({
-            brands,
-            deliveryTypes,
-            parkings
-        })
-    } catch (error) {
-        return next(ApiError.internalError(error.message))
-    }
+    const brands = await VehicleBrand.findAll({})
+    const deliveryTypes = await DeliveryType.findAll({})
+    const parkings = await Parking.findAll({ where: { isBusy: false } })
+    return res.json({
+        brands,
+        deliveryTypes,
+        parkings
+    })
+}
 
+async function create(req, res) {
+
+    const data = await Service.create(req.body)
+    return res.status(200).json({ message: 'created' })
+
+}
+
+
+
+async function test(req, res) {
+    //Driver.sync({ force: true })
+    //DriverHistory.sync({ force: true })
+    return res.json({ message: 'ok' })
 }
 
 async function getDriverHistory(modelId) {
     try {
         //const data = await db.query("select * from tb_in_type", { type: QueryTypes.SELECT });    
     } catch (error) {
-        
+
     }
 }
 
 
-
-module.exports.getCheckoutData = getCheckoutData
+module.exports.getCheckoutData = asyncHandler(getCheckoutData)
+module.exports.create = asyncHandler(create)
+module.exports.test = asyncHandler(test)

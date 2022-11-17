@@ -1,9 +1,7 @@
-const VehicleModel = require('./VehicleModel')
-const Driver = require('./Driver')
-
-
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
+
+
 const DriverHistory = db.define('DriverHistory', {
 
     date: {
@@ -11,10 +9,7 @@ const DriverHistory = db.define('DriverHistory', {
         defaultValue: new Date()
     }
 
-}, { underscored: true, timestamps: false, tableName: 'driver_history' })
-
-VehicleModel.belongsToMany(Driver, { through: 'DriverHistory' })
-Driver.belongsToMany(VehicleModel, { through: 'DriverHistory' })
+}, { tableName: 'driver_history' })
 
 
 module.exports = DriverHistory

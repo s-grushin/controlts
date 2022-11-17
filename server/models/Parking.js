@@ -12,7 +12,7 @@ const Parking = db.define('Parking', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     }
-}, { underscored: true, tableName: 'parkings' })
+}, { tableName: 'parkings' })
 
 
 module.exports = Parking

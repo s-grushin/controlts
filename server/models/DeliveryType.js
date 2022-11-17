@@ -8,7 +8,7 @@ const DeliveryType = db.define('DeliveryType', {
             notEmpty: true
         }
     },
-}, { underscored: true, tableName: 'deliveryTypes', timestamps: false })
+}, { tableName: 'deliveryTypes' })
 
 
 module.exports = DeliveryType

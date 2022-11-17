@@ -13,6 +13,6 @@ const VehicleModel = db.define('VehicleModel', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     }
-}, { underscored: true })
+})
 
 module.exports = VehicleModel
