@@ -4,6 +4,7 @@ const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
 const Driver = require('../models/Driver')
+const Company = require('../models/Company')
 const DriverHistory = require('../models/DriverHistory')
 
 async function getCheckoutData(req, res) {
@@ -26,12 +27,18 @@ async function create(req, res) {
 }
 
 async function getDrivers(req, res) {
-
     // поиск водителей которые уже заезжали от имени текущей компании
+    let searchValue = req.query.searchValue || ''
 
-    const data = await Service.create(req.body)
-    return res.status(200).json({ message: 'created' })
-
+    const data = await DriverHistory.findAll({
+        include: {
+            model: 'company',
+            where: {
+                name: searchValue
+            }
+        }
+    })
+    return res.status(200).json({ data })
 }
 
 

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import AsyncSelect from 'react-select/async'
 import useDebounce from '../../hooks/useDebounce'
@@ -12,14 +13,28 @@ const AsyncSelector = ({
     setSelectedId,
     defaultOptions,
     placeholder,
+    isDisabled,
+    isLoading,
     isCreatable,
-    isClearable
+    isClearable,
+    createUrl,
+    createData
 }) => {
 
-
+    const [createdOptions, setCreatedOptions] = useState([])
 
     const debounce = useDebounce()
-    const { request, loading } = useHttp()
+
+    const { request, loading: requestLoading, error, clearError } = useHttp()
+
+    const mapOptions = (options) => {
+        return mapValues(options)
+    }
+
+    if (error) {
+        alert(error)
+        clearError()
+    }
 
     const loadOptions = (inputValue, callback) => {
         if (inputValue.length < 2) {
@@ -32,13 +47,15 @@ const AsyncSelector = ({
         })
     }
 
+    const mappedCreatedOptions = mapOptions(createdOptions)
+
     const onChangeHandler = async (selectedValue) => {
 
         if (selectedValue?.__isNew__) {
-            if (createUrl) {
-                const res = await request(createUrl, 'post', createData)
-                console.log(res);
-            }
+            const res = await request(createUrl, 'post', { name: selectedValue.value, ...createData })
+            setCreatedOptions([...createdOptions, res.data])
+            setSelectedId(res.data.id)
+            return
         }
 
         if (!selectedValue) {
@@ -50,13 +67,14 @@ const AsyncSelector = ({
     if (isCreatable) {
         return (
             <AsyncCreatableSelect
-                defaultOptions={defaultOptions}
+                defaultOptions={[...mappedCreatedOptions]}
                 placeholder={placeholder}
                 isClearable={isClearable}
                 loadOptions={loadOptions}
                 onChange={onChangeHandler}
                 formatCreateLabel={(inputValue) => `Создать "${inputValue}"`}
-                isLoading={loading}
+                isDisabled={isDisabled}
+                isLoading={isLoading || requestLoading}
             />
         )
     } else {
@@ -82,6 +100,7 @@ AsyncSelector.defaultProps = {
     isCreatable: true,
     placeholder: 'Выбрать',
     noOptionsMessage: 'Не найдено',
+    createData: {},
 }
 
 export default AsyncSelector

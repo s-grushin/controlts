@@ -22,7 +22,7 @@ const Selector = (
     createData
   }) => {
 
-  const [extraOptions, setExtraOptions] = useState([])
+  const [createdOptions, setCreatedOptions] = useState([])
 
   const { request, loading: requestLoading, error, clearError } = useHttp()
 
@@ -40,7 +40,7 @@ const Selector = (
 
     if (selectedValue?.__isNew__) {
       const res = await request(createUrl, 'post', { name: selectedValue.value, ...createData })
-      setExtraOptions([...extraOptions, res.data])
+      setCreatedOptions([...createdOptions, res.data])
       setSelectedId(res.data.id)
       return
     }
@@ -52,7 +52,7 @@ const Selector = (
   }
 
   const mappedOptions = mapOptions(options)
-  const mappedExtraOptions = mapOptions(extraOptions)
+  const mappedcreatedOptions = mapOptions(createdOptions)
 
   const getValue = () => {
     if (!selectedId) {
@@ -63,14 +63,14 @@ const Selector = (
   }
 
   useEffect(() => {
-    setExtraOptions([])
+    setCreatedOptions([])
   }, [parentId])
 
 
   if (isCreatable) {
     return (
       <CreatableSelect
-        options={[...mappedOptions, ...mappedExtraOptions]}
+        options={[...mappedOptions, ...mappedcreatedOptions]}
         value={getValue()}
         isClearable={isClearable}
         isSearchable={isSearchable}
@@ -85,7 +85,7 @@ const Selector = (
   } else {
     return (
       <Select
-        options={[...mappedOptions, ...mappedExtraOptions]}
+        options={[...mappedOptions, ...mappedcreatedOptions]}
         value={getValue()}
         isClearable={isClearable}
         isSearchable={isSearchable}

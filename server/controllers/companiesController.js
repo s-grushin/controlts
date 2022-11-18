@@ -46,7 +46,7 @@ async function getById(req, res) {
 async function create(req, res) {
 
     const data = await Company.create(req.body)
-    return res.status(200).json({ message: 'created' })
+    return res.status(200).json({ message: 'created', data })
 
 }
 

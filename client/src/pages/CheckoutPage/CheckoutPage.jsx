@@ -129,9 +129,10 @@ const CheckoutPage = () => {
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
                                 <AsyncSelector
-                                    fetchUrl='/drivers'
+                                    fetchUrl='/driverHistory'
                                     setSelectedId={setSelectedDriverId}
                                     placeholder='Поиск по ФИО'
+
                                 />
                             </Form.Group>
 
@@ -165,6 +166,7 @@ const CheckoutPage = () => {
                                     presentationField='fullName'
                                     setSelectedId={setSelectedCompanyId}
                                     placeholder='Поиск по ЕДРПОУ или названию'
+                                    createUrl='/companies'
                                 />
                             </Form.Group>
 
@@ -182,7 +184,7 @@ const CheckoutPage = () => {
                             <Stack gap={2}>
                                 <div className="bg-light border">
                                     <div className="d-grid gap-2">
-                                        <Button type='submit' title='Получить данные с весов и камер' />
+                                        <Button title='Получить данные с весов и камер' />
                                     </div>
                                 </div>
                                 <div className="bg-light border">
@@ -210,10 +212,13 @@ const CheckoutPage = () => {
 
                                     </Table>
                                 </div>
+
                             </Stack>
                         </Col>
                         <Col md={4}>
-
+                            <div className="d-grid gap-2">
+                                <Button variant='outline-success' type='submit' title='Создать запись' />
+                            </div>
                         </Col>
                     </Row>
                 </Col>
