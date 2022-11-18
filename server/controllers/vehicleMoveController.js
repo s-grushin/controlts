@@ -25,6 +25,15 @@ async function create(req, res) {
 
 }
 
+async function getDrivers(req, res) {
+
+    // поиск водителей которые уже заезжали от имени текущей компании
+
+    const data = await Service.create(req.body)
+    return res.status(200).json({ message: 'created' })
+
+}
+
 
 
 async function test(req, res) {

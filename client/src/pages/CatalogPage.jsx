@@ -11,7 +11,8 @@ const CatalogPage = () => {
         { id: 3, name: 'vehicles', path: '/catalog/vehicleBrands', title: 'Марки и модели авто' },
         { id: 4, name: 'parkings', path: '/catalog/parkings', title: 'Места стоянки' },
         { id: 5, name: 'deliveryTypes', path: '/catalog/deliveryTypes', title: 'Виды доставок' },
-        { id: 6, name: 'users', path: '/catalog/users', title: 'Пользователи' },
+        { id: 6, name: 'vehicleTypes', path: '/catalog/vehicleTypes', title: 'Типы автотранспорта' },
+        { id: 7, name: 'users', path: '/catalog/users', title: 'Пользователи' },
     ]
 
     const [selectedItem, setSelectedItem] = useState(null)

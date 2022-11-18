@@ -6,9 +6,7 @@ const db = require('../db/mssql')
 const Driver = db.define('Driver', {
     fullName: {
         type: DataTypes.STRING,
-        validate: {
-            notEmpty: true
-        }
+        allowNull: false
     },
     phoneNumber1: {
         type: DataTypes.STRING

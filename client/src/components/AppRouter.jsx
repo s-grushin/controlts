@@ -19,6 +19,8 @@ import CreateUpdateDeliveryType from './Catalog/DeliveryTypes/CreateUpdateDelive
 import VehicleBrandsList from './Catalog/VehicleBrands/VehicleBrandsList'
 import CreateUpdateVehicleBrand from './Catalog/VehicleBrands/CreateUpdateVehicleBrand'
 import CreateUpdateVehicleModel from './Catalog/VehicleBrands/CreateUpdateVehicleModel'
+import VehicleTypesList from './Catalog/VehicleTypes/VehicleTypesList'
+import CreateUpdateVehicleType from './Catalog/VehicleTypes/CreateUpdateVehicleType'
 import Dashboard from '../pages/Dashboard'
 
 
@@ -68,6 +70,11 @@ const AppRouter = () => {
                                 <Route path=':id' element={<CreateUpdateVehicleBrand variant='update' />} />
                                 <Route path='models/create/:brandId' element={<CreateUpdateVehicleModel variant='create' />} />
                                 <Route path='models/:id' element={<CreateUpdateVehicleModel variant='update' />} />
+                            </Route>
+                            <Route path='vehicleTypes'>
+                                <Route index element={<VehicleTypesList />} />
+                                <Route path='create' element={<CreateUpdateVehicleType variant='create' />} />
+                                <Route path=':id' element={<CreateUpdateVehicleType variant='update' />} />
                             </Route>
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />

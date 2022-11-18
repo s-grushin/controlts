@@ -128,10 +128,10 @@ const CheckoutPage = () => {
                             {/* ФИО водителя */}
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
-                                <Selector
-                                    options={[]}
-                                    selectedId={selectedDriverId}
+                                <AsyncSelector
+                                    fetchUrl='/drivers'
                                     setSelectedId={setSelectedDriverId}
+                                    placeholder='Поиск по ФИО'
                                 />
                             </Form.Group>
 
@@ -156,16 +156,6 @@ const CheckoutPage = () => {
                             </Form.Group>
                         </Col>
                         <Col md={4}>
-                            {/* Код ЕДРПОУ
-                            <Form.Group className="mb-3">
-                                <Form.Label>Код ЕДРПОУ</Form.Label>
-                                <AsyncSelector
-                                    fetchUrl='/companies'
-                                    presentationField='edrpou'
-                                    setSelectedId={setSelectedCompanyId}
-                                    searchField='edrpou'
-                                />
-                            </Form.Group> */}
 
                             {/* Компания - получатель */}
                             <Form.Group className="mb-3">

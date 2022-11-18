@@ -120,9 +120,10 @@ const ItemsList = ({
             //fkfilter used only for oneToMany (one to many visualization)
             const fkfilter = fkName ? `${fkName}=${selectedOneId}` : ''
             const data = await request(`${fetchUrl}/?${fkfilter}&limit=${limit}&offset=${offset}`, 'get', {})
-            setItems(data.rows)
-            setItemsQtyAll(data.count)
-
+            if (data) {
+                setItems(data.rows)
+                setItemsQtyAll(data.count)
+            }
         }
 
         fetchItems()
