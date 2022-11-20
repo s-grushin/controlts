@@ -21,8 +21,15 @@ async function getCheckoutData(req, res) {
 
 async function create(req, res) {
 
-    const data = await Service.create(req.body)
-    return res.status(200).json({ message: 'created' })
+    const { brandId, modelId, weight, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany } = req.body
+
+    if (!brandId || !modelId || !driverId || !deliveryTypeId || !parkingId || !companyId) {
+        return res.status(400).json({ message: 'Не заполнены необходимые поля' })
+    }
+
+    const data = await VehicleMove.create({ brandId, modelId, weight, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany })
+
+    res.status(200).json({ message: 'created' })
 
 }
 

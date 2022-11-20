@@ -7,14 +7,6 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
     let searchValue = req.query.searchValue || ''
-    //let edrpou = req.query.edrpou || ''
-
-    // const where = {
-    //     [Op.and]: [
-    //         { name: { [Op.substring]: searchValue } },
-    //         { edrpou: { [Op.substring]: edrpou } },
-    //     ]
-    // }
 
     const data = await Company.findAndCountAll(
         {
@@ -40,6 +32,13 @@ async function getById(req, res) {
     } else {
         return res.status(400).json({ message: 'not found' })
     }
+
+}
+
+async function getDriverHistory(req, res) {
+
+    const data = await Company.findOne({ include: 'driverHistory' })
+    return res.status(200).json({ data })
 
 }
 

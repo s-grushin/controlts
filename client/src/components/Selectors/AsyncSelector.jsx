@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AsyncCreatableSelect from 'react-select/async-creatable'
 import AsyncSelect from 'react-select/async'
 import useDebounce from '../../hooks/useDebounce'
@@ -17,6 +17,7 @@ const AsyncSelector = ({
     isLoading,
     isCreatable,
     isClearable,
+    parentId,
     createUrl,
     createData
 }) => {
@@ -32,8 +33,9 @@ const AsyncSelector = ({
     }
 
     if (error) {
-        alert(error)
         clearError()
+        setSelectedId(null)
+        alert(error)
     }
 
     const loadOptions = (inputValue, callback) => {
@@ -43,7 +45,7 @@ const AsyncSelector = ({
         }
         debounce(async () => {
             const { rows } = await request(`${fetchUrl}?${searchField}=${inputValue}`)
-            callback(mapValues(rows, 0, presentationField))
+            callback(mapValues(rows, 'id', presentationField))
         })
     }
 
@@ -52,7 +54,7 @@ const AsyncSelector = ({
     const onChangeHandler = async (selectedValue) => {
 
         if (selectedValue?.__isNew__) {
-            const res = await request(createUrl, 'post', { name: selectedValue.value, ...createData })
+            const res = await request(createUrl, 'post', { [presentationField]: selectedValue.value, ...createData })
             setCreatedOptions([...createdOptions, res.data])
             setSelectedId(res.data.id)
             return
@@ -63,6 +65,11 @@ const AsyncSelector = ({
         }
         setSelectedId(selectedValue.value)
     }
+
+    useEffect(() => {
+        setCreatedOptions([])
+    }, [parentId])
+
 
     if (isCreatable) {
         return (
@@ -85,6 +92,7 @@ const AsyncSelector = ({
                 isClearable={isClearable}
                 loadOptions={loadOptions}
                 onChange={onChangeHandler}
+                isDisabled={isDisabled}
             />
         )
     }

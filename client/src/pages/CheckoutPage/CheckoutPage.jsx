@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
 import useInputChange from '../../hooks/useInputChange'
 import Button from '../../components/Button'
@@ -26,12 +27,14 @@ const CheckoutPage = () => {
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
-    const { request, loading } = useHttp()
+    const { request, error, loading, clearError } = useHttp()
     const inputChangeHandler = useInputChange()
 
-    const submitHandler = (e) => {
+    const navigate = useNavigate()
+
+    const submitHandler = async (e) => {
         e.preventDefault()
-        console.log({
+        const formData = {
             brandId: selectedBrandId,
             modelId: selectedModelId,
             weight,
@@ -40,7 +43,11 @@ const CheckoutPage = () => {
             parkingId: selectedParkingId,
             companyId: selectedCompanyId,
             isOwnCompany,
-        });
+        }
+        console.log(formData);
+
+        const res = await request('/vehicleMoves', 'post', formData)
+        console.log(res);
     }
 
 
@@ -69,6 +76,14 @@ const CheckoutPage = () => {
         }
         fetchModels(selectedBrandId)
     }, [selectedBrandId, request])
+
+    useEffect(() => {
+        if (error) {
+            alert(error)
+            clearError()
+        }
+    }, [error, clearError])
+
 
 
     if (loading && !formIsLoaded) {
@@ -125,6 +140,18 @@ const CheckoutPage = () => {
 
                         </Col>
                         <Col md={4}>
+
+                            {/* Компания - получатель */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Компания - получатель</Form.Label>
+                                <AsyncSelector
+                                    fetchUrl='/companies'
+                                    setSelectedId={setSelectedCompanyId}
+                                    placeholder='Поиск по ЕДРПОУ или названию'
+                                    createUrl='/companies'
+                                />
+                            </Form.Group>
+
                             {/* ФИО водителя */}
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
@@ -132,9 +159,15 @@ const CheckoutPage = () => {
                                     fetchUrl='/driverHistory'
                                     setSelectedId={setSelectedDriverId}
                                     placeholder='Поиск по ФИО'
-
+                                    isDisabled={!selectedCompanyId}
+                                    presentationField='fullName'
+                                    createUrl='/drivers'
                                 />
                             </Form.Group>
+
+
+                        </Col>
+                        <Col md={4}>
 
                             {/* Вид доставки */}
                             <Form.Group className="mb-3">
@@ -153,20 +186,6 @@ const CheckoutPage = () => {
                                     options={parkingOptions}
                                     selectedId={selectedParkingId}
                                     setSelectedId={setSelectedParkingId}
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col md={4}>
-
-                            {/* Компания - получатель */}
-                            <Form.Group className="mb-3">
-                                <Form.Label>Компания - получатель</Form.Label>
-                                <AsyncSelector
-                                    fetchUrl='/companies'
-                                    presentationField='fullName'
-                                    setSelectedId={setSelectedCompanyId}
-                                    placeholder='Поиск по ЕДРПОУ или названию'
-                                    createUrl='/companies'
                                 />
                             </Form.Group>
 
@@ -213,12 +232,15 @@ const CheckoutPage = () => {
                                     </Table>
                                 </div>
 
+                                <Stack direction='horizontal' gap='3'>
+                                    <Button variant='outline-success' type='submit' title='Создать запись' withSpinner={true} loading={loading} />
+                                    <Button variant='outline-danger' title='Отмена' className='ms-auto' clickHandler={() => navigate('/')} />
+                                </Stack>
+
                             </Stack>
                         </Col>
                         <Col md={4}>
-                            <div className="d-grid gap-2">
-                                <Button variant='outline-success' type='submit' title='Создать запись' />
-                            </div>
+
                         </Col>
                     </Row>
                 </Col>

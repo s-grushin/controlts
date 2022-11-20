@@ -19,9 +19,9 @@ const useHttp = () => {
         }
     }, [])
 
-    const clearError = () => {
+    const clearError = useCallback(() => {
         setError('')
-    }
+    }, [])
 
     //test
     // eslint-disable-next-line

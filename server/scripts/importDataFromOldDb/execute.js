@@ -49,10 +49,10 @@ async function execute() {
 
 async function transferData() {
     console.log('Выполняется перенос данных. Подождите...'.green.bold);
-    //await transferServices()
-    //await transferCompanies()
-    //await transferVehicles()
-    //await transferParkings()
+    await transferServices()
+    await transferCompanies()
+    await transferVehicles()
+    await transferParkings()
     await transferDeliveryTypes()
 }
 

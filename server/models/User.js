@@ -43,8 +43,10 @@ const User = db.define('User', {
     }
 }, { timestamps: true })
 
-User.hasMany(VehicleMove, { as: 'vehicleMoves', foreignKey: { allowNull: false, name: 'userId' } })
-VehicleMove.belongsTo(User, { as: 'user' })
+User.hasMany(VehicleMove, { as: 'vehicleMovesIn', foreignKey: { allowNull: false, name: 'userInId' } })
+VehicleMove.belongsTo(User, { as: 'userIn' })
 
+User.hasMany(VehicleMove, { as: 'vehicleMovesOut', foreignKey: { allowNull: false, name: 'userOutId' } })
+VehicleMove.belongsTo(User, { as: 'userOut' })
 
 module.exports = User

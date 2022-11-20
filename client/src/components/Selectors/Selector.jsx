@@ -9,6 +9,7 @@ const Selector = (
     options,
     setSelectedId,
     selectedId,
+    presentationField,
     isCreatable,
     isClearable,
     isSearchable,
@@ -32,14 +33,15 @@ const Selector = (
 
 
   if (error) {
-    alert(error)
     clearError()
-  }
+    setSelectedId(null)
+    alert(error)
+}
 
   const onChangeHandler = async (selectedValue) => {
 
     if (selectedValue?.__isNew__) {
-      const res = await request(createUrl, 'post', { name: selectedValue.value, ...createData })
+      const res = await request(createUrl, 'post', { [presentationField]: selectedValue.value, ...createData })
       setCreatedOptions([...createdOptions, res.data])
       setSelectedId(res.data.id)
       return
@@ -104,6 +106,7 @@ Selector.defaultProps = {
   isCreatable: true,
   isClearable: true,
   isSearchable: true,
+  presentationField: 'name',
   placeholder: 'Выбрать',
   isDisabled: false,
   isLoading: false,
