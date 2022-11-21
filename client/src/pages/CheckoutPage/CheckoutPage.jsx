@@ -24,6 +24,7 @@ const CheckoutPage = () => {
     const [selectedParkingId, setSelectedParkingId] = useState(null)
     const [selectedCompanyId, setSelectedCompanyId] = useState(null)
     const [isOwnCompany, setIsOwnCompany] = useState(false)
+    const [comment, setComment] = useState('')
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
@@ -37,12 +38,13 @@ const CheckoutPage = () => {
         const formData = {
             brandId: selectedBrandId,
             modelId: selectedModelId,
-            weight,
+            weightIn: weight,
             driverId: selectedDriverId,
             deliveryTypeId: selectedDeliveryTypeId,
             parkingId: selectedParkingId,
             companyId: selectedCompanyId,
             isOwnCompany,
+            comment
         }
         console.log(formData);
 
@@ -156,7 +158,8 @@ const CheckoutPage = () => {
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
                                 <AsyncSelector
-                                    fetchUrl='/driverHistory'
+                                    fetchUrl='/companies/getDriverHistory'
+                                    queryParams={`&companyId=${selectedCompanyId}`}
                                     setSelectedId={setSelectedDriverId}
                                     placeholder='Поиск по ФИО'
                                     isDisabled={!selectedCompanyId}
@@ -196,6 +199,8 @@ const CheckoutPage = () => {
                                     onChange={e => inputChangeHandler(e, setIsOwnCompany)}
                                 />
                             </Form.Group>
+
+
                         </Col>
                     </Row>
                     <Row>
@@ -240,7 +245,10 @@ const CheckoutPage = () => {
                             </Stack>
                         </Col>
                         <Col md={4}>
-
+                            {/* Комментарий */}
+                            <Form.Group>
+                                <Form.Control placeholder='Комментарий' as="textarea" rows={4} value={comment} onChange={(e) => inputChangeHandler(e, setComment)} />
+                            </Form.Group>
                         </Col>
                     </Row>
                 </Col>

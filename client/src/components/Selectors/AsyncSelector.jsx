@@ -9,6 +9,7 @@ import { mapValues } from './utils'
 const AsyncSelector = ({
     fetchUrl,
     searchField,
+    queryParams,
     presentationField,
     setSelectedId,
     defaultOptions,
@@ -44,8 +45,9 @@ const AsyncSelector = ({
             return
         }
         debounce(async () => {
-            const { rows } = await request(`${fetchUrl}?${searchField}=${inputValue}`)
-            callback(mapValues(rows, 'id', presentationField))
+            const { rows } = await request(`${fetchUrl}?${searchField}=${inputValue}${queryParams}`)
+            const mappedOptions = mapValues(rows, 'id', presentationField)
+            callback(mappedOptions)
         })
     }
 
@@ -102,6 +104,7 @@ const AsyncSelector = ({
 
 AsyncSelector.defaultProps = {
     searchField: 'searchValue',
+    queryParams: '',
     presentationField: 'name',
     defaultOptions: [],
     isClearable: true,

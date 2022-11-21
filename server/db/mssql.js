@@ -16,7 +16,8 @@ const mssql = new Sequelize({
             cryptoCredentialsDetails: {
                 minVersion: 'TLSv1'
             },
-        }
+            appName: 'ControlTC'
+        },        
     },
     logging: false,
     define: {

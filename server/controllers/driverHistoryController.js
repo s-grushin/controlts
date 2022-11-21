@@ -13,7 +13,7 @@ async function getAll(req, res) {
 async function getById(req, res) {
 
     const { id } = req.params
-    const data = await DriverHistory.findOne({ where: { id } })
+    const data = await DriverHistory.findOne({ include: { as: '', where: {} } })
     if (data) {
         return res.status(200).json(data)
     } else {

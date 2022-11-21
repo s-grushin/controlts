@@ -21,13 +21,20 @@ async function getCheckoutData(req, res) {
 
 async function create(req, res) {
 
-    const { brandId, modelId, weight, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany } = req.body
+    const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment } = req.body
 
     if (!brandId || !modelId || !driverId || !deliveryTypeId || !parkingId || !companyId) {
         return res.status(400).json({ message: 'Не заполнены необходимые поля' })
     }
 
-    const data = await VehicleMove.create({ brandId, modelId, weight, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany })
+    const currentDate = new Date()
+
+    //test
+    const userInId = 1
+    const userOutId = 1
+
+    const vehicleMove = await VehicleMove.create({ brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, userInId, userOutId, comment })
+    const driverHistory = await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id })
 
     res.status(200).json({ message: 'created' })
 
@@ -35,15 +42,26 @@ async function create(req, res) {
 
 async function getDrivers(req, res) {
     // поиск водителей которые уже заезжали от имени текущей компании
-    let searchValue = req.query.searchValue || ''
+    const driverFullName = req.query.searchValue || ''
+    const companyId = req.query.companyId || ''
 
     const data = await DriverHistory.findAll({
-        include: {
-            model: 'company',
-            where: {
-                name: searchValue
+        include: [
+            {
+                model: Company,
+                as: 'company',
+                where: {
+                    id: companyId
+                }
+            },
+            {
+                model: Driver,
+                as: 'driver',
+                where: {
+                    fullName: driverFullName
+                }
             }
-        }
+        ]
     })
     return res.status(200).json({ data })
 }
@@ -67,4 +85,5 @@ async function getDriverHistory(modelId) {
 
 module.exports.getCheckoutData = asyncHandler(getCheckoutData)
 module.exports.create = asyncHandler(create)
+module.exports.getDrivers = asyncHandler(getDrivers)
 module.exports.test = asyncHandler(test)

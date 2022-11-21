@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 
-
 const DriverHistory = db.define('DriverHistory', {
 
     date: {
@@ -10,6 +9,5 @@ const DriverHistory = db.define('DriverHistory', {
     }
 
 }, { tableName: 'driver_history' })
-
 
 module.exports = DriverHistory
