@@ -1,117 +1,126 @@
 import { useState, useEffect } from 'react'
-import CreatableSelect from 'react-select/creatable'
-import Select from 'react-select'
-import { mapValues } from './utils'
+import AsyncCreatableSelect from 'react-select/async-creatable'
+import useDebounce from '../../hooks/useDebounce'
 import useHttp from '../../hooks/useHttp'
 
-const Selector = (
-  {
-    options,
-    setSelectedId,
-    selectedId,
-    presentationField,
-    isCreatable,
-    isClearable,
-    isSearchable,
-    placeholder,
-    isDisabled,
-    isLoading,
-    noOptionsMessage,
-    name,
-    parentId,
-    createUrl,
-    createData
-  }) => {
-
-  const [createdOptions, setCreatedOptions] = useState([])
-
-  const { request, loading: requestLoading, error, clearError } = useHttp()
-
-  const mapOptions = (options) => {
-    return mapValues(options)
-  }
-
-
-  if (error) {
-    clearError()
-    setSelectedId(null)
-    alert(error)
+export const mapValues = (values, valueProp = 'id', labelProp = 'name') => {
+    return values.map(item => ({ value: item[valueProp], label: item[labelProp] }))
 }
 
-  const onChangeHandler = async (selectedValue) => {
+const Selector = ({
+    options,
+    selectedId,
+    setSelectedId,
+    parentId,
+    inputSearchUrl,
+    inputSearchFieldName,
+    inputSearchQueryParams,
+    postUrl,
+    postData,
+    presentationField,
+    placeholder,
+    isClearable,
+    isDisabled,
+    isLoading,
+    name
+}) => {
 
-    if (selectedValue?.__isNew__) {
-      const res = await request(createUrl, 'post', { [presentationField]: selectedValue.value, ...createData })
-      setCreatedOptions([...createdOptions, res.data])
-      setSelectedId(res.data.id)
-      return
+    const [createdOptions, setCreatedOptions] = useState([])
+
+    const mappedOptions = mapValues(options, 'id', presentationField)
+    const mappedCreatedOptions = mapValues(createdOptions, 'id', presentationField)
+    const combinedOptions = [...mappedOptions, ...mappedCreatedOptions]
+
+
+    const { request, loading: requestLoading, error, clearError } = useHttp()
+    const debounce = useDebounce()
+
+
+    const onChangeHandler = async (selectedValue) => {
+
+        if (selectedValue?.__isNew__) {
+            const res = await request(postUrl, 'post', { [presentationField]: selectedValue.value, ...postData })
+            setCreatedOptions([...createdOptions, res.data])
+            setSelectedId(res.data.id)
+            return
+        }
+
+        if (selectedValue) {
+            setSelectedId(selectedValue.value)
+        } else {
+            setSelectedId(null)
+        }
+
     }
 
-    if (!selectedValue) {
-      return setSelectedId(null)
+    const loadOptions = (inputValue, callback) => {
+
+        if (inputValue.length < 2) {
+            callback([])
+            return
+        }
+        debounce(async () => {
+
+            if (inputSearchUrl) {
+                const { rows } = await request(`${inputSearchUrl}?${inputSearchFieldName}=${inputValue}${inputSearchQueryParams}`)
+                const mappedOptions = mapValues(rows, 'id', presentationField)
+                callback(mappedOptions)
+            } else {
+                const founded = options.filter(item => item[presentationField].toLowerCase().includes(inputValue))
+                const mappedOptions = mapValues(founded, 'id', presentationField)
+                callback(mappedOptions)
+            }
+        })
     }
-    setSelectedId(selectedValue.value)
-  }
 
-  const mappedOptions = mapOptions(options)
-  const mappedcreatedOptions = mapOptions(createdOptions)
 
-  const getValue = () => {
-    if (!selectedId) {
-      return null
+    const getValue = () => {
+        if (!selectedId) {
+            return null
+        }
+
+        const value = combinedOptions.find(item => item.value === selectedId)
+        return value
     }
-    const value = mappedOptions.find(item => item.value === selectedId)
-    return value
-  }
 
-  useEffect(() => {
-    setCreatedOptions([])
-  }, [parentId])
+    useEffect(() => {
+        if (error) {
+            alert(error)
+            clearError()
+        }
+    }, [error, clearError])
 
 
-  if (isCreatable) {
+    useEffect(() => {
+        setCreatedOptions([])
+    }, [parentId])
+
     return (
-      <CreatableSelect
-        options={[...mappedOptions, ...mappedcreatedOptions]}
-        value={getValue()}
-        isClearable={isClearable}
-        isSearchable={isSearchable}
-        placeholder={placeholder}
-        onChange={onChangeHandler}
-        isDisabled={isDisabled || isLoading || requestLoading}
-        isLoading={isLoading || requestLoading}
-        noOptionsMessage={() => noOptionsMessage}
-        formatCreateLabel={(inputValue) => `Создать "${inputValue}"`}
-      />
+        <AsyncCreatableSelect
+            defaultOptions={combinedOptions}
+            value={getValue()}
+            placeholder={placeholder}
+            isClearable={isClearable}
+            loadOptions={loadOptions}
+            onChange={onChangeHandler}
+            formatCreateLabel={(inputValue) => `Создать "${inputValue}"`}
+            isDisabled={isDisabled}
+            isLoading={isLoading || requestLoading}
+        />
     )
-  } else {
-    return (
-      <Select
-        options={[...mappedOptions, ...mappedcreatedOptions]}
-        value={getValue()}
-        isClearable={isClearable}
-        isSearchable={isSearchable}
-        placeholder={placeholder}
-        onChange={onChangeHandler}
-        isDisabled={isDisabled || isLoading}
-        isLoading={isLoading}
-      />
-    )
-  }
-
 }
 
 Selector.defaultProps = {
-  options: [],
-  isCreatable: true,
-  isClearable: true,
-  isSearchable: true,
-  presentationField: 'name',
-  placeholder: 'Выбрать',
-  isDisabled: false,
-  isLoading: false,
-  noOptionsMessage: 'Не найдено',
-  createData: {},
+    options: [],
+    placeholder: 'Выбрать',
+    inputSearchFieldName: 'searchValue',
+    inputSearchQueryParams: '',
+    fetchQueryParams: '',
+    presentationField: 'name',
+    isClearable: true,
+    isCreatable: true,
+    noOptionsMessage: 'Не найдено',
+    createData: {},
 }
 
 export default Selector

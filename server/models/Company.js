@@ -29,10 +29,10 @@ const Company = db.define('Company', {
     }
 })
 
-Company.hasMany(DriverHistory, { as: 'driverHistory', foreignKey: { name: 'driverId', allowNull: false } })
+Company.hasMany(DriverHistory, { as: 'driverHistory', foreignKey: { allowNull: false, name: 'companyId' } })
 DriverHistory.belongsTo(Company, { as: 'company' })
 
-Company.hasMany(VehicleMove, { as: 'vehicleMoves', foreignKey: { name: 'companyId', allowNull: false } })
+Company.hasMany(VehicleMove, { as: 'vehicleMoves', foreignKey: { allowNull: false, name: 'companyId' } })
 VehicleMove.belongsTo(Company, { as: 'company' })
 
 module.exports = Company

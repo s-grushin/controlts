@@ -5,9 +5,8 @@ import useInputChange from '../../hooks/useInputChange'
 import Button from '../../components/Button'
 import Table from '../../components/Table'
 import Spinner from '../../components/Spinner'
-import Selector from '../../components/Selectors/Selector'
-import AsyncSelector from '../../components/Selectors/AsyncSelector'
 import useHttp from '../../hooks/useHttp'
+import Selector from '../../components/Selectors/Selector'
 
 const CheckoutPage = () => {
 
@@ -103,14 +102,13 @@ const CheckoutPage = () => {
                     <Row>
                         <Col md={4}>
 
-                            {/* Марка авто */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Марка авто</Form.Label>
                                 <Selector
                                     options={brandOptions}
                                     selectedId={selectedBrandId}
                                     setSelectedId={setSelectedBrandId}
-                                    createUrl='/vehicle/brands'
+                                    postUrl='/vehicle/brands'
                                 />
                             </Form.Group>
 
@@ -124,8 +122,8 @@ const CheckoutPage = () => {
                                     isDisabled={!selectedBrandId}
                                     isLoading={loading}
                                     parentId={selectedBrandId}
-                                    createUrl='/vehicle/models'
-                                    createData={{ brandId: selectedBrandId }}
+                                    postUrl='/vehicle/models'
+                                    postData={{ brandId: selectedBrandId }}
                                 />
                             </Form.Group>
 
@@ -146,25 +144,28 @@ const CheckoutPage = () => {
                             {/* Компания - получатель */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Компания - получатель</Form.Label>
-                                <AsyncSelector
-                                    fetchUrl='/companies'
+                                <Selector
+                                    inputSearchUrl='/companies'
+                                    selectedId={selectedCompanyId}
                                     setSelectedId={setSelectedCompanyId}
                                     placeholder='Поиск по ЕДРПОУ или названию'
-                                    createUrl='/companies'
+                                    postUrl='/companies'
                                 />
                             </Form.Group>
 
                             {/* ФИО водителя */}
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
-                                <AsyncSelector
-                                    fetchUrl='/companies/getDriverHistory'
-                                    queryParams={`&companyId=${selectedCompanyId}`}
+                                <Selector
+                                    inputSearchUrl='/companies/getDriverHistory'
+                                    inputSearchQueryParams={`&companyId=${selectedCompanyId}`}
+                                    selectedId={selectedDriverId}
                                     setSelectedId={setSelectedDriverId}
                                     placeholder='Поиск по ФИО'
                                     isDisabled={!selectedCompanyId}
                                     presentationField='fullName'
-                                    createUrl='/drivers'
+                                    postUrl='/drivers'
+                                    name='driver'
                                 />
                             </Form.Group>
 

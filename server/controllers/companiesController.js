@@ -74,8 +74,6 @@ async function getDriverHistory(req, res) {
     const companyId = req.query.companyId
     const searchValue = req.query.searchValue || ''
 
-    console.log(companyId, searchValue);
-
     if (!companyId) {
         return res.status(400).json({ message: 'required company id' })
     }
@@ -98,10 +96,13 @@ async function getDriverHistory(req, res) {
         }
     })
 
+    //return res.status(200).json({ data })
+
     data = data.rows[0].vehicleMoves.map(item => ({
         id: item.driver.id,
         fullName: item.driver.fullName
     }))
+
 
     return res.status(200).json({ rows: data, count: data.length })
 

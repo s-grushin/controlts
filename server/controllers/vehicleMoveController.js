@@ -27,14 +27,23 @@ async function create(req, res) {
         return res.status(400).json({ message: 'Не заполнены необходимые поля' })
     }
 
+    console.log(companyId);
+
     const currentDate = new Date()
 
     //test
     const userInId = 1
     const userOutId = 1
 
-    const vehicleMove = await VehicleMove.create({ brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, userInId, userOutId, comment })
-    const driverHistory = await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id })
+    try {
+        const vehicleMove = await VehicleMove.create({ brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, userInId, userOutId, comment })
+
+        const driverHistory = await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id })
+
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
 
     res.status(200).json({ message: 'created' })
 
