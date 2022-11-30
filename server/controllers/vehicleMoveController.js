@@ -6,6 +6,7 @@ const Parking = require('../models/Parking')
 const Driver = require('../models/Driver')
 const Company = require('../models/Company')
 const DriverHistory = require('../models/DriverHistory')
+const VehicleMoveDetails = require('../models/VehicleMoveDetail')
 
 async function getCheckoutData(req, res) {
 
@@ -78,9 +79,34 @@ async function getDrivers(req, res) {
 
 
 async function test(req, res) {
+
+    const data = [{
+        number: 'AA 1234 XX',
+        photo: '/asdasd.jpg',
+        vehicleTypeId: 1,
+    },
+    {
+        number: 'CC 5689 SS',
+        photo: '/asdasd2.jpg',
+        vehicleTypeId: 2,
+    }]
+
+    const vm = await VehicleMove.findByPk(1)
+
+    try {
+        const detail1 = await vm.createVehicleDetail(data[0])
+        const detail2 = await vm.createVehicleDetail(data[1])
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+
+
+    //const asd = await vm.addVehicleMoveDetails([detail1, detail2])
+
     //Driver.sync({ force: true })
     //DriverHistory.sync({ force: true })
-    return res.json({ message: 'ok' })
+    return res.json({ message: 'ok', data: asd })
 }
 
 async function getDriverHistory(modelId) {

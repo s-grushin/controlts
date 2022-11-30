@@ -153,7 +153,7 @@ const CheckoutPage = () => {
                                 />
                             </Form.Group>
 
-                            {/* ФИО водителя */}
+                            {/* ФИО водителя */}`
                             <Form.Group className="mb-3">
                                 <Form.Label>ФИО водителя</Form.Label>
                                 <Selector
