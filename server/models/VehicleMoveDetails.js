@@ -10,6 +10,13 @@ const VehicleMoveDetails = db.define('VehicleMoveDetails', {
     photo: {
         type: DataTypes.STRING
     },
+    vehicleTypeId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: VehicleType,
+            key: 'id'
+        }
+    }
 
 })
 
