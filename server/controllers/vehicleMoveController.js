@@ -38,41 +38,12 @@ async function create(req, res) {
             brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId
         }, { transaction: t })
 
-
         await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id }, { transaction: t })
 
     })
 
     res.status(200).json({ message: 'created' })
 }
-
-async function getDrivers(req, res) {
-    // поиск водителей которые уже заезжали от имени текущей компании
-    const driverFullName = req.query.searchValue || ''
-    const companyId = req.query.companyId || ''
-
-    const data = await DriverHistory.findAll({
-        include: [
-            {
-                model: Company,
-                as: 'company',
-                where: {
-                    id: companyId
-                }
-            },
-            {
-                model: Driver,
-                as: 'driver',
-                where: {
-                    fullName: driverFullName
-                }
-            }
-        ]
-    })
-    return res.status(200).json({ data })
-}
-
-
 
 async function test(req, res) {
 
@@ -116,5 +87,4 @@ async function getDriverHistory(modelId) {
 
 module.exports.getCheckoutData = asyncHandler(getCheckoutData)
 module.exports.create = asyncHandler(create)
-module.exports.getDrivers = asyncHandler(getDrivers)
 module.exports.test = asyncHandler(test)
