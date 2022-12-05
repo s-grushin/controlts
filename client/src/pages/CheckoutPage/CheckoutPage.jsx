@@ -79,6 +79,13 @@ const CheckoutPage = () => {
     }, [selectedBrandId, request])
 
     useEffect(() => {
+        // При изменении компании, очистим поле водителя
+        setSelectedDriverId(null)
+
+    }, [selectedCompanyId])
+
+
+    useEffect(() => {
         if (error) {
             alert(error)
             clearError()
@@ -166,6 +173,7 @@ const CheckoutPage = () => {
                                     presentationField='fullName'
                                     postUrl='/drivers'
                                     name='driver'
+                                    parentId={selectedCompanyId}
                                 />
                             </Form.Group>
 
