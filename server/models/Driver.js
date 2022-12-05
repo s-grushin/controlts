@@ -19,10 +19,10 @@ const Driver = db.define('Driver', {
     }
 }, { tableName: 'drivers' })
 
-Driver.hasMany(DriverHistory, { as: 'driverHistory', foreignKey: { name: 'driverId', allowNull: false }, onDelete: 'CASCADE' })
-DriverHistory.belongsTo(Driver, { as: 'driver' })
+Driver.hasMany(DriverHistory, { as: 'driverHistory', onDelete: 'CASCADE' })
+DriverHistory.belongsTo(Driver)
 
-Driver.hasMany(VehicleMove, { as: 'vehicleMoves', foreignKey: { name: 'driverId', allowNull: false } })
+Driver.hasMany(VehicleMove, { as: 'vehicleMoves' })
 VehicleMove.belongsTo(Driver, { as: 'driver' })
 
 module.exports = Driver

@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const db = require('../db/mssql')
 const VehicleBrand = require('../models/VehicleBrand')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
@@ -24,30 +25,25 @@ async function create(req, res) {
 
     const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment } = req.body
 
-    if (!brandId || !modelId || !driverId || !deliveryTypeId || !parkingId || !companyId) {
-        return res.status(400).json({ message: 'Не заполнены необходимые поля' })
-    }
-
-    console.log(companyId);
-
     const currentDate = new Date()
 
     //test
     const userInId = 1
     const userOutId = 1
 
-    try {
-        const vehicleMove = await VehicleMove.create({ brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, userInId, userOutId, comment })
 
-        const driverHistory = await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id })
+    await db.transaction(async (t) => {
 
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
+        const vehicleMove = await VehicleMove.create({
+            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId
+        }, { transaction: t })
+
+
+        await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id }, { transaction: t })
+
+    })
 
     res.status(200).json({ message: 'created' })
-
 }
 
 async function getDrivers(req, res) {

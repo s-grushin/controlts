@@ -10,6 +10,14 @@ const VehicleMoveDetail = db.define('VehicleMoveDetail', {
     photo: {
         type: DataTypes.STRING
     },
+    vehicleMoveId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    vehicleTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
 })
 
 VehicleMoveDetail.belongsTo(VehicleType, { foreignKey: { allowNull: false } })

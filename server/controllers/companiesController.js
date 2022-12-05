@@ -1,6 +1,8 @@
 const Company = require('../models/Company')
 const asyncHandler = require('express-async-handler')
+const db = require('../db/mssql')
 const { Op } = require('sequelize')
+const { QueryTypes } = require('sequelize')
 const DriverHistory = require('../models/DriverHistory')
 const Driver = require('../models/Driver')
 const VehicleMove = require('../models/VehicleMove')
@@ -78,31 +80,18 @@ async function getDriverHistory(req, res) {
         return res.status(400).json({ message: 'required company id' })
     }
 
-    let data = await Company.findAndCountAll({
-        where: { id: companyId },
-        include: {
-            model: VehicleMove,
-            as: 'vehicleMoves',
-            attributes: ['id'],
-            include: {
-                model: Driver,
-                as: 'driver',
-                attributes: ['id', 'fullName'],
-                where: {
-                    fullName: { [Op.substring]: searchValue },
-                },
-                order: [['fullName']]
-            }
+    const data = await db.query(
+        `select driver_id as id, full_name as fullName from driver_history
+        inner join drivers as drivers on driver_history.driver_id = drivers.id
+        where driver_history.company_id = :companyId and full_name like :fullName
+        group by driver_id, full_name`,
+        {
+            replacements: { companyId, fullName: `%${searchValue}%` },
+            type: QueryTypes.SELECT
         }
-    })
+    );    
 
     //return res.status(200).json({ data })
-
-    data = data.rows[0].vehicleMoves.map(item => ({
-        id: item.driver.id,
-        fullName: item.driver.fullName
-    }))
-
 
     return res.status(200).json({ rows: data, count: data.length })
 

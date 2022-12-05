@@ -12,7 +12,12 @@ const VehicleModel = db.define('VehicleModel', {
     isTruck: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+    brandId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 })
+
 
 module.exports = VehicleModel
