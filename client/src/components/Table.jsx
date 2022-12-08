@@ -1,8 +1,8 @@
 import { Table as BootstrapTable } from 'react-bootstrap'
 
-const Table = ({ children, striped }) => {
+const Table = ({ children, striped, ...props }) => {
     return (
-        <BootstrapTable responsive bordered hover size='sm' striped={striped} style={{ cursor: 'pointer' }}>
+        <BootstrapTable responsive bordered hover size='sm' striped={striped} style={{ cursor: 'pointer' }} {...props}>
             {children}
         </BootstrapTable>
     )

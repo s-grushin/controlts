@@ -1,9 +1,22 @@
 import { Button as BootstrapButton, Spinner } from 'react-bootstrap'
 
 
-const Button = ({ children, variant, title, size, withSpinner, loading, disabled, clickHandler, ...props }) => {
+const Button = ({ children, variant, title, size, withSpinner, loading, disabled, clickHandler, className, disableFlex, ...props }) => {
+
+    const dflexCenter = disableFlex ? '' : 'd-flex align-items-center'
+
+    let classNames = [dflexCenter, className].join(' ');
+
     return (
-        <BootstrapButton {...props} variant={variant} size={size} disabled={loading || disabled} onClick={clickHandler}>
+        <BootstrapButton
+            className={classNames}
+            variant={variant}
+            size={size}
+            disabled={loading || disabled}
+            onClick={clickHandler}
+            {...props}
+        >
+
             {withSpinner && loading &&
                 <Spinner
                     as="span"
@@ -14,6 +27,7 @@ const Button = ({ children, variant, title, size, withSpinner, loading, disabled
                 />}
             {title}
             {children}
+
         </BootstrapButton>
     )
 }
@@ -25,6 +39,7 @@ Button.defaultProps = {
     withSpinner: false,
     loading: false,
     disabled: false,
+    disableFlex: false,
 }
 
 export default Button

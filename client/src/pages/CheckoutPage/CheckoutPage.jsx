@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
 import useInputChange from '../../hooks/useInputChange'
 import Button from '../../components/Button'
-import Table from '../../components/Table'
 import Spinner from '../../components/Spinner'
 import useHttp from '../../hooks/useHttp'
 import Selector from '../../components/Selectors/Selector'
+import VehicleDetails from '../../components/VehicleDetails/VehicleDetails'
 
 const CheckoutPage = () => {
 
@@ -24,6 +24,8 @@ const CheckoutPage = () => {
     const [selectedCompanyId, setSelectedCompanyId] = useState(null)
     const [isOwnCompany, setIsOwnCompany] = useState(false)
     const [comment, setComment] = useState('')
+
+    const vehicleDetails = useRef([])
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
@@ -46,11 +48,11 @@ const CheckoutPage = () => {
             comment
         }
         console.log(formData);
+        console.log(vehicleDetails.current);
 
         const res = await request('/vehicleMoves', 'post', formData)
         console.log(res);
     }
-
 
     useEffect(() => {
         const getCheckoutData = async () => {
@@ -217,34 +219,14 @@ const CheckoutPage = () => {
                             <Stack gap={2}>
                                 <div className="bg-light border">
                                     <div className="d-grid gap-2">
-                                        <Button title='Получить данные с весов и камер' />
+                                        <Button title='Получить данные с весов и камер' disableFlex={true} />
                                     </div>
                                 </div>
                                 <div className="bg-light border">
-                                    <Table>
-                                        < thead >
-                                            <tr>
-                                                <th>Гос. знак</th>
-                                                <th>Тип</th>
-                                            </tr >
-                                        </thead >
-
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <input type="text" className='tableInput' value={'AA 5555 EE'} onChange={() => { }} />
-                                                </td>
-                                                <td>
-                                                    <select size='' className='tableInput'>
-                                                        <option value="123">Тягач</option>
-                                                        <option value="123">Прицеп</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-
-                                    </Table>
+                                    <VehicleDetails vehicleDetails={vehicleDetails} />
                                 </div>
+
+                                <hr />
 
                                 <Stack direction='horizontal' gap='3'>
                                     <Button variant='outline-success' type='submit' title='Создать запись' withSpinner={true} loading={loading} />
