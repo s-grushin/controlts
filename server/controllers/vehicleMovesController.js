@@ -1,13 +1,13 @@
 const asyncHandler = require('express-async-handler')
 const db = require('../db/mssql')
+const { copyPhotos } = require('../utils')
 const VehicleBrand = require('../models/VehicleBrand')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
-const Driver = require('../models/Driver')
-const Company = require('../models/Company')
 const DriverHistory = require('../models/DriverHistory')
-const VehicleMoveDetails = require('../models/VehicleMoveDetail')
+const { getPhotoAndNumber } = require('../services/nomerok')
+
 
 async function getCheckoutData(req, res) {
 
@@ -19,6 +19,30 @@ async function getCheckoutData(req, res) {
         deliveryTypes,
         parkings
     })
+}
+
+async function getWeightAndCameraData(req, res) {
+
+    const cameraData = await getPhotoAndNumber()
+    for (const item of cameraData) {
+        const publicPhotoPath = await copyPhotos(item.filePath, item.file, item.birthTime)
+        item.publicPhotoPath = publicPhotoPath
+    }
+
+    const weight = 45000
+    return res.status(200).json({ cameraData, weight })
+
+}
+
+async function getPhotos(req, res) {
+
+    try {
+        const data = await getPhotoAndNumber()
+        return res.status(200).json({ data })
+    } catch (error) {
+        return res.status(500).json({ message: `Не удалось получить фотографии. ${error.message}` })
+    }
+
 }
 
 async function create(req, res) {
@@ -68,23 +92,12 @@ async function test(req, res) {
         throw error
     }
 
-
-    //const asd = await vm.addVehicleMoveDetails([detail1, detail2])
-
-    //Driver.sync({ force: true })
-    //DriverHistory.sync({ force: true })
     return res.json({ message: 'ok', data: asd })
-}
-
-async function getDriverHistory(modelId) {
-    try {
-        //const data = await db.query("select * from tb_in_type", { type: QueryTypes.SELECT });    
-    } catch (error) {
-
-    }
 }
 
 
 module.exports.getCheckoutData = asyncHandler(getCheckoutData)
+module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
+module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.create = asyncHandler(create)
 module.exports.test = asyncHandler(test)

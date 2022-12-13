@@ -211,8 +211,8 @@ const CheckoutPage = () => {
                                 />
                             </Form.Group>
 
-
                         </Col>
+
                     </Row>
                     <Row>
                         <Col md={8}>
@@ -226,6 +226,11 @@ const CheckoutPage = () => {
                                     <VehicleDetails vehicleDetails={vehicleDetails} />
                                 </div>
 
+                                {/* Комментарий */}
+                                <Form.Group>
+                                    <Form.Control placeholder='Комментарий' as="textarea" rows={4} value={comment} onChange={(e) => inputChangeHandler(e, setComment)} />
+                                </Form.Group>
+
                                 <hr />
 
                                 <Stack direction='horizontal' gap='3'>
@@ -236,12 +241,12 @@ const CheckoutPage = () => {
                             </Stack>
                         </Col>
                         <Col md={4}>
-                            {/* Комментарий */}
-                            <Form.Group>
-                                <Form.Control placeholder='Комментарий' as="textarea" rows={4} value={comment} onChange={(e) => inputChangeHandler(e, setComment)} />
-                            </Form.Group>
+                            <div className='mt-4'>
+                                <img src="/" alt="" />
+                            </div>
                         </Col>
                     </Row>
+
                 </Col>
             </Form>
         </Row>

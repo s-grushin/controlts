@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const mssql = require('./db/mssql')
-const appRouter = require('./router')
+const apiRouter = require('./router')
 const dotenv = require('dotenv')
 const colors = require('colors')
 const handleErrorMiddleware = require('./middleware/handleErrorMiddleware')
@@ -15,15 +15,14 @@ const DBNAME = process.env.MSSQL_DBNAME
 
 const app = express()
 app.use(cors())
+//app.use(express.static('public'))
+app.use("/public", express.static(__dirname + "/public"));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use('/api', appRouter)
+app.use('/api', apiRouter)
 app.use(handleErrorMiddleware)
 
-
-
 async function start() {
-
     try {
         await mssql.authenticate()
         console.log(`connected to ${DBNAME}`.green);
