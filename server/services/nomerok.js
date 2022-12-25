@@ -11,7 +11,7 @@ function parseNumber(file) {
     return number
 }
 
-async function getPhotoAndNumber() {
+async function getCameraData() {
 
     // Функция получает крайние по дате созданные фото
 
@@ -53,4 +53,4 @@ async function getPhotoAndNumber() {
     return photos
 }
 
-module.exports.getPhotoAndNumber = getPhotoAndNumber
+module.exports.getCameraData = getCameraData

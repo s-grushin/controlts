@@ -6,7 +6,7 @@ async function copyPhotos(src, fileName, d = new Date()) {
     //fileName - имя файла. Пример picture.jpg
     //Возвращает новый путь к файлу
 
-    //Функция копирует фото автомобилей в папку public с разбиением по дням
+    //Функция копирует фото автомобилей из программы которая фотографирует в папку public сервера с разбиением по дням
     //так нужно, потому что на клиент передать путь к файлу из папки программы для фотографий напрямую невозможно
     //фотография копируется в папку /public/photo/year/month/date
 
@@ -17,7 +17,6 @@ async function copyPhotos(src, fileName, d = new Date()) {
     const destionationFolder = path.join('public', 'photo', year, month, date)
     await fs.promises.mkdir(destionationFolder, { recursive: true })
     const newPhotoPath = path.join(destionationFolder, fileName)
-    console.log(src, newPhotoPath);
     await fs.promises.copyFile(src, newPhotoPath)
     return newPhotoPath
 

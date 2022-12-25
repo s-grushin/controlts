@@ -54,6 +54,12 @@ const CheckoutPage = () => {
         console.log(res);
     }
 
+    const getWeightAndCameraData = async () => {
+        const res = await request('/vehicleMoves/getWeightAndCameraData')
+        console.log(res);
+
+    }
+
     useEffect(() => {
         const getCheckoutData = async () => {
             const { brands, deliveryTypes, parkings } = await request('/vehicleMoves/getCheckoutData')
@@ -219,7 +225,13 @@ const CheckoutPage = () => {
                             <Stack gap={2}>
                                 <div className="bg-light border">
                                     <div className="d-grid gap-2">
-                                        <Button title='Получить данные с весов и камер' disableFlex={true} />
+                                        <Button
+                                            title='Получить данные с весов и камер'
+                                            onClick={getWeightAndCameraData}
+                                            withSpinner={true}
+                                            loading={loading}
+                                            disableFlex={true}
+                                        />
                                     </div>
                                 </div>
                                 <div className="bg-light border">

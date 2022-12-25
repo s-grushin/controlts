@@ -6,7 +6,8 @@ const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
 const DriverHistory = require('../models/DriverHistory')
-const { getPhotoAndNumber } = require('../services/nomerok')
+const { getCameraData } = require('../services/nomerok')
+const { getWeight } = require('../services/weight')
 
 
 async function getCheckoutData(req, res) {
@@ -23,13 +24,13 @@ async function getCheckoutData(req, res) {
 
 async function getWeightAndCameraData(req, res) {
 
-    const cameraData = await getPhotoAndNumber()
+    const cameraData = await getCameraData()
     for (const item of cameraData) {
         const publicPhotoPath = await copyPhotos(item.filePath, item.file, item.birthTime)
         item.publicPhotoPath = publicPhotoPath
     }
 
-    const weight = 45000
+    const weight = await getWeight()
     return res.status(200).json({ cameraData, weight })
 
 }
@@ -37,7 +38,7 @@ async function getWeightAndCameraData(req, res) {
 async function getPhotos(req, res) {
 
     try {
-        const data = await getPhotoAndNumber()
+        const data = await getCameraData()
         return res.status(200).json({ data })
     } catch (error) {
         return res.status(500).json({ message: `Не удалось получить фотографии. ${error.message}` })
