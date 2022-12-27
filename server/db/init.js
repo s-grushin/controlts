@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Settings = require('../models/Settings')
 const bcrypt = require('bcryptjs')
 const colors = require('colors')
 
@@ -11,12 +12,16 @@ async function init() {
 async function initSettings() {
 
     const defaultSettings = [
-        { key: '', value: '', description: '' },
-        { key: '', value: '', description: '' },
+        { key: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' },
         { key: 'language', value: 'ru', description: 'Язык интерфейса' },
     ]
 
-
+    for (const iterator of defaultSettings) {
+        const item = await Settings.findOne({ where: { key: iterator.key } })
+        if (!item || !item.value) {
+            await Settings.create(iterator)
+        }
+    }
 
 }
 

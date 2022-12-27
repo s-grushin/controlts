@@ -20,6 +20,8 @@ const VehicleDetails = ({ vehicleDetails }) => {
         return vehicleTypes.length > 0 ? { ...vehicleTypes[0] } : { id: '', name: '' }
     }
 
+    const preparedVehicleTypes = vehicleTypes.filter(item => item.orderInCheckout).sort((a, b) => a.orderInCheckout - b.orderInCheckout)
+
     const addHandler = () => {
         setRows([...rows, {
             uuid: uuid(),
@@ -88,7 +90,7 @@ const VehicleDetails = ({ vehicleDetails }) => {
         return <Spinner />
     }
 
-    const tableContent = rows.map(row => (
+    const tableContent = preparedVehicleTypes.map(row => (
         <tr
             key={row.uuid}
             onFocus={() => selectRowHandler(row.uuid)}
@@ -103,9 +105,9 @@ const VehicleDetails = ({ vehicleDetails }) => {
                 />
             </td>
             <td>
-                <select size='' className='tableInput' onChange={onChangeCellHandler} name='vehicleDetails'>
+                <select size='' className='tableInput' onChange={onChangeCellHandler} name='vehicleDetails' defaultValue={row.id}>
                     {
-                        vehicleTypes.map(item => (
+                        preparedVehicleTypes.map(item => (
                             <option
                                 key={item.uuid}
                                 value={item.id}
