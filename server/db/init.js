@@ -4,6 +4,24 @@ const colors = require('colors')
 
 async function init() {
 
+    await createRootUser()
+    await initSettings()
+}
+
+async function initSettings() {
+
+    const defaultSettings = [
+        { key: '', value: '', description: '' },
+        { key: '', value: '', description: '' },
+        { key: 'language', value: 'ru', description: 'Язык интерфейса' },
+    ]
+
+
+
+}
+
+async function createRootUser() {
+
     let rootUser
 
     try {
@@ -20,6 +38,7 @@ async function init() {
     } catch (error) {
         throw new Error(`error on creating root user. ${error.message}`.red)
     }
+
 }
 
 module.exports = init

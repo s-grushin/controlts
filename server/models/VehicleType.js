@@ -7,6 +7,14 @@ const VehicleType = db.define('VehicleType', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    orderInCheckout: {
+        type: DataTypes.TINYINT,
+        validate: {
+            min: 1,
+        }
+    }
 })
+
+VehicleType.sync({ alter: true })
 
 module.exports = VehicleType

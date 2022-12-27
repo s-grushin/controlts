@@ -26,7 +26,7 @@ async function start() {
     try {
         await mssql.authenticate()
         console.log(`connected to ${DBNAME}`.green);
-        await mssql.sync({ force: false })
+        await mssql.sync()
         await dbInit()
         await runWebServer()
     } catch (error) {
