@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
 import useInputChange from '../../hooks/useInputChange'
@@ -25,7 +25,7 @@ const CheckoutPage = () => {
     const [isOwnCompany, setIsOwnCompany] = useState(false)
     const [comment, setComment] = useState('')
 
-    const vehicleDetails = useRef([])
+    const [vehicleDetails, setVehicleDetails] = useState([])
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
@@ -48,15 +48,20 @@ const CheckoutPage = () => {
             comment
         }
         console.log(formData);
-        console.log(vehicleDetails.current);
+        console.log(vehicleDetails);
 
         const res = await request('/vehicleMoves', 'post', formData)
         console.log(res);
     }
 
     const getWeightAndCameraData = async () => {
-        const res = await request('/vehicleMoves/getWeightAndCameraData')
-        console.log(res);
+        const { cameraData, weight } = await request('/vehicleMoves/getWeightAndCameraData')
+        const updatedVehicleDetails = vehicleDetails.map((item, index) => {
+            if (!item.orderInCheckout) return { ...item }
+            return { ...item, number: cameraData[index].number }
+        })
+
+        setVehicleDetails(updatedVehicleDetails)
 
     }
 
@@ -235,7 +240,10 @@ const CheckoutPage = () => {
                                     </div>
                                 </div>
                                 <div className="bg-light border">
-                                    <VehicleDetails vehicleDetails={vehicleDetails} />
+                                    <VehicleDetails
+                                        vehicleDetails={vehicleDetails}
+                                        setVehicleDetails={setVehicleDetails}
+                                    />
                                 </div>
 
                                 {/* Комментарий */}
