@@ -15,6 +15,7 @@ const prepareRows = (vehicleTypes) => {
             ...item,
             rowId: uuid()
         }))
+    console.log(prepared);
     return prepared
 }
 
@@ -41,26 +42,47 @@ const VehicleDetails = () => {
     }
 
     const onChangeCellHandler = (event) => {
-        const updated = rows.map(item => {
-            if (item.uuid === selectedId) {
-                if (event.target.name === 'vehicleDetails') {
-                    const vehicleType = vehicleTypes.find(item => item.id === parseInt(event.target.value))
-                    return { ...item, id: vehicleType.id, name: vehicleType.name }
-                } else {
-                    return { ...item, [event.target.name]: event.target.value }
-                }
 
+        console.log(selectedRowId);
+        const selectedRow = getRow(selectedRowId)
+
+        console.log(rows);
+
+        const updated = rows.map(row => {
+            if (row.rowId === selectedRowId) {
+                if (event.target.name === 'vehicleDetails') {
+                    return { ...selectedRow, id: selectedRow.id }
+                } else {
+                    return { ...selectedRow, [event.target.name]: event.target.value }
+                }
             } else {
-                return { ...item }
+                return { ...row }
             }
 
         });
+        
+        console.log(updated);
 
         setRows(updated)
     }
 
     const getRow = (rowId) => {
         return rows.find(row => row.rowId === rowId)
+    }
+
+    const addRowHandler = () => {
+        setRows([...rows, {
+            uuid: uuid(),
+            number: ''
+        }])
+
+        setSelectedRowId(null)
+    }
+
+    const deleteRowHandler = () => {
+        const filteredRows = rows.filter(row => row.rowId !== setSelectedRowId)
+        setRows(filteredRows)
+        setSelectedRowId(null)
     }
 
     const focusRowHandler = (rowId) => {
@@ -77,16 +99,16 @@ const VehicleDetails = () => {
                     name='number'
                     type="text"
                     className='tableInput'
-                    value={getRow(row.uuid).number}
+                    value={getRow(row.rowId).number}
                     onChange={onChangeCellHandler}
                 />
             </td>
             <td>
                 <select size='' className='tableInput' onChange={onChangeCellHandler} name='vehicleDetails' defaultValue={row.id}>
                     {
-                        preparedVehicleTypes.map(item => (
+                        rows.map(item => (
                             <option
-                                key={item.uuid}
+                                key={item.rowId}
                                 value={item.id}
                             >
                                 {item.name}
@@ -119,8 +141,8 @@ const VehicleDetails = () => {
                 <Button
                     title=''
                     variant='danger'
-                    disabled={!selectedId}
-                    onClick={deleteHandler}
+                    disabled={!selectedRowId}
+                    onClick={deleteRowHandler}
                 >
                     <DashCircle />
                 </Button>
@@ -128,7 +150,7 @@ const VehicleDetails = () => {
                 <Button
                     title=''
                     variant='success'
-                    onClick={addHandler}
+                    onClick={addRowHandler}
                 >
                     <PlusCircle />
                 </Button>
