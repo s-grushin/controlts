@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
 import useInputChange from '../../hooks/useInputChange'
@@ -7,6 +7,8 @@ import Spinner from '../../components/Spinner'
 import useHttp from '../../hooks/useHttp'
 import Selector from '../../components/Selectors/Selector'
 import VehicleDetails from '../../components/VehicleDetails/VehicleDetails'
+import { VehicleDetailsContext } from '../../context/VehicleDetailsProvider'
+
 
 const CheckoutPage = () => {
 
@@ -25,9 +27,9 @@ const CheckoutPage = () => {
     const [isOwnCompany, setIsOwnCompany] = useState(false)
     const [comment, setComment] = useState('')
 
-    const [vehicleDetails, setVehicleDetails] = useState([])
-
     const [formIsLoaded, setFormIsLoaded] = useState(false)
+
+    const { state: vdState, dispatch: vdDispatch } = useContext(VehicleDetailsContext)
 
     const { request, error, loading, clearError } = useHttp()
     const inputChangeHandler = useInputChange()
@@ -48,20 +50,15 @@ const CheckoutPage = () => {
             comment
         }
         console.log(formData);
-        console.log(vehicleDetails);
 
-        const res = await request('/vehicleMoves', 'post', formData)
-        console.log(res);
+        //const res = await request('/vehicleMoves', 'post', formData)
+        //console.log(res);
     }
 
     const getWeightAndCameraData = async () => {
-        const { cameraData, weight } = await request('/vehicleMoves/getWeightAndCameraData')
-        const updatedVehicleDetails = vehicleDetails.map((item, index) => {
-            if (!item.orderInCheckout) return { ...item }
-            return { ...item, number: cameraData[index].number }
-        })
 
-        setVehicleDetails(updatedVehicleDetails)
+        const { cameraData, weight } = await request('/vehicleMoves/getWeightAndCameraData')
+        vdDispatch({ type: 'fillCameraData', payload: cameraData })
 
     }
 
@@ -240,10 +237,7 @@ const CheckoutPage = () => {
                                     </div>
                                 </div>
                                 <div className="bg-light border">
-                                    <VehicleDetails
-                                        vehicleDetails={vehicleDetails}
-                                        setVehicleDetails={setVehicleDetails}
-                                    />
+                                    <VehicleDetails />
                                 </div>
 
                                 {/* Комментарий */}

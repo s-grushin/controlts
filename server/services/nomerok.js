@@ -21,8 +21,8 @@ async function getCameraData() {
     const BACK_PHOTO_DIR = process.env.BACK_PHOTO_DIR
     const currentDate = new Date()
     const year = currentDate.getFullYear()
-    const month = currentDate.getMonth() + 1
-    const day = currentDate.getDate()
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
+    const day = currentDate.getDate().toString().padStart(2, '0')
 
 
     const combinedDir = [{ path: FRONT_PHOTO_DIR, cameraName: 'front' }, { path: BACK_PHOTO_DIR, cameraName: 'back' }]

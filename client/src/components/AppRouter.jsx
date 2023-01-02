@@ -22,6 +22,7 @@ import CreateUpdateVehicleModel from './Catalog/VehicleBrands/CreateUpdateVehicl
 import VehicleTypesList from './Catalog/VehicleTypes/VehicleTypesList'
 import CreateUpdateVehicleType from './Catalog/VehicleTypes/CreateUpdateVehicleType'
 import Dashboard from '../pages/Dashboard'
+import VehicleDetailsProvider from '../context/VehicleDetailsProvider'
 
 
 const AppRouter = () => {
@@ -37,7 +38,8 @@ const AppRouter = () => {
                     <Route path='/' element={<Layout />}>
                         <Route index element={<Dashboard />} />
                         <Route path='login' element={<Navigate to={'/'} />} />
-                        <Route path='checkout' element={<CheckoutPage />} />
+                        <Route path='checkout' element={<VehicleDetailsProvider><CheckoutPage /></VehicleDetailsProvider>} />
+
                         <Route path='catalog' element={<CatalogPage />}>
                             <Route path='services'>
                                 <Route index element={<ServicesList />} />
