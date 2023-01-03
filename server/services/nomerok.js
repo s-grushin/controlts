@@ -47,7 +47,11 @@ async function getCameraData() {
     }
 
     for (const photo of photos) {
-        photo.number = parseNumber(photo.file)
+        try {
+            photo.number = parseNumber(photo.file)
+        } catch (error) {
+            photo.number = ''
+        }
     }
 
     return photos

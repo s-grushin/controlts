@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const db = require('../db/mssql')
-const { copyPhotos } = require('../utils')
+const { copyPhotos, pathToPublicUrl } = require('../utils')
 const VehicleBrand = require('../models/VehicleBrand')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
@@ -8,6 +8,7 @@ const Parking = require('../models/Parking')
 const DriverHistory = require('../models/DriverHistory')
 const { getCameraData } = require('../services/nomerok')
 const { getWeight } = require('../services/weight')
+const url = require('url')
 
 
 async function getCheckoutData(req, res) {

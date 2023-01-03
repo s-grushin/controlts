@@ -8,6 +8,7 @@ import useHttp from '../../hooks/useHttp'
 import Selector from '../../components/Selectors/Selector'
 import VehicleDetails from '../../components/VehicleDetails/VehicleDetails'
 import { VehicleDetailsContext } from '../../context/VehicleDetailsProvider'
+import VehiclePhoto from '../../components/VehiclePhoto'
 
 
 const CheckoutPage = () => {
@@ -58,7 +59,10 @@ const CheckoutPage = () => {
     const getWeightAndCameraData = async () => {
 
         const { cameraData, weight } = await request('/vehicleMoves/getWeightAndCameraData')
+        //console.log(cameraData, weight);
+        vdDispatch({ type: 'setRowsByDefault' })
         vdDispatch({ type: 'fillCameraData', payload: cameraData })
+        setWeight(parseInt(weight) || 0)
 
     }
 
@@ -255,9 +259,14 @@ const CheckoutPage = () => {
                             </Stack>
                         </Col>
                         <Col md={4}>
-                            <div className='mt-4'>
-                                <img src="/" alt="" />
-                            </div>
+                            {vdState.rows.map((row, index) => (
+                                <VehiclePhoto
+                                    key={row.id}
+                                    photoUrl={row.photoUrl}
+                                    number={row.number}
+                                    className={index > 0 ? 'mt-2' : ''}
+                                />
+                            ))}
                         </Col>
                     </Row>
 

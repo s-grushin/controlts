@@ -36,8 +36,10 @@ const reducer = (state, action) => {
         case 'fillCameraData':
             return {
                 ...state,
-                rows: action.payload.map((row, index) => {
-                    return { ...row, }
+                rows: state.rows.map((row, index) => {
+                    //cd - cameraData element. 
+                    const cd = action.payload[index]
+                    return { ...row, number: cd.number, photoUrl: cd.publicPhotoPath }
                 })
             }
 
