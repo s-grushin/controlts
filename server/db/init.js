@@ -6,7 +6,7 @@ const colors = require('colors')
 async function init() {
 
     await createRootUser()
-    await initSettings()
+    //await initSettings()
 }
 
 async function initSettings() {

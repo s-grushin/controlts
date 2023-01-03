@@ -17,13 +17,13 @@ const mssql = new Sequelize({
                 minVersion: 'TLSv1'
             },
             appName: 'ControlTC'
-        },        
+        },
     },
     logging: false,
     define: {
         timestamps: false,
         underscored: true,
-    }
+    },
 
 })
 

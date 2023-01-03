@@ -50,10 +50,10 @@ const CheckoutPage = () => {
             isOwnCompany,
             comment
         }
-        console.log(formData);
+        //console.log(formData);
 
-        //const res = await request('/vehicleMoves', 'post', formData)
-        //console.log(res);
+        const res = await request('/vehicleMoves', 'post', formData)
+        console.log(res);
     }
 
     const getWeightAndCameraData = async () => {

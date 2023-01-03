@@ -58,7 +58,17 @@ async function create(req, res) {
     const userOutId = 1
 
 
+
+
     await db.transaction(async (t) => {
+
+        const parking = await Parking.findOne({ where: { id: parkingId }, lock: true, transaction: t })
+        if (parking.isBusy) {
+            throw new Error(`${parking.name} уже занято!`)
+        }
+
+        parking.isBusy = true
+        await parking.save()
 
         const vehicleMove = await VehicleMove.create({
             brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId
