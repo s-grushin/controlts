@@ -9,6 +9,7 @@ const DriverHistory = require('../models/DriverHistory')
 const { getCameraData } = require('../services/nomerok')
 const { getWeight } = require('../services/weight')
 const url = require('url')
+const VehicleMoveDetail = require('../models/VehicleMoveDetail')
 
 
 async function getCheckoutData(req, res) {
@@ -49,7 +50,7 @@ async function getPhotos(req, res) {
 
 async function create(req, res) {
 
-    const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment } = req.body
+    const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment, vehicleDetails } = req.body
 
     const currentDate = new Date()
 
@@ -57,23 +58,35 @@ async function create(req, res) {
     const userInId = 1
     const userOutId = 1
 
-
-
-
     await db.transaction(async (t) => {
 
+        // Parking
         const parking = await Parking.findOne({ where: { id: parkingId }, lock: true, transaction: t })
         if (parking.isBusy) {
-            throw new Error(`${parking.name} уже занято!`)
+            //throw new Error(`${parking.name} уже занято!`)
         }
-
         parking.isBusy = true
         await parking.save()
 
+        // Vehicle move
         const vehicleMove = await VehicleMove.create({
-            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId
+            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId,
         }, { transaction: t })
 
+        // Vehicle move Details
+        const resss = await Promise.all(vehicleDetails.map(async (item) => {
+            const vehicleDetail = await VehicleMoveDetail.create({
+                number: item.number,
+                photo: item.photoUrl,
+                vehicleMoveId: vehicleMove.id,
+                vehicleTypeId: item.vehicleTypeId
+            }, { transaction: t })
+            await vehicleMove.addVehicleMoveDetail(vehicleDetail)
+        }))
+
+        console.log(resss);
+
+        // Driver history
         await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id }, { transaction: t })
 
     })

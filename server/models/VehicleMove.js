@@ -74,7 +74,7 @@ const VehicleMove = db.define('VehicleMove', {
 
 }, { timestamps: true, createdAt: 'date_in' })
 
-VehicleMove.hasMany(VehicleMoveDetail, { foreignKey: { allowNull: false } })
+VehicleMove.hasMany(VehicleMoveDetail, { foreignKey: { allowNull: false, name: 'vehicleMoveId' } })
 VehicleMoveDetail.belongsTo(VehicleMove)
 
 VehicleMove.belongsTo(VehicleModel, { foreignKey: 'modelId' })

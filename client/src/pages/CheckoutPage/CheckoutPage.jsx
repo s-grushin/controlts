@@ -48,7 +48,8 @@ const CheckoutPage = () => {
             parkingId: selectedParkingId,
             companyId: selectedCompanyId,
             isOwnCompany,
-            comment
+            comment,
+            vehicleDetails: vdState.rows
         }
         //console.log(formData);
 

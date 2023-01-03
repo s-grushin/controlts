@@ -15,6 +15,4 @@ const VehicleType = db.define('VehicleType', {
     }
 })
 
-VehicleType.sync({ alter: true })
-
 module.exports = VehicleType

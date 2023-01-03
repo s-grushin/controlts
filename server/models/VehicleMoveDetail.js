@@ -20,6 +20,6 @@ const VehicleMoveDetail = db.define('VehicleMoveDetail', {
     }
 })
 
-VehicleMoveDetail.belongsTo(VehicleType, { foreignKey: { allowNull: false } })
+VehicleMoveDetail.belongsTo(VehicleType, { foreignKey: { allowNull: false, name: 'vehicleTypeId' } })
 
 module.exports = VehicleMoveDetail
