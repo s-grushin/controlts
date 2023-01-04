@@ -1,5 +1,9 @@
 select * from vehicle_moves
 select * from parkings
+select * from vehicle_move_details
+select * from vehicle_types
+
+DELETE vehicle_move_details 
 
 
 --DELETE ALL TABLES

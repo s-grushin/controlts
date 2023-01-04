@@ -74,6 +74,8 @@ async function create(req, res) {
         }, { transaction: t })
 
         // Vehicle move Details
+        
+
         const resss = await Promise.all(vehicleDetails.map(async (item) => {
             const vehicleDetail = await VehicleMoveDetail.create({
                 number: item.number,
