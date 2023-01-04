@@ -51,10 +51,11 @@ const CheckoutPage = () => {
             comment,
             vehicleDetails: vdState.rows
         }
-        //console.log(formData);
 
         const res = await request('/vehicleMoves', 'post', formData)
-        console.log(res);
+        if (res) {
+            navigate('/')
+        }
     }
 
     const getWeightAndCameraData = async () => {

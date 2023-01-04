@@ -66,7 +66,7 @@ async function create(req, res) {
             //throw new Error(`${parking.name} уже занято!`)
         }
         parking.isBusy = true
-        await parking.save()
+        await parking.save({ transaction: t })
 
         // Vehicle move
         const vehicleMove = await VehicleMove.create({
@@ -74,19 +74,15 @@ async function create(req, res) {
         }, { transaction: t })
 
         // Vehicle move Details
-        
-
-        const resss = await Promise.all(vehicleDetails.map(async (item) => {
-            const vehicleDetail = await VehicleMoveDetail.create({
+        const vmd = vehicleDetails.map(item => {
+            return {
                 number: item.number,
                 photo: item.photoUrl,
                 vehicleMoveId: vehicleMove.id,
                 vehicleTypeId: item.vehicleTypeId
-            }, { transaction: t })
-            await vehicleMove.addVehicleMoveDetail(vehicleDetail)
-        }))
-
-        console.log(resss);
+            }
+        })
+        await VehicleMoveDetail.bulkCreate(vmd, { transaction: t })
 
         // Driver history
         await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id }, { transaction: t })
