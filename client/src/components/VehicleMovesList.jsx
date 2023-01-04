@@ -1,7 +1,6 @@
-import React from 'react'
 import Table from '../components/Table'
 
-const VehicleMovesList = () => {
+const VehicleMovesList = ({ selectedId, setSelectedId }) => {
   return (
     <Table>
       <thead>
@@ -15,7 +14,7 @@ const VehicleMovesList = () => {
         </tr>
       </thead>
       <tbody style={{ fontSize: '14px' }}>
-        <tr>
+        <tr >
           <td>Скребантович Олександр</td>
           <td>ВС0420СМ</td>
           <td>15.04.2020 16:33</td>

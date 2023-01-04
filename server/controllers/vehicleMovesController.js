@@ -52,6 +52,10 @@ async function create(req, res) {
 
     const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment, vehicleDetails } = req.body
 
+    if (!(brandId && modelId && driverId && deliveryTypeId && parkingId && companyId)) {
+        return res.status(400).json({ message: 'Не заполнены обязательные поля!' })
+    }
+
     const currentDate = new Date()
 
     //test
@@ -62,7 +66,7 @@ async function create(req, res) {
 
         // Parking
         const parking = await Parking.findOne({ where: { id: parkingId }, lock: true, transaction: t })
-        if (parking.isBusy) {
+        if (parking?.isBusy) {
             //throw new Error(`${parking.name} уже занято!`)
         }
         parking.isBusy = true
