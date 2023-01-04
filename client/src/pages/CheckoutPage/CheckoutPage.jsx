@@ -61,7 +61,6 @@ const CheckoutPage = () => {
     const getWeightAndCameraData = async () => {
 
         const { cameraData, weight } = await request('/vehicleMoves/getWeightAndCameraData')
-        //console.log(cameraData, weight);
         vdDispatch({ type: 'setRowsByDefault' })
         vdDispatch({ type: 'fillCameraData', payload: cameraData })
         setWeight(parseInt(weight) || 0)

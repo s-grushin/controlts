@@ -12,6 +12,16 @@ const url = require('url')
 const VehicleMoveDetail = require('../models/VehicleMoveDetail')
 
 
+async function getAll(req, res) {
+
+    let limit = parseInt(req.query.limit) || 0
+    let offset = parseInt(req.query.offset) || 0
+
+    const data = await VehicleMove.findAndCountAll({ limit, offset })
+    return res.json(data)
+}
+
+
 async function getCheckoutData(req, res) {
 
     const brands = await VehicleBrand.findAll({})
@@ -127,4 +137,5 @@ module.exports.getCheckoutData = asyncHandler(getCheckoutData)
 module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.create = asyncHandler(create)
+module.exports.getAll = asyncHandler(getAll)
 module.exports.test = asyncHandler(test)

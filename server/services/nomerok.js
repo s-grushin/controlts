@@ -19,6 +19,10 @@ async function getCameraData() {
 
     const FRONT_PHOTO_DIR = process.env.FRONT_PHOTO_DIR
     const BACK_PHOTO_DIR = process.env.BACK_PHOTO_DIR
+    if (!FRONT_PHOTO_DIR && !BACK_PHOTO_DIR) {
+        throw new Error('Не заданы параметры FRONT_PHOTO_DIR и BACK_PHOTO_DIR в файле .env')
+    }
+
     const currentDate = new Date()
     const year = currentDate.getFullYear()
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
