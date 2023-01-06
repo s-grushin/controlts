@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize')
 const DriverHistory = require('./DriverHistory')
-const VehicleMove = require('./VehicleMove')
 const db = require('../db/mssql')
 
 const Company = db.define('Company', {
@@ -31,8 +30,5 @@ const Company = db.define('Company', {
 
 Company.hasMany(DriverHistory, { as: 'driverHistory' })
 DriverHistory.belongsTo(Company)
-
-Company.hasMany(VehicleMove, { as: 'vehicleMoves' })
-VehicleMove.belongsTo(Company)
 
 module.exports = Company

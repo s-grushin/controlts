@@ -1,6 +1,7 @@
 import Table from '../components/Table'
 
-const VehicleMovesList = ({ selectedId, setSelectedId, vehicleMoves }) => {
+const VehicleMovesList = ({ selectedMoveId, setSelectedMoveId, vehicleMoves }) => {
+
   return (
     <Table>
       <thead>
@@ -15,12 +16,12 @@ const VehicleMovesList = ({ selectedId, setSelectedId, vehicleMoves }) => {
       <tbody style={{ fontSize: '14px' }}>
         {
           vehicleMoves.map(item => (
-            <tr key={item.id}>
+            <tr key={item.id} onClick={() => setSelectedMoveId(item.id)} className={item.id === selectedMoveId ? 'selectedTableRow' : ''}>
+              <td>{item.driver.fullName}</td>
+              <td>{item.dateIn}</td>
+              <td>{item.dateOut}</td>
               <td>{item.driverId}</td>
-              <td>15.04.2020 16:33</td>
-              <td></td>
-              <td>Нестеренко О.А</td>
-              <td>Место №37</td>
+              <td>{item.parking.name}</td>
             </tr>
           ))
         }

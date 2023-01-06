@@ -8,7 +8,7 @@ import AppAlert from '../../components/AppAlert'
 const Dashboard = () => {
 
     const [vehicleMoves, setVehicleMoves] = useState([])
-    const [selectedItemId, setSelectedItemId] = useState(null)
+    const [selectedMoveId, setSelectedMoveId] = useState(null)
     const { request, loading, error } = useHttp()
 
     useEffect(() => {
@@ -40,15 +40,15 @@ const Dashboard = () => {
 
     return (
         <div className="row">
-            <div className="col-md-7 mt-1">
+            <div className="col-md-8 mt-1">
                 <VehicleMovesList
-                    selectedId={selectedItemId}
-                    setSelectedId={setSelectedItemId}
+                    selectedMoveId={selectedMoveId}
+                    setSelectedMoveId={setSelectedMoveId}
                     vehicleMoves={vehicleMoves}
                 />
             </div>
-            <div className="col-md-5 mt-1">
-                <VehicleMoveDetails />
+            <div className="col-md-4 mt-1">
+                <VehicleMoveDetails move={vehicleMoves.find(move => move.id === selectedMoveId)} />
             </div>
 
         </div>

@@ -1,8 +1,12 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 const VehicleMoveDetail = require('./VehicleMoveDetail')
-const DriverHistory = require('./DriverHistory')
+const VehicleBrand = require('./VehicleBrand')
 const VehicleModel = require('./VehicleModel')
+const Driver = require('./Driver')
+const Parking = require('./Parking')
+const Company = require('./Company')
+const DeliveryType = require('./DeliveryType')
 
 
 const VehicleMove = db.define('VehicleMove', {
@@ -11,6 +15,9 @@ const VehicleMove = db.define('VehicleMove', {
         type: DataTypes.DATE
     },
     comment: {
+        type: DataTypes.STRING
+    },
+    number: {
         type: DataTypes.STRING
     },
     isOwnCompany: {
@@ -53,6 +60,14 @@ const VehicleMove = db.define('VehicleMove', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    parkingId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    deliveryTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     companyId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -72,11 +87,24 @@ const VehicleMove = db.define('VehicleMove', {
         }
     }
 
-}, { timestamps: true, createdAt: 'date_in' })
+}, { timestamps: true, createdAt: 'dateIn' })
 
-VehicleMove.hasMany(VehicleMoveDetail, { foreignKey: { allowNull: false, name: 'vehicleMoveId' } })
+
+VehicleMove.hasMany(VehicleMoveDetail, { as: 'vehicleDetails', foreignKey: 'vehicleMoveId' })
 VehicleMoveDetail.belongsTo(VehicleMove)
 
 VehicleMove.belongsTo(VehicleModel, { foreignKey: 'modelId' })
+
+VehicleMove.belongsTo(Driver, { as: 'driver', foreignKey: 'driverId' })
+
+VehicleMove.belongsTo(Parking, { as: 'parking', foreignKey: 'parkingId' })
+
+VehicleMove.belongsTo(Company, { as: 'company', foreignKey: 'companyId' })
+
+VehicleMove.belongsTo(VehicleBrand, { as: 'brand', foreignKey: 'brandId' })
+
+VehicleMove.belongsTo(VehicleModel, { as: 'model', foreignKey: 'modelId' })
+
+VehicleMove.belongsTo(DeliveryType, { as: 'deliveryType', foreignKey: 'deliveryTypeId' })
 
 module.exports = VehicleMove

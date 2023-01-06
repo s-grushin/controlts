@@ -1,22 +1,6 @@
-import { useEffect, useState } from 'react'
 import { Card, InputGroup, FormControl, FormCheck, Table, Stack } from 'react-bootstrap'
-import Spinner from '../components/Spinner'
 
-const VehicleMoveDetails = ({ moveId }) => {
-
-  const [loading] = useState(false)
-
-  useEffect(() => {
-
-  }, [])
-
-  if (loading) {
-    return (
-      <div className='mx-auto mt-5 d-flex justify-content-center'>
-        <Spinner />
-      </div>
-    )
-  }
+const VehicleMoveDetails = ({ move }) => {
 
   return (
     <div>
@@ -29,33 +13,33 @@ const VehicleMoveDetails = ({ moveId }) => {
           {/* Марка авто */}
           <InputGroup size="sm" className="mb-3">
             <InputGroup.Text id="inputGroup-sizing-sm">Марка авто</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.brand?.name} />
           </InputGroup>
 
           {/* Модель авто */}
           <InputGroup size="sm" className="mb-3">
             <InputGroup.Text id="inputGroup-sizing-sm">Модель авто</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.model?.name} />
           </InputGroup>
 
-          <Stack direction='horizontal' gap={1}>
-            {/* Вес */}
-            <InputGroup size="sm" className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-sm">Вес</InputGroup.Text>
-              <FormControl type='number' aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-            </InputGroup>
 
-            {/* Вид доставки */}
-            <InputGroup size="sm" className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-sm">Вид доставки</InputGroup.Text>
-              <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
-            </InputGroup>
-          </Stack>
+          {/* Вес */}
+          <InputGroup size="sm" className="mb-3">
+            <InputGroup.Text id="inputGroup-sizing-sm">Вес</InputGroup.Text>
+            <FormControl type='number' aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.weightIn} />
+          </InputGroup>
+
+          {/* Вид доставки */}
+          <InputGroup size="sm" className="mb-3">
+            <InputGroup.Text id="inputGroup-sizing-sm">Вид доставки</InputGroup.Text>
+            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.deliveryType.name} />
+          </InputGroup>
+
 
           {/* Компания-получатель */}
           <InputGroup size="sm" className="mb-3">
             <InputGroup.Text id="inputGroup-sizing-sm">Компания-получатель</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.company?.name} />
           </InputGroup>
 
           {/* Клиент ХФК-Биокон */}

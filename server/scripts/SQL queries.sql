@@ -7,6 +7,7 @@ DELETE vehicle_move_details
 
 
 --DELETE ALL TABLES
+drop table vehicle_move_details
 drop table vehicle_types
 drop table vehicle_moves
 drop table vehicle_models

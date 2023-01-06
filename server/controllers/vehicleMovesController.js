@@ -8,7 +8,6 @@ const Parking = require('../models/Parking')
 const DriverHistory = require('../models/DriverHistory')
 const { getCameraData } = require('../services/nomerok')
 const { getWeight } = require('../services/weight')
-const url = require('url')
 const VehicleMoveDetail = require('../models/VehicleMoveDetail')
 
 
@@ -17,8 +16,20 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 
-    const data = await VehicleMove.findAndCountAll({ limit, offset })
+    const data = await VehicleMove.findAndCountAll({ limit, offset, include: ['driver', 'parking', 'vehicleDetails', 'brand', 'model', 'deliveryType', 'company'] })
     return res.json(data)
+}
+
+async function getById(req, res) {
+
+    const { id } = req.params
+    const data = await VehicleMove.findOne({ where: { id } })
+    if (data) {
+        return res.status(200).json(data)
+    } else {
+        return res.status(400).json({ message: 'not found' })
+    }
+
 }
 
 
@@ -72,6 +83,8 @@ async function create(req, res) {
     const userInId = 1
     const userOutId = 1
 
+    const number = vehicleDetails && vehicleDetails[0] && vehicleDetails[0].number
+
     await db.transaction(async (t) => {
 
         // Parking
@@ -84,7 +97,7 @@ async function create(req, res) {
 
         // Vehicle move
         const vehicleMove = await VehicleMove.create({
-            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId,
+            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId, number
         }, { transaction: t })
 
         // Vehicle move Details
@@ -138,4 +151,5 @@ module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.create = asyncHandler(create)
 module.exports.getAll = asyncHandler(getAll)
+module.exports.getById = asyncHandler(getById)
 module.exports.test = asyncHandler(test)
