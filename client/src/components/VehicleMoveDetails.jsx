@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
+import Button from '../components/Button'
 import { Card, FormCheck, Table, Row, Col, Stack } from 'react-bootstrap'
 import InputGroup from './InputGroup'
 import VehiclePhoto from './VehiclePhoto'
 
-const VehicleMoveDetails = ({ move }) => {  
+const VehicleMoveDetails = ({ move }) => {
 
   const [selectedMoveDetailId, setSelectedMoveDetailId] = useState(null)
 
@@ -18,7 +19,6 @@ const VehicleMoveDetails = ({ move }) => {
   }
 
   const vehicleDetail = selectedMoveDetailId && move.vehicleDetails.find(item => item.id === selectedMoveDetailId)
-
   return (
     <div>
       <Card>
@@ -34,17 +34,16 @@ const VehicleMoveDetails = ({ move }) => {
           {/* Модель авто */}
           <InputGroup title='Модель авто' value={move?.model?.name} className='mb-2' />
 
+          <Stack direction='horizontal' gap={1}>
+            {/* Вес на вьезде */}
+            <InputGroup title='Вес на вьезде' value={move?.weightIn || 0} className='mb-2' />
 
-          <Row>
-            <Col xl='4'>
-              {/* Вес */}
-              <InputGroup title='Вес' value={move?.weightIn} className='mb-2' />
-            </Col>
-            <Col xl='8'>
-              {/* Вид доставки */}
-              <InputGroup title='Вид доставки' value={move?.deliveryType?.name} className='mb-2' />
-            </Col>
-          </Row>
+            {/* Вес на выезде */}
+            <InputGroup title='Вес на выезде' value={move?.weightOut || ''} className='mb-2' />
+          </Stack>
+
+          {/* Вид доставки */}
+          <InputGroup title='Вид доставки' value={move?.deliveryType?.name} className='mb-2' />
 
           {/* Компания-получатель */}
           <InputGroup title='Компания' value={move?.company?.name} className='mb-2' />
@@ -56,7 +55,7 @@ const VehicleMoveDetails = ({ move }) => {
           <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />
 
           <Row>
-            <Col>
+            <Col xl='6'>
               <Stack direction='vertical'>
                 <Table responsive bordered hover size='sm'>
                   <thead>
@@ -81,9 +80,10 @@ const VehicleMoveDetails = ({ move }) => {
                     }
                   </tbody>
                 </Table>
+                <Button title='Печатать пропуск' disableFlex={true} />
               </Stack>
             </Col>
-            <Col>
+            <Col xl='6'>
               <VehiclePhoto
                 number={vehicleDetail?.number}
                 photoUrl={vehicleDetail?.photo}

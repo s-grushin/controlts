@@ -6,7 +6,7 @@ const VehicleMovesList = ({ selectedMoveId, setSelectedMoveId, vehicleMoves }) =
   return (
     <Table>
       <thead>
-        <tr>
+        <tr style={{ fontSize: 13, fontWeight: 'bold' }}>
           <th>Водитель</th>
           <th>Дата заезда</th>
           <th>Дата выезда</th>
