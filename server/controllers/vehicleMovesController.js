@@ -23,6 +23,7 @@ async function getAll(req, res) {
     const data = await VehicleMove.findAndCountAll({
         limit,
         offset,
+        order: [['dateIn', 'DESC']],
         include: [
             { model: Driver, as: 'driver' },
             { model: Parking, as: 'parking' },

@@ -1,80 +1,96 @@
-import { Card, InputGroup, FormControl, FormCheck, Table } from 'react-bootstrap'
+import { useState, useEffect } from 'react'
+import { Card, FormCheck, Table, Row, Col, Stack } from 'react-bootstrap'
+import InputGroup from './InputGroup'
+import VehiclePhoto from './VehiclePhoto'
 
-const VehicleMoveDetails = ({ move }) => {
+const VehicleMoveDetails = ({ move }) => {  
 
-  console.log(move);
-  //return null
+  const [selectedMoveDetailId, setSelectedMoveDetailId] = useState(null)
+
+  useEffect(() => {
+
+    setSelectedMoveDetailId(move?.vehicleDetails[0]?.id)
+
+  }, [move])
 
   if (!move) {
     return null
   }
 
+  const vehicleDetail = selectedMoveDetailId && move.vehicleDetails.find(item => item.id === selectedMoveDetailId)
+
   return (
     <div>
       <Card>
         <Card.Body>
+
           <Card.Title>
             <h6>Детальные данные</h6>
           </Card.Title>
 
           {/* Марка авто */}
-          <InputGroup size="sm" className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-sm">Марка авто</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.brand?.name} />
-          </InputGroup>
+          <InputGroup title='Марка авто' value={move?.brand?.name} className='mb-2' />
 
           {/* Модель авто */}
-          <InputGroup size="sm" className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-sm">Модель авто</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.model?.name} />
-          </InputGroup>
+          <InputGroup title='Модель авто' value={move?.model?.name} className='mb-2' />
 
 
-          {/* Вес */}
-          <InputGroup size="sm" className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-sm">Вес</InputGroup.Text>
-            <FormControl type='number' aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.weightIn} />
-          </InputGroup>
-
-          {/* Вид доставки */}
-          <InputGroup size="sm" className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-sm">Вид доставки</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.deliveryType.name} />
-          </InputGroup>
-
+          <Row>
+            <Col xl='4'>
+              {/* Вес */}
+              <InputGroup title='Вес' value={move?.weightIn} className='mb-2' />
+            </Col>
+            <Col xl='8'>
+              {/* Вид доставки */}
+              <InputGroup title='Вид доставки' value={move?.deliveryType?.name} className='mb-2' />
+            </Col>
+          </Row>
 
           {/* Компания-получатель */}
-          <InputGroup size="sm" className="mb-3">
-            <InputGroup.Text id="inputGroup-sizing-sm">Компания-получатель</InputGroup.Text>
-            <FormControl aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled placeholder={move?.company?.name} />
-          </InputGroup>
+          <InputGroup title='Компания' value={move?.company?.name} className='mb-2' />
 
           {/* Клиент ХФК-Биокон */}
-          <InputGroup size="sm" className="mb-3">
-            <FormCheck label='Клиент ХФК-Биокон' id='bioconClient' />
-          </InputGroup>
+          <FormCheck label='Клиент ХФК-Биокон' id='bioconClient' className='mb-2' checked={move?.isOwnCompany} readOnly />
 
+          {/* Компания-получатель */}
+          <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />
 
-          <Table responsive bordered hover size='sm'>
-            <thead>
-              <tr>
-                <th>Гос знак</th>
-                <th>Тип</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                move.vehicleDetails.map(item => (
-                  <tr key={item.id}>
-                    <td>{item.number}</td>
-                    <td>{item.vehicleType.name}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </Table>
+          <Row>
+            <Col>
+              <Stack direction='vertical'>
+                <Table responsive bordered hover size='sm'>
+                  <thead>
+                    <tr>
+                      <th>Гос знак</th>
+                      <th>Тип</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      move.vehicleDetails.map(item => (
+                        <tr
+                          key={item.id}
+                          onClick={() => setSelectedMoveDetailId(item.id)}
+                          className={item.id === selectedMoveDetailId ? 'selectedTableRow' : ''}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <td>{item.number}</td>
+                          <td>{item.vehicleType.name}</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </Table>
+              </Stack>
+            </Col>
+            <Col>
+              <VehiclePhoto
+                number={vehicleDetail?.number}
+                photoUrl={vehicleDetail?.photo}
+              />
+            </Col>
+          </Row>
 
-          <Card.Img variant="bottom" src="/image" />
         </Card.Body>
       </Card>
     </div >

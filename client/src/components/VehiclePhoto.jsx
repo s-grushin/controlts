@@ -8,11 +8,13 @@ const VehiclePhoto = ({ number, photoUrl, ...props }) => {
 
     return (
         <Card {...props}>
-            <Card.Img variant="top" src={src} height='150' />
-            <Card.Body>
-                <Card.Title>{number}</Card.Title>
-                <Card.Link href={src} target='_blank'>На весь экран</Card.Link>
-            </Card.Body>
+            <a href={src} target='_blank' rel='noreferrer'>
+                <Card.Img variant="top" src={src} height='150' />
+            </a>
+            {number &&
+                <Card.Body>
+                    <Card.Subtitle>{number}</Card.Subtitle>
+                </Card.Body>}
         </Card>
     )
 }

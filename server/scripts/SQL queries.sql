@@ -6,6 +6,8 @@ select * from companies
 
 DELETE vehicle_move_details 
 
+DELETE vehicle_move_details where id in (15,16)
+
 
 --DELETE ALL TABLES
 drop table vehicle_move_details

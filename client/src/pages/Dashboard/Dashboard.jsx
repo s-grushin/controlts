@@ -15,9 +15,9 @@ const Dashboard = () => {
 
         const fetchVehicleMoves = async () => {
             const { rows } = await request('/vehicleMoves')
-            console.log(rows);
             if (rows) {
                 setVehicleMoves(rows)
+                if (rows.length > 0) setSelectedMoveId(rows[0].id)
             }
         }
 

@@ -15,7 +15,7 @@ const VehicleMove = db.define('VehicleMove', {
         type: DataTypes.DATE
     },
     comment: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
     },
     number: {
         type: DataTypes.STRING
@@ -106,5 +106,6 @@ VehicleMove.belongsTo(VehicleBrand, { as: 'brand', foreignKey: 'brandId' })
 VehicleMove.belongsTo(VehicleModel, { as: 'model', foreignKey: 'modelId' })
 
 VehicleMove.belongsTo(DeliveryType, { as: 'deliveryType', foreignKey: 'deliveryTypeId' })
+
 
 module.exports = VehicleMove

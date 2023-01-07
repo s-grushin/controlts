@@ -1,4 +1,5 @@
 import Table from '../components/Table'
+import { formatDate } from '../utils/common'
 
 const VehicleMovesList = ({ selectedMoveId, setSelectedMoveId, vehicleMoves }) => {
 
@@ -16,10 +17,14 @@ const VehicleMovesList = ({ selectedMoveId, setSelectedMoveId, vehicleMoves }) =
       <tbody style={{ fontSize: '14px' }}>
         {
           vehicleMoves.map(item => (
-            <tr key={item.id} onClick={() => setSelectedMoveId(item.id)} className={item.id === selectedMoveId ? 'selectedTableRow' : ''}>
+            <tr
+              key={item.id}
+              onClick={() => setSelectedMoveId(item.id)}
+              className={item.id === selectedMoveId ? 'selectedTableRow' : ''}
+            >
               <td>{item.driver.fullName}</td>
-              <td>{item.dateIn}</td>
-              <td>{item.dateOut}</td>
+              <td>{formatDate(item.dateIn, { withSeconds: true })}</td>
+              <td>{formatDate(item.dateOut, { withSeconds: true })}</td>
               <td>{item.driverId}</td>
               <td>{item.parking.name}</td>
             </tr>
