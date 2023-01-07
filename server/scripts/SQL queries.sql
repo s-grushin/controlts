@@ -2,6 +2,7 @@ select * from vehicle_moves
 select * from parkings
 select * from vehicle_move_details
 select * from vehicle_types
+select * from companies
 
 DELETE vehicle_move_details 
 

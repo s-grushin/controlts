@@ -1,7 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const db = require('../db/mssql')
 const { copyPhotos, pathToPublicUrl } = require('../utils')
-const VehicleBrand = require('../models/VehicleBrand')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
@@ -9,6 +8,11 @@ const DriverHistory = require('../models/DriverHistory')
 const { getCameraData } = require('../services/nomerok')
 const { getWeight } = require('../services/weight')
 const VehicleMoveDetail = require('../models/VehicleMoveDetail')
+const Driver = require('../models/Driver')
+const VehicleBrand = require('../models/VehicleBrand')
+const VehicleModel = require('../models/VehicleModel')
+const Company = require('../models/Company')
+const VehicleType = require('../models/VehicleType')
 
 
 async function getAll(req, res) {
@@ -16,7 +20,24 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 
-    const data = await VehicleMove.findAndCountAll({ limit, offset, include: ['driver', 'parking', 'vehicleDetails', 'brand', 'model', 'deliveryType', 'company'] })
+    const data = await VehicleMove.findAndCountAll({
+        limit,
+        offset,
+        include: [
+            { model: Driver, as: 'driver' },
+            { model: Parking, as: 'parking' },
+            { model: VehicleBrand, as: 'brand' },
+            { model: VehicleModel, as: 'model' },
+            { model: DeliveryType, as: 'deliveryType' },
+            { model: Company, as: 'company' },
+            {
+                model: VehicleMoveDetail,
+                as: 'vehicleDetails', include: [
+                    { model: VehicleType, as: 'vehicleType' }
+                ]
+            },
+        ]
+    })
     return res.json(data)
 }
 

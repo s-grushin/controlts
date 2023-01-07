@@ -1,6 +1,13 @@
-import { Card, InputGroup, FormControl, FormCheck, Table, Stack } from 'react-bootstrap'
+import { Card, InputGroup, FormControl, FormCheck, Table } from 'react-bootstrap'
 
 const VehicleMoveDetails = ({ move }) => {
+
+  console.log(move);
+  //return null
+
+  if (!move) {
+    return null
+  }
 
   return (
     <div>
@@ -56,14 +63,14 @@ const VehicleMoveDetails = ({ move }) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>AI3840EE</td>
-                <td>Тягач</td>
-              </tr>
-              <tr>
-                <td>AH1353IA</td>
-                <td>Прицеп</td>
-              </tr>
+              {
+                move.vehicleDetails.map(item => (
+                  <tr key={item.id}>
+                    <td>{item.number}</td>
+                    <td>{item.vehicleType.name}</td>
+                  </tr>
+                ))
+              }
             </tbody>
           </Table>
 
