@@ -1,20 +1,17 @@
 import React, { useState, useContext } from 'react'
 import { Col, Row, Card, Form } from 'react-bootstrap'
-import useHttp from '../hooks/useHttp'
 import Button from '../components/Button'
-import { AuthContext } from '../context/AuthProvider'
+import { AppGlobalDataContext } from '../context/AppGlobalDataProvider'
 
 const LoginPage = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { request, loading } = useHttp()
-  const auth = useContext(AuthContext)
+  const { login, loading } = useContext(AppGlobalDataContext)
 
   async function loginHandler(event) {
-    const data = await request('/users/login', 'post', { username, password })
-    auth.login(data.token, data.userInfo)
+    login(username, password)
   }
 
   return (
@@ -39,7 +36,7 @@ const LoginPage = () => {
               </Form.Group>
 
               <div className='d-flex justify-content-end'>
-                <Button variant='primary' title="Войти" isLoading={loading} clickHandler={loginHandler} />
+                <Button variant='primary' title="Войти" loading={loading} clickHandler={loginHandler} />
               </div>
             </Form>
           </Card.Body>

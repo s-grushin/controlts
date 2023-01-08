@@ -1,5 +1,4 @@
 const User = require('../models/User')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 
@@ -64,31 +63,6 @@ async function deleteUser(req, res, next) {
 
 }
 
-async function login(req, res) {
-
-    const { username, password } = req.body
-    const user = await User.findOne({ where: { username } })
-    if (!user) {
-        return res.status(400).json({ message: 'user not found' })
-    }
-    const isMatched = await bcrypt.compare(password, user.password)
-    if (isMatched) {
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' })
-        return res.json({
-            token,
-            userInfo: {
-                id: user.id,
-                username,
-                fullName: user.fullName,
-                role: user.role
-            }
-
-        })
-    } else {
-        res.status(400).json({ message: 'wrong password' })
-    }
-}
-
 async function changePassword(req, res, next) {
 
     const { id, password, repeatPassword } = req.body
@@ -109,10 +83,28 @@ async function changePassword(req, res, next) {
 
 }
 
+async function changePassword(req, res, next) {
+
+    const { id, password, repeatPassword } = req.body
+    console.log({ id, password, repeatPassword });
+    if (password !== repeatPassword || !password) {
+        return res.status(400).json({ message: 'passwords not equals or empty' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 5)
+
+    const updated = await User.update({ password: hashedPassword }, { where: { id } })
+    if (updated) {
+        res.status(200).json({ message: 'password changed' })
+    } else {
+        res.status(400).json({ message: 'error on changing password' })
+    }
+
+}
+
 module.exports.getAllUsers = asyncHandler(getAllUsers)
 module.exports.getUserById = asyncHandler(getUserById)
 module.exports.createUser = asyncHandler(createUser)
 module.exports.updateUser = asyncHandler(updateUser)
 module.exports.deleteUser = asyncHandler(deleteUser)
-module.exports.login = asyncHandler(login)
 module.exports.changePassword = asyncHandler(changePassword)

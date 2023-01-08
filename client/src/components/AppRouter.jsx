@@ -4,7 +4,7 @@ import Layout from './Layout/Layout'
 import CatalogPage from '../pages/CatalogPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import LoginPage from '../pages/LoginPage'
-import { AuthContext } from '../context/AuthProvider'
+import { AppGlobalDataContext } from '../context/AppGlobalDataProvider'
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage'
 import UsersList from './Catalog/Users/UsersList'
 import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
@@ -27,10 +27,9 @@ import VehicleDetailsProvider from '../context/VehicleDetailsProvider'
 
 const AppRouter = () => {
 
-    const auth = useContext(AuthContext)
-    const isAuthenticated = !!auth.token
+    const { isAuth } = useContext(AppGlobalDataContext)
 
-    if (isAuthenticated) {
+    if (isAuth) {
 
         return (
             <BrowserRouter>

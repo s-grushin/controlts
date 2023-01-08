@@ -10,6 +10,7 @@ const vehicleMovesRouter = require('./vehicleMoves.router')
 const vehicleTypesRouter = require('./vehicleTypes.router')
 const driversRouter = require('./drivers.router')
 const driverHistoryRouter = require('./driverHistory.router')
+const authRouter = require('./auth.router')
 
 const router = Router()
 router.use('/users', usersRouter)
@@ -23,7 +24,7 @@ router.use('/vehicleMoves', vehicleMovesRouter)
 router.use('/vehicleTypes', vehicleTypesRouter)
 router.use('/drivers', driversRouter)
 router.use('/driverHistory', driverHistoryRouter)
-
+router.use('/auth', authRouter)
 
 
 module.exports = router

@@ -1,19 +1,18 @@
 import React, { useContext } from 'react'
 import { Container, Nav, Navbar, NavDropdown, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { AuthContext } from '../../context/AuthProvider'
+import { AppGlobalDataContext } from '../../context/AppGlobalDataProvider'
 
 const TopNavbar = () => {
 
-    const authContext = useContext(AuthContext)
-    const { userInfo } = authContext
+    const { isAuth, userInfo, logout } = useContext(AppGlobalDataContext)
 
     const logoutHandler = () => {
-        authContext.logout()
+        logout()
     }
 
-    if (!userInfo) {
-        return <></>
+    if (!isAuth) {
+        return null
     } else {
         return (
             <Navbar collapseOnSelect expand="md" bg="primary" variant="dark">
@@ -40,7 +39,7 @@ const TopNavbar = () => {
                         </Nav>
                         <Nav>
                             <Nav.Link href="#deets">
-                                {`${userInfo.username}`}
+                                {`${userInfo?.username}`}
                             </Nav.Link>
                         </Nav>
                         <Nav>
