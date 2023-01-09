@@ -27,20 +27,26 @@ const VehicleMoveDetails = ({ move }) => {
           <Card.Title>
             <h6>Детальные данные</h6>
           </Card.Title>
+          
+          <Row>
+            <Col xxl='6'>
+              {/* Марка авто */}
+              <InputGroup title='Марка авто' value={move?.brand?.name} className='mb-2' /></Col>
+            <Col xxl='6'>
+              {/* Модель авто */}
+              <InputGroup title='Модель авто' value={move?.model?.name} className='mb-2' /></Col>
+          </Row>
 
-          {/* Марка авто */}
-          <InputGroup title='Марка авто' value={move?.brand?.name} className='mb-2' />
-
-          {/* Модель авто */}
-          <InputGroup title='Модель авто' value={move?.model?.name} className='mb-2' />
-
-          <Stack direction='horizontal' gap={1}>
-            {/* Вес на вьезде */}
-            <InputGroup title='Вес на вьезде' value={move?.weightIn || 0} className='mb-2' />
-
-            {/* Вес на выезде */}
-            <InputGroup title='Вес на выезде' value={move?.weightOut || ''} className='mb-2' />
-          </Stack>
+          <Row>
+            <Col xl='6'>
+              {/* Вес на вьезде */}
+              <InputGroup title='Вес на вьезде' value={move?.weightIn || 0} className='mb-2' />
+            </Col>
+            <Col xl='6'>
+              {/* Вес на выезде */}
+              <InputGroup title='Вес на выезде' value={move?.weightOut || ''} className='mb-2' />
+            </Col>
+          </Row>
 
           {/* Вид доставки */}
           <InputGroup title='Вид доставки' value={move?.deliveryType?.name} className='mb-2' />
