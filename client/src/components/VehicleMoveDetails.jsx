@@ -27,8 +27,8 @@ const VehicleMoveDetails = ({ move }) => {
           <Card.Title>
             <h6>Детальные данные</h6>
           </Card.Title>
-          
-          <Row>
+
+          <Row className='gx-1'>
             <Col xxl='6'>
               {/* Марка авто */}
               <InputGroup title='Марка авто' value={move?.brand?.name} className='mb-2' /></Col>
@@ -37,7 +37,7 @@ const VehicleMoveDetails = ({ move }) => {
               <InputGroup title='Модель авто' value={move?.model?.name} className='mb-2' /></Col>
           </Row>
 
-          <Row>
+          <Row className='gx-1'>
             <Col xl='6'>
               {/* Вес на вьезде */}
               <InputGroup title='Вес на вьезде' value={move?.weightIn || 0} className='mb-2' />
@@ -60,7 +60,7 @@ const VehicleMoveDetails = ({ move }) => {
           {/* Компания-получатель */}
           <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />
 
-          <Row>
+          <Row className='gx-1'>
             <Col xl='6'>
               <Stack direction='vertical'>
                 <Table responsive bordered hover size='sm'>

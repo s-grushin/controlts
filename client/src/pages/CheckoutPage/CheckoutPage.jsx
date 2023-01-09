@@ -118,7 +118,7 @@ const CheckoutPage = () => {
     }
 
     return (
-        <Row className='mt-2'>
+        <Row className='mt-2' >
             <Form onSubmit={submitHandler}>
                 <Col md={8} className='mx-auto'>
                     <Row>
