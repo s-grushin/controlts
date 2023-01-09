@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import useHttp from '../hooks/useHttp'
 import { Form, Row, Col, Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,7 @@ import useInputChange from '../hooks/useInputChange'
 import BottomBar from '../components/Item/BottomBar'
 import Spinner from '../components/Spinner'
 import AppAlert from '../components/AppAlert'
+import { AppGlobalDataContext } from '../context/AppGlobalDataProvider'
 
 const ProfilePage = () => {
 
@@ -15,13 +16,16 @@ const ProfilePage = () => {
     const [phoneNumber2, setPhoneNumber2] = useState('')
 
     const { request, loading, error, clearError } = useHttp()
+    const { restoreAuth } = useContext(AppGlobalDataContext)
 
     const navigate = useNavigate()
     const inputChangeHandler = useInputChange()
 
+
     const saveHandler = async () => {
         const data = await request('/users/saveProfile', 'put', { fullName, phoneNumber1, phoneNumber2 })
         if (data) {
+            restoreAuth()
             navigate('/')
         }
     }

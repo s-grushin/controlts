@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Col, Row, Card, Form } from 'react-bootstrap'
 import AppAlert from '../components/AppAlert'
 import Button from '../components/Button'
+import SelectUser from '../components/SelectUser/SelectUser'
 import { AppGlobalDataContext } from '../context/AppGlobalDataProvider'
 
 const LoginPage = () => {
@@ -9,27 +10,28 @@ const LoginPage = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { login, loading, errorLogin, clearLoginError } = useContext(AppGlobalDataContext)
+  const { login, loading, error, clearError, requestName } = useContext(AppGlobalDataContext)
 
-  async function loginHandler(event) {
+  async function loginHandler() {
     login(username, password)
   }
-  
+
   return (
     <Row >
       <Col className='d-flex align-items-center justify-content-center vh-100'>
         <Card style={{ width: '18rem' }}>
           <Card.Body>
             <p>
-              <AppAlert show={errorLogin} text={errorLogin} clear={clearLoginError} />
+              {requestName === 'login' && error && <AppAlert show={error} text={error} clear={clearError} />}
             </p>
             <Card.Title>Вход в систему</Card.Title>
             <Form>
               <Form.Group className="mb-3">
-                <Form.Control type="text" placeholder="Логин" required
+                {/* <Form.Control type="text" placeholder="Логин" required
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
-                  autoFocus />
+                  autoFocus /> */}
+                <SelectUser />
               </Form.Group>
 
               <Form.Group className="mb-3">

@@ -17,10 +17,10 @@ const AppGlobalDataProvider = ({ children }) => {
 
     const login = async (username, password) => {
 
+        setRequestName('login')
         const data = await request('auth/login', 'post', { username, password })
         if (data) {
             localStorage.setItem(STORAGE_KEYS.authToken, data.token)
-            setRequestName('login')
             setIsAuth(true)
             setUserInfo(data.userInfo)
         }
@@ -57,6 +57,7 @@ const AppGlobalDataProvider = ({ children }) => {
             userInfo,
             login,
             logout,
+            restoreAuth,
             appSettings,
             loading,
             error,
