@@ -9,14 +9,15 @@ const AppAlert = ({ show, clear, title, text, variant }) => {
     return (
         <Alert variant={variant} onClose={clear} dismissible>
             <Alert.Heading as='b'>{title}</Alert.Heading>
-            <p>{text}</p>
+            <div>{text}</div>
         </Alert>
     )
 }
 
 AppAlert.defaultProps = {
     variant: 'danger',
-    title: 'Ошибка'
+    title: 'Ошибка',
+    text: '',
 }
 
 

@@ -7,6 +7,8 @@ function handleErrorMiddleware(err, req, res, next) {
         statusCode = 500
     }
 
+    console.log(err.stack);
+
     res.status(statusCode).json({ message })
 }
 

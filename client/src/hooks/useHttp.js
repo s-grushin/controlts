@@ -6,6 +6,7 @@ const useHttp = () => {
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [requestName, setRequestName] = useState('')
 
     const request = useCallback(async (url, method, data) => {
         try {
@@ -34,7 +35,7 @@ const useHttp = () => {
         })
     }, [])
 
-    return { request, loading, error, clearError }
+    return { request, loading, error, clearError, requestName, setRequestName }
 }
 
 export default useHttp

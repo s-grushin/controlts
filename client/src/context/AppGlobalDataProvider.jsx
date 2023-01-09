@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createContext } from 'react'
+import { STORAGE_KEYS } from '../constants/appConstants'
 import useHttp from '../hooks/useHttp'
 
 
 export const AppGlobalDataContext = createContext()
-
-const AUTH_TOKEN_KEY = 'authToken'
 
 const AppGlobalDataProvider = ({ children }) => {
 
@@ -13,12 +12,15 @@ const AppGlobalDataProvider = ({ children }) => {
     const [userInfo, setUserInfo] = useState(null)
     const [appSettings] = useState(null)
 
-    const { request, loading, error } = useHttp()
+    const { request, loading, error, clearError, requestName, setRequestName } = useHttp()
+    //const { request: requestLogin, error: errorLogin, clearError: clearLoginError } = useHttp()
 
     const login = async (username, password) => {
+
         const data = await request('auth/login', 'post', { username, password })
         if (data) {
-            localStorage.setItem(AUTH_TOKEN_KEY, data.token)
+            localStorage.setItem(STORAGE_KEYS.authToken, data.token)
+            setRequestName('login')
             setIsAuth(true)
             setUserInfo(data.userInfo)
         }
@@ -27,7 +29,7 @@ const AppGlobalDataProvider = ({ children }) => {
     const restoreAuth = useCallback(async () => {
 
         // When page refreshed need to restore auth
-        const token = localStorage.getItem(AUTH_TOKEN_KEY)
+        const token = localStorage.getItem(STORAGE_KEYS.authToken)
         const data = await request('auth/restoreAuth', 'post', { token })
         if (data) {
             setIsAuth(true)
@@ -45,12 +47,23 @@ const AppGlobalDataProvider = ({ children }) => {
     const logout = () => {
         setIsAuth(false)
         setUserInfo(null)
-        localStorage.removeItem(AUTH_TOKEN_KEY)
+        localStorage.removeItem(STORAGE_KEYS.authToken)
     }
 
 
     return (
-        <AppGlobalDataContext.Provider value={{ isAuth, userInfo, login, logout, appSettings, loading, error }}>
+        <AppGlobalDataContext.Provider value={{
+            isAuth,
+            userInfo,
+            login,
+            logout,
+            appSettings,
+            loading,
+            error,
+            clearError,
+            requestName,
+            setRequestName
+        }}>
             {children}
         </AppGlobalDataContext.Provider>
     )

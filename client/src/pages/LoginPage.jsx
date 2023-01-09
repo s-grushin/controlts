@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Col, Row, Card, Form } from 'react-bootstrap'
+import AppAlert from '../components/AppAlert'
 import Button from '../components/Button'
 import { AppGlobalDataContext } from '../context/AppGlobalDataProvider'
 
@@ -8,17 +9,20 @@ const LoginPage = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { login, loading } = useContext(AppGlobalDataContext)
+  const { login, loading, errorLogin, clearLoginError } = useContext(AppGlobalDataContext)
 
   async function loginHandler(event) {
     login(username, password)
   }
-
+  
   return (
     <Row >
       <Col className='d-flex align-items-center justify-content-center vh-100'>
         <Card style={{ width: '18rem' }}>
           <Card.Body>
+            <p>
+              <AppAlert show={errorLogin} text={errorLogin} clear={clearLoginError} />
+            </p>
             <Card.Title>Вход в систему</Card.Title>
             <Form>
               <Form.Group className="mb-3">

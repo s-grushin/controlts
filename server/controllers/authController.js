@@ -13,7 +13,7 @@ async function login(req, res) {
 
     const user = await User.findOne({ where: { username } })
     if (!user) {
-        return res.status(400).json({ message: 'user not found' })
+        return res.status(400).json({ message: 'Не правильный логин или пароль' })
     }
     const isMatched = await bcrypt.compare(password, user.password)
     if (isMatched) {
@@ -29,7 +29,7 @@ async function login(req, res) {
 
         })
     } else {
-        res.status(400).json({ message: 'wrong password' })
+        res.status(400).json({ message: 'Не правильный логин или пароль' })
     }
 }
 

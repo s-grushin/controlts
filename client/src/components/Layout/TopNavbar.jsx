@@ -38,9 +38,9 @@ const TopNavbar = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#deets">
-                                {`${userInfo?.username}`}
-                            </Nav.Link>
+                            <LinkContainer to='/profile' activeClassName=''>
+                                <Nav.Link>{`${userInfo.username}${userInfo.fullName ? ` (${userInfo.fullName})` : ''}`}</Nav.Link>
+                            </LinkContainer>
                         </Nav>
                         <Nav>
                             <Nav.Link onClick={logoutHandler}>Выйти</Nav.Link>

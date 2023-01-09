@@ -21,6 +21,30 @@ async function getUserById(req, res) {
 
 }
 
+async function getProfile(req, res) {
+
+    const userId = req.userId
+    if (!userId) {
+        return res.status(400).json({ message: 'userId not provided' })
+    }
+    const user = await User.findByPk(userId, { attributes: ['id', 'fullName', 'phoneNumber1', 'phoneNumber2'] })
+    console.log(user);
+    return res.status(200).json({ user })
+}
+
+async function saveProfile(req, res) {
+
+    const userId = req.userId
+    if (!userId) {
+        return res.status(400).json({ message: 'userId not provided' })
+    }
+
+    const { fullName, phoneNumber1, phoneNumber2 } = req.body
+
+    const user = await User.update({ fullName, phoneNumber1, phoneNumber2 }, { where: { id: userId } })
+    return res.status(200).json({ message: 'updated' })
+}
+
 async function createUser(req, res) {
 
     const { username, password, role } = req.body
@@ -66,31 +90,12 @@ async function deleteUser(req, res, next) {
 async function changePassword(req, res, next) {
 
     const { id, password, repeatPassword } = req.body
-    console.log({id, password, repeatPassword});
-    if (password !== repeatPassword || !password) {
-        return res.status(400).json({ message: 'passwords not equals or empty' })
-    }
-
-
-    const hashedPassword = await bcrypt.hash(password, 5)
-
-    const updated = await User.update({ password: hashedPassword }, { where: { id } })
-    if (updated) {
-        res.status(200).json({ message: 'password changed' })
-    } else {
-        res.status(400).json({ message: 'error on changing password' })
-    }
-
-}
-
-async function changePassword(req, res, next) {
-
-    const { id, password, repeatPassword } = req.body
     console.log({ id, password, repeatPassword });
     if (password !== repeatPassword || !password) {
         return res.status(400).json({ message: 'passwords not equals or empty' })
     }
 
+
     const hashedPassword = await bcrypt.hash(password, 5)
 
     const updated = await User.update({ password: hashedPassword }, { where: { id } })
@@ -102,8 +107,11 @@ async function changePassword(req, res, next) {
 
 }
 
+
 module.exports.getAllUsers = asyncHandler(getAllUsers)
 module.exports.getUserById = asyncHandler(getUserById)
+module.exports.getProfile = asyncHandler(getProfile)
+module.exports.saveProfile = asyncHandler(saveProfile)
 module.exports.createUser = asyncHandler(createUser)
 module.exports.updateUser = asyncHandler(updateUser)
 module.exports.deleteUser = asyncHandler(deleteUser)
