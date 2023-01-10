@@ -9,6 +9,7 @@ function checkAuth(req, res, next) {
         const decoded = jwt.decode(header.split(" ")[1]);
         req.userId = decoded.id;
     } catch (error) {
+        res.status(401) 
         throw new Error('access denied')
     }
     next()
