@@ -1,5 +1,6 @@
 const express = require('express')
 const { getAllUsers, getUserById, getProfile, saveProfile, createUser, updateUser, deleteUser, changePassword } = require('../controllers/usersController')
+const checkAuth = require('../middleware/checkAuth')
 const router = express()
 
 router.get('/', getAllUsers)

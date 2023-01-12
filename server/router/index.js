@@ -11,10 +11,10 @@ const vehicleTypesRouter = require('./vehicleTypes.router')
 const driversRouter = require('./drivers.router')
 const driverHistoryRouter = require('./driverHistory.router')
 const authRouter = require('./auth.router')
-const checkAuth = require('../middleware/checkAuth')
+const publicRouter = require('./publicData.router')
 
 const router = Router()
-router.use('/users', checkAuth, usersRouter)
+router.use('/users', usersRouter)
 router.use('/services', servicesRouter)
 router.use('/companies', companiesRouter)
 router.use('/vehicle/brands', vehicleBrandsRouter)
@@ -26,6 +26,7 @@ router.use('/vehicleTypes', vehicleTypesRouter)
 router.use('/drivers', driversRouter)
 router.use('/driverHistory', driverHistoryRouter)
 router.use('/auth', authRouter)
+router.use('/publicData', publicRouter)
 
 
 module.exports = router
