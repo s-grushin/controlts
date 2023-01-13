@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 const VehicleMove = require('../models/VehicleMove')
-const Settings = require('../models/Settings')
 
 const User = db.define('User', {
     username: {
@@ -49,8 +48,5 @@ VehicleMove.belongsTo(User, { as: 'userIn' })
 
 User.hasMany(VehicleMove, { as: 'vehicleMovesOut', foreignKey: 'userOutId' })
 VehicleMove.belongsTo(User, { as: 'userOut' })
-
-User.hasMany(Settings, { as: 'settings', foreignKey: 'userId' })
-Settings.belongsTo(User)
 
 module.exports = User

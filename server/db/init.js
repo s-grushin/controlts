@@ -1,28 +1,26 @@
-const User = require('../models/User')
-const Settings = require('../models/Settings')
 const bcrypt = require('bcryptjs')
+const User = require('../models/User')
+const Constant = require('../models/Constant')
 const colors = require('colors')
 
 async function init() {
 
     await createRootUser()
-    //await initSettings()
+    await fillConstants()
 }
 
-async function initSettings() {
+async function fillConstants() {
 
     const defaultSettings = [
-        { key: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' },
-        { key: 'language', value: 'ru', description: 'Язык интерфейса' },
+        { name: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' },
     ]
 
-    for (const iterator of defaultSettings) {
-        const item = await Settings.findOne({ where: { key: iterator.key } })
-        if (!item || !item.value) {
-            await Settings.create(iterator)
+    for (const item of defaultSettings) {
+        const exists = await Constant.findOne({ where: { name: item.name } })
+        if (!exists) {
+            await Constant.create(item)
         }
     }
-
 }
 
 async function createRootUser() {
