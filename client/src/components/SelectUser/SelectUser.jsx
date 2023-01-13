@@ -10,21 +10,31 @@ const SelectUser = ({ onUserSelected }) => {
     useEffect(() => {
 
         const fetchUsers = async () => {
-            const data = await request('/users?active=true')
-            console.log(data);
+            const data = await request('/publicData/getLoginUsers')
+            if (data) {
+                setUsers(data)
+            }
+            if (error) {
+                alert(error)
+            }
         }
 
         fetchUsers()
 
-    }, [])
+    }, [request, error])
 
+    const onChangeHandler = (event) => {
+        if (onUserSelected) {
+            onUserSelected(event.target.value)
+        }
+    }
 
     return (
-        <Form.Select aria-label="Default select example">
-            <option>---Выбрать пользователя---</option>
+        <Form.Select disabled={loading} onChange={onChangeHandler}>
+            <option value=''>---Выбрать пользователя---</option>
             {
                 users.map(item => (
-                    <option value={item.id}>{item.username}</option>
+                    <option key={item.id} value={item.username}>{item.username}</option>
                 ))
             }
         </Form.Select >

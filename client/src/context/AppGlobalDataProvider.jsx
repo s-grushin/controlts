@@ -30,6 +30,8 @@ const AppGlobalDataProvider = ({ children }) => {
 
         // When page refreshed need to restore auth
         const token = localStorage.getItem(STORAGE_KEYS.authToken)
+        if (!token) return
+        
         const data = await request('auth/restoreAuth', 'post', { token })
         if (data) {
             setIsAuth(true)

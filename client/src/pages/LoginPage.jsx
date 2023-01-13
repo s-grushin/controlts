@@ -27,11 +27,7 @@ const LoginPage = () => {
             <Card.Title>Вход в систему</Card.Title>
             <Form>
               <Form.Group className="mb-3">
-                {/* <Form.Control type="text" placeholder="Логин" required
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                  autoFocus /> */}
-                <SelectUser />
+                <SelectUser onUserSelected={(username) => setUsername(username)} />
               </Form.Group>
 
               <Form.Group className="mb-3">
