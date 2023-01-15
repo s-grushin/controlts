@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Button from '../components/Button'
 import { Card, FormCheck, Table, Row, Col, Stack } from 'react-bootstrap'
 import InputGroup from './InputGroup'
 import VehiclePhoto from './VehiclePhoto'
@@ -85,8 +84,7 @@ const VehicleMoveDetails = ({ move }) => {
                       ))
                     }
                   </tbody>
-                </Table>
-                <Button title='Печатать пропуск' disableFlex={true} />
+                </Table>                
               </Stack>
             </Col>
             <Col xl='6'>

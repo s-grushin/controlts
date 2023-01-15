@@ -4,6 +4,8 @@ import VehicleMoveDetails from '../../components/VehicleMoveDetails'
 import useHttp from '../../hooks/useHttp'
 import Spinner from '../../components/Spinner'
 import AppAlert from '../../components/AppAlert'
+import { Stack } from 'react-bootstrap'
+import PrintPassButton from '../../printForms/Pass/PrintPassButton'
 
 const Dashboard = () => {
 
@@ -48,7 +50,12 @@ const Dashboard = () => {
                 />
             </div>
             <div className="col-md-4 mt-1">
-                <VehicleMoveDetails move={vehicleMoves.find(move => move.id === selectedMoveId)} />
+                <Stack>
+                    <VehicleMoveDetails move={vehicleMoves.find(move => move.id === selectedMoveId)} />
+                    <Stack className='mt-1' direction='horizontal' gap={2}>
+                        <PrintPassButton />
+                    </Stack>
+                </Stack>
             </div>
 
         </div>
