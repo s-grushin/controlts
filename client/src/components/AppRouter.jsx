@@ -31,8 +31,6 @@ const AppRouter = () => {
 
     const { isAuth, authChecked } = useContext(AppGlobalDataContext)
 
-    console.log(authChecked);
-
     if (!authChecked) return null
 
     if (isAuth) {

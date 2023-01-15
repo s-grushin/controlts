@@ -84,7 +84,7 @@ const VehicleMoveDetails = ({ move }) => {
                       ))
                     }
                   </tbody>
-                </Table>                
+                </Table>
               </Stack>
             </Col>
             <Col xl='6'>
