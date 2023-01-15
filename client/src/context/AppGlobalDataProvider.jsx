@@ -9,11 +9,11 @@ export const AppGlobalDataContext = createContext()
 const AppGlobalDataProvider = ({ children }) => {
 
     const [isAuth, setIsAuth] = useState(false)
+    const [authChecked, setAuthChecked] = useState(false) //need for saving url when page reload
     const [userInfo, setUserInfo] = useState(null)
     const [appSettings] = useState(null)
 
     const { request, loading, error, clearError, requestName, setRequestName } = useHttp()
-    //const { request: requestLogin, error: errorLogin, clearError: clearLoginError } = useHttp()
 
     const login = async (username, password) => {
 
@@ -30,13 +30,19 @@ const AppGlobalDataProvider = ({ children }) => {
 
         // When page refreshed need to restore auth
         const token = localStorage.getItem(STORAGE_KEYS.authToken)
-        if (!token) return
-        
+        if (!token) {
+            setAuthChecked(true)
+            return
+        }
+
         const data = await request('auth/restoreAuth', 'post', { token })
         if (data) {
             setIsAuth(true)
             setUserInfo(data.userInfo)
         }
+
+        setAuthChecked(true)
+
 
     }, [request])
 
@@ -56,6 +62,7 @@ const AppGlobalDataProvider = ({ children }) => {
     return (
         <AppGlobalDataContext.Provider value={{
             isAuth,
+            authChecked,
             userInfo,
             login,
             logout,

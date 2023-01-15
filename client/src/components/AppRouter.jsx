@@ -29,7 +29,11 @@ import PrintPass from '../printForms/Pass/PrintPass'
 
 const AppRouter = () => {
 
-    const { isAuth } = useContext(AppGlobalDataContext)
+    const { isAuth, authChecked } = useContext(AppGlobalDataContext)
+
+    console.log(authChecked);
+
+    if (!authChecked) return null
 
     if (isAuth) {
 
@@ -41,7 +45,7 @@ const AppRouter = () => {
                         <Route path='profile' element={<ProfilePage />} />
                         <Route path='checkout' element={<VehicleDetailsProvider><CheckoutPage /></VehicleDetailsProvider>} />
                         <Route path='login' element={<Navigate to={'/'} />} />
-                        
+
                         <Route path='printForms'>
                             <Route index element={<PrintPass />} />
                             <Route path='pass' element={< PrintPass />} />
