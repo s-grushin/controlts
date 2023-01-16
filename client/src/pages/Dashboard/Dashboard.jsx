@@ -6,6 +6,7 @@ import Spinner from '../../components/Spinner'
 import AppAlert from '../../components/AppAlert'
 import { Stack } from 'react-bootstrap'
 import PrintPassButton from '../../printForms/Pass/PrintPassButton'
+import VehicleMoveActions from '../../components/VehicleMoveActions/VehicleMoveActions'
 
 const Dashboard = () => {
 
@@ -55,6 +56,7 @@ const Dashboard = () => {
                     <Stack className='mt-1' direction='horizontal' gap={2}>
                         <PrintPassButton />
                     </Stack>
+                    <VehicleMoveActions vehicleMoveId={selectedMoveId} className='mt-2' />
                 </Stack>
             </div>
 
