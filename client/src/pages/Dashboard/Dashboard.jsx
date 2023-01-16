@@ -43,7 +43,7 @@ const Dashboard = () => {
 
     return (
         <div className="row gx-2">
-            <div className="col-md-8 mt-1">
+            <div className="col-md-8 mt-1">                
                 <VehicleMovesList
                     selectedMoveId={selectedMoveId}
                     setSelectedMoveId={setSelectedMoveId}
