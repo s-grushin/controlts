@@ -7,6 +7,7 @@ const Driver = require('./Driver')
 const Parking = require('./Parking')
 const Company = require('./Company')
 const DeliveryType = require('./DeliveryType')
+const User = require('./User')
 
 
 const VehicleMove = db.define('VehicleMove', {
@@ -107,5 +108,8 @@ VehicleMove.belongsTo(VehicleModel, { as: 'model', foreignKey: 'modelId' })
 
 VehicleMove.belongsTo(DeliveryType, { as: 'deliveryType', foreignKey: 'deliveryTypeId' })
 
+VehicleMove.belongsTo(User, { as: 'userIn', foreignKey: 'userInId' })
+
+VehicleMove.belongsTo(User, { as: 'userOut', foreignKey: 'userOutId' })
 
 module.exports = VehicleMove

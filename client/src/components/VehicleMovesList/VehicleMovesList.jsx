@@ -9,6 +9,8 @@ const VehicleMovesList = () => {
 
   const { state, dispatch } = useContext(VehicleMovesContext)
 
+  console.log(state);
+
   return (
     <>
       <Topbar />
@@ -33,7 +35,7 @@ const VehicleMovesList = () => {
                 <td>{item.driver.fullName}</td>
                 <td>{formatDate(item.dateIn, { withSeconds: true })}</td>
                 <td>{formatDate(item.dateOut, { withSeconds: true })}</td>
-                <td>{item.driverId}</td>
+                <td>{item.userIn.username}</td>
                 <td>{item.parking.name}</td>
               </tr>
             ))

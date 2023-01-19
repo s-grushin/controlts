@@ -13,7 +13,8 @@ const Driver = require('../models/Driver')
 const VehicleBrand = require('../models/VehicleBrand')
 const VehicleModel = require('../models/VehicleModel')
 const Company = require('../models/Company')
-const VehicleType = require('../models/VehicleType')
+const VehicleType = require('../models/VehicleType');
+const User = require('../models/User');
 
 
 async function getAll(req, res) {
@@ -29,8 +30,6 @@ async function getAll(req, res) {
         ...(req.query?.thisYear && { dateIn: { [Op.gte]: startOfYear() } }),
     }
 
-    console.log(where);
-
     const data = await VehicleMove.findAndCountAll({
         where,
         limit,
@@ -43,6 +42,8 @@ async function getAll(req, res) {
             { model: VehicleModel, as: 'model' },
             { model: DeliveryType, as: 'deliveryType' },
             { model: Company, as: 'company' },
+            { model: User, as: 'userIn' },
+            { model: User, as: 'userOut' },
             {
                 model: VehicleMoveDetail,
                 as: 'vehicleDetails', include: [
