@@ -9,7 +9,6 @@ const VehicleDetails = () => {
 
     const { state, dispatch } = useContext(VehicleDetailsContext)
 
-
     const tableContent = state.rows.map(row => (
         <tr
             key={row.id}

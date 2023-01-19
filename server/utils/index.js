@@ -25,4 +25,15 @@ async function copyPhotos(src, fileName, d = new Date()) {
 
 }
 
+function subtractDays(days, fromDate = new Date()) {
+    return new Date(fromDate - 1000 * 60 * 60 * 24 * days)
+}
+
+function startOfYear(date = new Date()) {
+    //Функция возвращает начало года от переданной даты.
+    return new Date(date.getFullYear(), 0, 1)
+}
+
 module.exports.copyPhotos = copyPhotos
+module.exports.subtractDays = subtractDays
+module.exports.startOfYear = startOfYear

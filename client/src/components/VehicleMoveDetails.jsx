@@ -57,7 +57,7 @@ const VehicleMoveDetails = ({ move }) => {
           <FormCheck label='Клиент ХФК-Биокон' id='bioconClient' className='mb-2' checked={move?.isOwnCompany} readOnly />
 
           {/* Компания-получатель */}
-          <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />
+          {move?.comment && <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />}
 
           <Row className='gx-1'>
             <Col xl='6'>

@@ -27,7 +27,7 @@ const AppGlobalDataProvider = ({ children }) => {
     }
 
     const restoreAuth = useCallback(async () => {
-
+        
         // When page refreshed need to restore auth
         const token = localStorage.getItem(STORAGE_KEYS.authToken)
         if (!token) {

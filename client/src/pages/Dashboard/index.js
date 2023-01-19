@@ -1,2 +1,13 @@
 import Dashboard from './Dashboard'
-export default Dashboard
+import VehicleMovesProvider from '../../context/VehicleMovesProvider'
+
+
+const DashboardWrapper = () => {
+    return (
+        <VehicleMovesProvider>
+            <Dashboard />
+        </VehicleMovesProvider>
+    )
+}
+
+export default DashboardWrapper

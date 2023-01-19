@@ -1,8 +1,13 @@
 import Table from '../Table'
 import { formatDate } from '../../utils/common'
 import Topbar from './Topbar'
+import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
+import { useContext } from 'react'
 
-const VehicleMovesList = ({ selectedMoveId, setSelectedMoveId, vehicleMoves }) => {
+
+const VehicleMovesList = () => {
+
+  const { state, dispatch } = useContext(VehicleMovesContext)
 
   return (
     <>
@@ -19,11 +24,11 @@ const VehicleMovesList = ({ selectedMoveId, setSelectedMoveId, vehicleMoves }) =
         </thead>
         <tbody style={{ fontSize: '14px' }}>
           {
-            vehicleMoves.map(item => (
+            state.items.map(item => (
               <tr
                 key={item.id}
-                onClick={() => setSelectedMoveId(item.id)}
-                className={item.id === selectedMoveId ? 'selectedTableRow' : ''}
+                onClick={() => dispatch({ type: 'setSelectedItem', payload: item.id })}
+                className={item.id === state.selectedId ? 'selectedTableRow' : 'asd'}
               >
                 <td>{item.driver.fullName}</td>
                 <td>{formatDate(item.dateIn, { withSeconds: true })}</td>
