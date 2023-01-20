@@ -4,6 +4,8 @@ import axios from '../utils/axios'
 export const VehicleMovesContext = createContext()
 
 export const availableFilters = {
+    all: { name: 'all' },
+    onTerritory: { name: 'onTerritory' },
     lastDays: { name: 'lastDays' },
     thisYear: { name: 'thisYear' },
     dateInRange: { name: 'dateInRange' },
@@ -12,11 +14,13 @@ export const availableFilters = {
 export const initState = {
     items: [],
     selectedId: null,
-    loading: true,
+    loading: false,
     error: null,
     vehicleFilterTitle: 'Все',
-    dateInRange: { from: '', to: '' },
-    filters: []
+    filters: {
+        vehicles: null,
+        dateIn: { from: '', to: '' }
+    }
 }
 
 const reducer = (state, action) => {
@@ -47,8 +51,11 @@ const reducer = (state, action) => {
         case 'clearFilters':
             return { ...state, filters: [] }
 
-        case 'setFilter':
-            return { ...state, filters: [...state.filters, action.payload] }
+        case 'setVehicleFilter':
+            return { ...state, filters: { ...state.filters, vehicles: action.payload } }
+
+        case 'setDateInFilter':
+            return { ...state, filters: { ...state.filters, dateIn: action.payload } }
 
         default:
             return { ...state }
@@ -106,9 +113,10 @@ const VehicleMovesProvider = ({ children }) => {
 
         fetchItems2: async () => {
 
-            let url = '/vehicleMoves'
+            //let url = '/vehicleMoves'
 
-            let queryParams = state.filters.map(item => 1)
+            //let queryParams = state.filters.map(item => `${item.name}=${item.value}`).join('&')
+            //console.log(queryParams);
 
             // try {
             //     dispatch({ type: 'fetchItemsPending' })

@@ -1,27 +1,41 @@
-import { useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
-import { vehicleMoveActions as vmActions, VehicleMovesContext } from '../../context/VehicleMovesProvider'
+import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
 import DateRangePicker from '../DateRangePicker'
+import { availableFilters } from '../../context/VehicleMovesProvider'
 
 
 const Topbar = ({ ...props }) => {
 
-    const { state } = useContext(VehicleMovesContext)
+    const { state, dispatch } = useContext(VehicleMovesContext)
 
-    const setFilterHandler = (filterType, event) => {
-        vmActions.fetchItems(filterType)
-        vmActions.setVehicleFilterTitle(event.target.innerText)
+    useEffect(() => {
+
+        console.log('Topbar mounted');
+
+    }, [])
+
+    console.log(state);
+
+    const setVehicleFilterHandler = (filterOptions) => {
+
+        //vmActions.fetchItems(filterType)
+        //vmActions.setVehicleFilterTitle(event.target.innerText)
+        dispatch({ type: 'setVehicleFilter', payload: filterOptions })
     }
 
     const setDateRangeHandler = (range) => {
 
-        vmActions.fetchItems({
-            type: 'dateInRange',
-            value: { from: range.dateFrom, to: range.dateTo }
-        })
+        // vmActions.fetchItems({
+        //     type: 'dateInRange',
+        //     value: { from: range.dateFrom, to: range.dateTo }
+        // })
+
+        dispatch({ type: 'setDateInFilter', payload: range })
+
     }
 
-    const dateRangePickerText = (state.dateInRange.from || state.dateInRange.to) ? `${state.dateInRange.from} - ${state.dateInRange.to}` : 'Период по дате въезда'
+    const dateRangePickerText = state.filters.dateIn ? `${state.filters.dateIn.from} - ${state.filters.dateIn.to}` : 'Период по дате въезда'
 
     return (
         <Stack
@@ -37,19 +51,19 @@ const Topbar = ({ ...props }) => {
                     size='sm'
                 />
 
-                <NavDropdown title={`Показать автомобили (${state.vehicleFilterTitle})`} id="basic-nav-dropdown" className='my-auto'>
-                    <NavDropdown.Item onClick={(e) => setFilterHandler({}, e)}>Все</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setFilterHandler({ type: 'onTerritory' }, e)}>На территории</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setFilterHandler({ type: 'last2days' }, e)}>За двое суток</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setFilterHandler({ type: 'last7days' }, e)}>За последнюю неделю</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setFilterHandler({ type: 'last30days' }, e)}>За последний месяц</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setFilterHandler({ type: 'thisYear' }, e)}>За этот год</NavDropdown.Item>
+                <NavDropdown title={`Показать автомобили (${state.vehicleFilterTitle})`} className='my-auto'>
+                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler(null, e)}>Все</NavDropdown.Item>
+                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.onTerritory.name }, e)}>На территории</NavDropdown.Item>
+                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.lastDays.name, value: 2 }, e)}>За двое суток</NavDropdown.Item>
+                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.lastDays.name, value: 7 }, e)}>За последнюю неделю</NavDropdown.Item>
+                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.lastDays.name, value: 31 }, e)}>За последний месяц</NavDropdown.Item>
+                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.thisYear.name }, e)}>За этот год</NavDropdown.Item>
                 </NavDropdown>
 
                 <DateRangePicker
                     buttonText={dateRangePickerText}
                     onPicked={setDateRangeHandler}
-                    defaultRange={{ from: state.dateInRange.from, to: state.dateInRange.to }}
+                    defaultRange={{ from: state.filters.dateIn.from, to: state.filters.dateIn.to }}
                 />
             </Form>
         </Stack >

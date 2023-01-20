@@ -15,7 +15,9 @@ const Dashboard = () => {
 
     useEffect(() => {
 
-        vehicleMoveActions.fetchItems()
+        //console.log('fetchItems2');
+
+        vehicleMoveActions.fetchItems2()
 
     }, [])
 
