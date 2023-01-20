@@ -5,7 +5,9 @@ const Button = ({ children, variant, title, size, withSpinner, loading, disabled
 
     const dflexCenter = disableFlex ? '' : 'd-flex align-items-center'
 
-    let classNames = [dflexCenter, className].join(' ');
+    const defaultClasses = 'text-nowrap'
+
+    let classNames = [defaultClasses, dflexCenter, className].join(' ');
 
     return (
         <BootstrapButton

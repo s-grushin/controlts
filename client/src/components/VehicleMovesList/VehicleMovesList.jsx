@@ -9,8 +9,6 @@ const VehicleMovesList = () => {
 
   const { state, dispatch } = useContext(VehicleMovesContext)
 
-  console.log(state);
-
   return (
     <>
       <Topbar />

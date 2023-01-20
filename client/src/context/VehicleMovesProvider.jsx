@@ -3,12 +3,20 @@ import axios from '../utils/axios'
 
 export const VehicleMovesContext = createContext()
 
+export const availableFilters = {
+    lastDays: { name: 'lastDays' },
+    thisYear: { name: 'thisYear' },
+    dateInRange: { name: 'dateInRange' },
+}
+
 export const initState = {
     items: [],
     selectedId: null,
     loading: true,
     error: null,
-    vehicleFilterTitle: 'Все'
+    vehicleFilterTitle: 'Все',
+    dateInRange: { from: '', to: '' },
+    filters: []
 }
 
 const reducer = (state, action) => {
@@ -32,6 +40,15 @@ const reducer = (state, action) => {
 
         case 'setVehicleFilterTitle':
             return { ...state, vehicleFilterTitle: action.payload }
+
+        case 'setDateInRangeFilter':
+            return { ...state, dateInRange: { ...state.dateInRange, from: action.payload.from, to: action.payload.to } }
+
+        case 'clearFilters':
+            return { ...state, filters: [] }
+
+        case 'setFilter':
+            return { ...state, filters: [...state.filters, action.payload] }
 
         default:
             return { ...state }
@@ -68,6 +85,10 @@ const VehicleMovesProvider = ({ children }) => {
                     case 'thisYear':
                         url = url.concat('?thisYear=1')
                         break;
+                    case 'dateInRange':
+                        dispatch({ type: 'setDateInRangeFilter', payload: { from: filterOptions.value.from, to: filterOptions.value.to } })
+                        url = url.concat(`?dateInFrom=${filterOptions.value.dateFrom}&dateInTo=${filterOptions.value.dateTo}`)
+                        break;
                     default:
                         break;
                 }
@@ -81,6 +102,22 @@ const VehicleMovesProvider = ({ children }) => {
             } catch (error) {
                 dispatch({ type: 'fetchItemsFailed' })
             }
+        },
+
+        fetchItems2: async () => {
+
+            let url = '/vehicleMoves'
+
+            let queryParams = state.filters.map(item => 1)
+
+            // try {
+            //     dispatch({ type: 'fetchItemsPending' })
+            //     const response = await axios.get(url)
+            //     dispatch({ type: 'fetchItemsSuccess', payload: response.data.rows })
+            //     dispatch({ type: 'setSelectedItem', payload: response.data.rows.length > 0 ? response.data.rows[0].id : null })
+            // } catch (error) {
+            //     dispatch({ type: 'fetchItemsFailed' })
+            // }
         },
         setVehicleFilterTitle: (title) => {
             dispatch({ type: 'setVehicleFilterTitle', payload: title })
