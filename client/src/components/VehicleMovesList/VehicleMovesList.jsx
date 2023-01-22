@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Table from '../Table'
 import { formatDate } from '../../utils/common'
 import Topbar from './Topbar'
@@ -8,6 +9,13 @@ import { useContext } from 'react'
 const VehicleMovesList = () => {
 
   const { state, dispatch } = useContext(VehicleMovesContext)
+
+  useEffect(() => {
+
+    console.log('VehicleMovesList mounted');
+
+  }, [])
+
 
   return (
     <>

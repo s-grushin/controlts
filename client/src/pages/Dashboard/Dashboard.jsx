@@ -1,25 +1,24 @@
 import { useEffect, useContext } from 'react'
 import VehicleMovesList from '../../components/VehicleMovesList'
 import VehicleMoveDetails from '../../components/VehicleMoveDetails'
+import VehicleMoveActions from '../../components/VehicleMoveActions'
 import Spinner from '../../components/Spinner'
 import AppAlert from '../../components/AppAlert'
 import { Stack } from 'react-bootstrap'
 import PrintPassButton from '../../printForms/Pass/PrintPassButton'
-import VehicleMoveActions from '../../components/VehicleMoveActions/VehicleMoveActions'
 import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
-import { vehicleMoveActions } from '../../context/VehicleMovesProvider'
+
 
 const Dashboard = () => {
 
-    const { state: vmState } = useContext(VehicleMovesContext)
+    const { state: vmState, fetchItems } = useContext(VehicleMovesContext)
 
     useEffect(() => {
 
-        //console.log('fetchItems2');
+        fetchItems()
 
-        vehicleMoveActions.fetchItems2()
+    }, [fetchItems])
 
-    }, [])
 
     if (vmState.loading) {
         return <Spinner />

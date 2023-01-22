@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer, useCallback } from 'react'
 import axios from '../utils/axios'
 
 export const VehicleMovesContext = createContext()
@@ -22,6 +22,8 @@ export const initState = {
         dateIn: { from: '', to: '' }
     }
 }
+
+const baseUrl = '/vehicleMoves'
 
 const reducer = (state, action) => {
 
@@ -62,83 +64,36 @@ const reducer = (state, action) => {
     }
 }
 
-export let vehicleMoveActions = null
-
 const VehicleMovesProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initState)
 
-    vehicleMoveActions = {
+    const fetchItems = useCallback(async () => {
 
-        fetchItems: async (filterOptions) => {
-
-            let url = '/vehicleMoves'
-
-            if (filterOptions) {
-
-                switch (filterOptions.type) {
-                    case 'onTerritory':
-                        url = url.concat('?onTerritory=1')
-                        break;
-                    case 'last2days':
-                        url = url.concat('?last2days=1')
-                        break;
-                    case 'last7days':
-                        url = url.concat('?last7days=1')
-                        break;
-                    case 'last30days':
-                        url = url.concat('?last30days=1')
-                        break;
-                    case 'thisYear':
-                        url = url.concat('?thisYear=1')
-                        break;
-                    case 'dateInRange':
-                        dispatch({ type: 'setDateInRangeFilter', payload: { from: filterOptions.value.from, to: filterOptions.value.to } })
-                        url = url.concat(`?dateInFrom=${filterOptions.value.dateFrom}&dateInTo=${filterOptions.value.dateTo}`)
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            try {
-                dispatch({ type: 'fetchItemsPending' })
-                const response = await axios.get(url)
-                dispatch({ type: 'fetchItemsSuccess', payload: response.data.rows })
-                dispatch({ type: 'setSelectedItem', payload: response.data.rows.length > 0 ? response.data.rows[0].id : null })
-            } catch (error) {
-                dispatch({ type: 'fetchItemsFailed' })
-            }
-        },
-
-        fetchItems2: async () => {
-
-            //let url = '/vehicleMoves'
-
-            //let queryParams = state.filters.map(item => `${item.name}=${item.value}`).join('&')
-            //console.log(queryParams);
-
-            // try {
-            //     dispatch({ type: 'fetchItemsPending' })
-            //     const response = await axios.get(url)
-            //     dispatch({ type: 'fetchItemsSuccess', payload: response.data.rows })
-            //     dispatch({ type: 'setSelectedItem', payload: response.data.rows.length > 0 ? response.data.rows[0].id : null })
-            // } catch (error) {
-            //     dispatch({ type: 'fetchItemsFailed' })
-            // }
-        },
-        setVehicleFilterTitle: (title) => {
-            dispatch({ type: 'setVehicleFilterTitle', payload: title })
+        const searchParams = new URLSearchParams()
+        state.filters.vehicles && searchParams.append(state.filters.vehicles.name, state.filters.vehicles.value)
+        if (state.filters.dateIn.from || state.filters.dateIn.to) {
+            searchParams.append('dateInRange', `${state.filters.dateIn.from}to${state.filters.dateIn.to}`)
         }
-    }
+
+        const fetchUrl = baseUrl + (searchParams.toString() ? '?' + searchParams.toString() : '')
+
+        try {
+            dispatch({ type: 'fetchItemsPending' })
+            const response = await axios.get(fetchUrl)
+            dispatch({ type: 'fetchItemsSuccess', payload: response.data.rows })
+            dispatch({ type: 'setSelectedItem', payload: response.data.rows.length > 0 ? response.data.rows[0].id : null })
+        } catch (error) {
+            dispatch({ type: 'fetchItemsError', payload: error })
+        }
+
+    }, [state.filters])
 
     return (
-        <VehicleMovesContext.Provider value={{ state, dispatch }}>
+        <VehicleMovesContext.Provider value={{ state, dispatch, fetchItems }}>
             {children}
         </VehicleMovesContext.Provider>
     )
 }
-
-
 
 export default VehicleMovesProvider
