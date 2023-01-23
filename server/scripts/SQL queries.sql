@@ -20,3 +20,6 @@ drop table vehicle_brands
 drop table companies
 drop table drivers
 drop table users
+
+--UPDATES
+update vehicle_moves set date_in='2023-01-23 21:59:59.999' where id=4013 

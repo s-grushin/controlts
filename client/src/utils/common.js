@@ -1,7 +1,7 @@
 export function formatDate(date, options = {}) {
 
     if (!date) {
-        return ''        
+        return ''
     }
 
     let withTime = options.withTime === undefined ? true : options.withTime

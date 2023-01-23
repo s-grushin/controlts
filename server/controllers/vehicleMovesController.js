@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const db = require('../db/mssql')
 const { Op } = require("sequelize");
-const { copyPhotos, subtractDays, startOfYear } = require('../utils')
+const { copyPhotos, subtractDays, startOfYear, parseQueryParamDateRange } = require('../utils')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
@@ -22,12 +22,11 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 
-    console.log(req.query);
-
     const where = {
         ...(req.query?.onTerritory && { dateOut: { [Op.is]: null } }),
         ...(req.query?.lastDays && { dateIn: { [Op.gte]: subtractDays(parseInt(req.query?.lastDays)) } }),
         ...(req.query?.thisYear && { dateIn: { [Op.gte]: startOfYear() } }),
+        ...(req.query?.dateInRange && { dateIn: { [Op.between]: parseQueryParamDateRange(req.query?.dateInRange, req.query?.tzOffset) } }),
     }
 
     const data = await VehicleMove.findAndCountAll({

@@ -7,8 +7,8 @@ import { Calendar4Range } from 'react-bootstrap-icons'
 const DateRangePicker = ({ onPicked, defaultRange, buttonText }) => {
 
     const [show, setShow] = useState(false)
-    const [dateFrom, setDateFrom] = useState(defaultRange.from)
-    const [dateTo, setDateTo] = useState(defaultRange.to)
+    const [from, setFrom] = useState(defaultRange.from)
+    const [to, setTo] = useState(defaultRange.to)
 
     const onClickHandler = () => {
         setShow(true)
@@ -20,7 +20,7 @@ const DateRangePicker = ({ onPicked, defaultRange, buttonText }) => {
 
     const confirmHandler = () => {
         setShow(false)
-        onPicked({ dateFrom, dateTo })
+        onPicked({ from, to, tzOffset: new Date().getTimezoneOffset() })
     }
 
     return (
@@ -34,10 +34,10 @@ const DateRangePicker = ({ onPicked, defaultRange, buttonText }) => {
                         title={buttonText}
                     >
                         <Stack direction='horizontal' gap={3}>
-                            <input type="date" name='dateFrom' value={dateFrom} onChange={(e) => changeDateHandler(setDateFrom, e)} />
-                            <button onClick={() => setDateFrom('')}>x</button>
-                            <input type="date" name='dateTo' value={dateTo} onChange={(e) => changeDateHandler(setDateTo, e)} />
-                            <button onClick={() => setDateTo('')}>x</button>
+                            <input type="date" name='from' value={from} onChange={(e) => changeDateHandler(setFrom, e)} />
+                            <button onClick={() => setFrom('')}>x</button>
+                            <input type="date" name='to' value={to} onChange={(e) => changeDateHandler(setTo, e)} />
+                            <button onClick={() => setTo('')}>x</button>
 
                         </Stack>
                     </Confirmation>)

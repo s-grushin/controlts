@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import Table from '../Table'
 import { formatDate } from '../../utils/common'
 import Topbar from './Topbar'
@@ -12,11 +11,7 @@ const VehicleMovesList = () => {
 
   const { state, dispatch } = useContext(VehicleMovesContext)
 
-  useEffect(() => {
-
-    console.log('VehicleMovesList mounted');
-
-  }, [])
+  //console.log(state);
 
   return (
     <>
@@ -25,8 +20,8 @@ const VehicleMovesList = () => {
         state.error
           ?
           <AppAlert
-            show={state.error.message}
-            text={state.error.message}
+            show={state.error}
+            text={state.error}
             title='Ошибка при загрузке списка'
             clear={() => dispatch({ type: 'clearError' })}
           />
@@ -39,7 +34,7 @@ const VehicleMovesList = () => {
               <thead>
                 <tr style={{ fontSize: 13, fontWeight: 'bold' }}>
                   <th>Водитель</th>
-                  <th>Дата заезда</th>
+                  <th>Дата въезда</th>
                   <th>Дата выезда</th>
                   <th>Диспетчер</th>
                   <th>Место стоянки</th>

@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
+const MAX_DATE = new Date(3000, 0, 1) //hello from 2023 :)
+
 async function copyPhotos(src, fileName, d = new Date()) {
     //src - полный путь к файлу. Пример C:\data\photo\front_camera\picture.jpg
     //fileName - имя файла. Пример picture.jpg
@@ -34,6 +36,45 @@ function startOfYear(date = new Date()) {
     return new Date(date.getFullYear(), 0, 1)
 }
 
+function parseQueryParamDateRange(queryParam, tzOffset) {
+    //Функция парсит параметр запроса вида YYYY-MM-DDtoYYYY-MM-DD
+    //Возвращает массив с двумя элементами: дата начало и дата конец, смещает даты на значение tzOffset
+
+    const result = queryParam.split('to').map((item, index) => {
+
+        if (index === 0 && !item) {
+            return new Date(null)
+
+        } else if (index === 1 && !item) {
+            return MAX_DATE
+
+        } else {
+            return new Date(item)
+        }
+
+    })
+
+    if (result.length === 0) {
+        throw new Error(`parseDateRangeQuery wrong parametr: ${queryParam}`)
+    }
+
+    //console.log('before', result);
+    result[0] = addTimeZoneToDate(result[0], tzOffset)
+    result[1] = addTimeZoneToDate(new Date(result[1].getTime() + 60 * 60 * 24 * 1000 - 1), tzOffset)
+    //console.log('after', result);
+
+    return result
+}
+
+function addTimeZoneToDate(date = new Date(), tzOffset) {
+    //Функция возвращает дату по UTC-0 учитывая тайм зону
+    //tzOffset - число или число строкой, разница в минутах между UTC-0 и желаемой тайм зоной 
+    return new Date(date.getTime() + parseInt(tzOffset) * 60 * 1000)
+}
+
+module.exports.MAX_DATE = MAX_DATE
 module.exports.copyPhotos = copyPhotos
 module.exports.subtractDays = subtractDays
 module.exports.startOfYear = startOfYear
+module.exports.parseQueryParamDateRange = parseQueryParamDateRange
+module.exports.addTimeZoneToDate = addTimeZoneToDate

@@ -19,7 +19,7 @@ export const initState = {
     vehicleFilterTitle: 'Все',
     filters: {
         vehicles: null,
-        dateIn: { from: '', to: '' }
+        dateIn: { from: '', to: '', tzOffset: '' }
     }
 }
 
@@ -48,7 +48,9 @@ const reducer = (state, action) => {
             return { ...state, vehicleFilterTitle: action.payload }
 
         case 'setDateInRangeFilter':
-            return { ...state, dateInRange: { ...state.dateInRange, from: action.payload.from, to: action.payload.to } }
+            return {
+                ...state, dateInRange: { ...state.dateInRange, filters: { dateIn: action.payload } }
+            }
 
         case 'clearFilters':
             return { ...state, filters: [] }
@@ -74,17 +76,20 @@ const VehicleMovesProvider = ({ children }) => {
         state.filters.vehicles && searchParams.append(state.filters.vehicles.name, state.filters.vehicles.value)
         if (state.filters.dateIn.from || state.filters.dateIn.to) {
             searchParams.append('dateInRange', `${state.filters.dateIn.from}to${state.filters.dateIn.to}`)
+            searchParams.append('tzOffset', state.filters.dateIn.tzOffset)
         }
 
         const fetchUrl = baseUrl + (searchParams.toString() ? '?' + searchParams.toString() : '')
 
         try {
+            dispatch({ type: 'clearError' })
             dispatch({ type: 'fetchItemsPending' })
             const response = await axios.get(fetchUrl)
             dispatch({ type: 'fetchItemsSuccess', payload: response.data.rows })
             dispatch({ type: 'setSelectedItem', payload: response.data.rows.length > 0 ? response.data.rows[0].id : null })
         } catch (error) {
-            dispatch({ type: 'fetchItemsError', payload: error })
+            const errorMsg = `${error.message} ${error.response?.data?.message}`
+            dispatch({ type: 'fetchItemsError', payload: errorMsg })
         }
 
     }, [state.filters])

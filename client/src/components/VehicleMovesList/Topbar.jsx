@@ -18,7 +18,7 @@ const Topbar = ({ ...props }) => {
 
     const setDateRangeHandler = (range) => {
 
-        dispatch({ type: 'setDateInFilter', payload: { from: range.dateFrom, to: range.dateTo } })
+        dispatch({ type: 'setDateInFilter', payload: range })
 
     }
 
