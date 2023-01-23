@@ -29,8 +29,8 @@ const reducer = (state, action) => {
 
     switch (action.type) {
 
-        case 'clearItems':
-            return { ...state, items: [] }
+        case 'clearError':
+            return { ...state, error: null }
 
         case 'fetchItemsPending':
             return { ...state, loading: true }

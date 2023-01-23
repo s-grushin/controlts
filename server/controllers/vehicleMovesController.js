@@ -22,11 +22,11 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 
+    console.log(req.query);
+
     const where = {
         ...(req.query?.onTerritory && { dateOut: { [Op.is]: null } }),
-        ...(req.query?.last2days && { dateIn: { [Op.gte]: subtractDays(2) } }),
-        ...(req.query?.last7days && { dateIn: { [Op.gte]: subtractDays(7) } }),
-        ...(req.query?.last30days && { dateIn: { [Op.gte]: subtractDays(30) } }),
+        ...(req.query?.lastDays && { dateIn: { [Op.gte]: subtractDays(parseInt(req.query?.lastDays)) } }),
         ...(req.query?.thisYear && { dateIn: { [Op.gte]: startOfYear() } }),
     }
 

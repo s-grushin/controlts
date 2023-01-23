@@ -2,8 +2,6 @@ import { useEffect, useContext } from 'react'
 import VehicleMovesList from '../../components/VehicleMovesList'
 import VehicleMoveDetails from '../../components/VehicleMoveDetails'
 import VehicleMoveActions from '../../components/VehicleMoveActions'
-import Spinner from '../../components/Spinner'
-import AppAlert from '../../components/AppAlert'
 import { Stack } from 'react-bootstrap'
 import PrintPassButton from '../../printForms/Pass/PrintPassButton'
 import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
@@ -19,17 +17,6 @@ const Dashboard = () => {
 
     }, [fetchItems])
 
-
-    if (vmState.loading) {
-        return <Spinner />
-    }
-
-    if (vmState.error) {
-        return <AppAlert
-            show={vmState.error}
-            text={`Ошибка загрузки списка. ${vmState.error}`}
-        />
-    }
 
     return (
         <div className="row gx-2">

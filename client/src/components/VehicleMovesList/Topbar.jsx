@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
 import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
 import DateRangePicker from '../DateRangePicker'
@@ -10,12 +10,6 @@ const Topbar = ({ ...props }) => {
     const [vehicleFilterText, setVehicleFilterText] = useState('Все')
 
     const { state, dispatch } = useContext(VehicleMovesContext)
-
-    useEffect(() => {
-
-        console.log('Topbar mounted');
-
-    }, [])
 
     const setVehicleFilterHandler = (filterOptions, event) => {
         dispatch({ type: 'setVehicleFilter', payload: filterOptions })
@@ -33,7 +27,6 @@ const Topbar = ({ ...props }) => {
         `${formatDate(state.filters.dateIn.from, { withTime: false })} - ${formatDate(state.filters.dateIn.to, { withTime: false })}`
         :
         'Период по дате въезда'
-
 
     return (
         <Stack
