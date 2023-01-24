@@ -3,8 +3,7 @@ import { useReactToPrint } from 'react-to-print'
 import { Row, Col, Container, Stack } from "react-bootstrap"
 
 const styles = {
-  fontSize: '14px',
-  border: '1px solid black',
+  fontSize: '12px'
 }
 
 const PrintPass = () => {
@@ -21,14 +20,19 @@ const PrintPass = () => {
     <>
       <div ref={componentRef} style={{ width: '100%', }}>
 
-        <Container fluid style={styles}>
+        <Container fluid style={styles} className='mt-2'>
           <Row >
-
-            <Col xs={1}>
-              Бокова лінія відриву
+            <Col xs={1} style={{ fontSize: '10px', position: 'relative' }}>
+              <div
+                style={{ writingMode: 'vertical-rl', position: 'absolute', top: 20, left: 0, bottom: 20, transform: 'rotate(180deg)' }}
+                className='text-center'
+              >
+                Після в'їзду на терріторію терміналу Ви забов'язані, не пізніше ніж 3 години, звернутися з усіма документами на товар в кімнату №______та подати ці документи уповноваженій посадовій особі митниці. У разі порушення встановленого терміну Вас буде притягнуто до адміністративної відповідальності за Митним кодексом України.
+                <br /> <span style={{ lineHeight: 2, fontSize: 11 }}> <b>Ознайомлений:________________________</b> </span>
+              </div>
             </Col>
 
-            <Col xs={11}>
+            <Col xs={11} className='border border-dark'>
 
               <Row>
                 <Col xs={9}>
@@ -97,6 +101,19 @@ const PrintPass = () => {
                     </Stack>
                   </Stack>
 
+
+
+                </Col>
+
+                <Col xs={3} className='text-center'>
+                  <span className="text-decoration-underline">Частина для митниці</span>
+                </Col>
+
+              </Row>
+
+
+              <Row>
+                <Col>
                   Відмітки митниці:<br />
                   Документи на товар подані:_________годин_________хвилин
 
@@ -107,24 +124,18 @@ const PrintPass = () => {
                       ПМК
                     </div>
 
-                    <div className='w-50 p-2 border border-secondary'>
+                    <div className='w-50 p-2'>
                       Дата прибуття: <br />
                       <b>15.04.2020 11:03</b><br />
                       Стоянка:
                     </div>
 
-                    <div className='w-50 border border-secondary'>
+                    <div className='w-50 border border-secondary p-3'>
                       Штрихкод
                     </div>
 
                   </Stack>
-
                 </Col>
-
-                <Col xs={3} className='text-center'>
-                  <span className="text-decoration-underline">Частина для митниці</span>
-                </Col>
-
               </Row>
 
 
