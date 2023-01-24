@@ -85,6 +85,40 @@ const PrintPass = () => {
                     </Stack>
                   </Stack>
 
+                  Вище вказаний транспортний засіб (контейнер) зареєстрував та пропустив на територію місця прибуття диспетчер:
+                  <Stack direction="horizontal" gap={3}>
+                    <Stack direction="vertical">
+                      <span className="ml-4" style={{ position: 'relative', top: 15 }}>Диспетчер І.Ф</span>
+                      <hr className="w-75" />
+                      <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>(П.І.Б., підпис)</span>
+                    </Stack>
+                    <Stack direction="horizontal" gap={3} className='w-50'>
+                      <span className="text-center">М.П.</span>
+                    </Stack>
+                  </Stack>
+
+                  Відмітки митниці:<br />
+                  Документи на товар подані:_________годин_________хвилин
+
+                  <Stack direction="horizontal">
+
+                    <div className='w-50 p-4 border border-secondary'>
+                      Місце штампу <br />
+                      ПМК
+                    </div>
+
+                    <div className='w-50 p-2 border border-secondary'>
+                      Дата прибуття: <br />
+                      <b>15.04.2020 11:03</b><br />
+                      Стоянка:
+                    </div>
+
+                    <div className='w-50 border border-secondary'>
+                      Штрихкод
+                    </div>
+
+                  </Stack>
+
                 </Col>
 
                 <Col xs={3} className='text-center'>
@@ -100,7 +134,7 @@ const PrintPass = () => {
           </Row>
         </Container>
 
-      </div>
+      </div >
       <button onClick={handlePrint}>Print pass</button>
     </>
   )
