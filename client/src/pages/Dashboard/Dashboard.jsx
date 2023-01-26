@@ -1,5 +1,5 @@
 import { useEffect, useContext } from 'react'
-import { Row } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import VehicleMovesList from '../../components/VehicleMovesList'
 import VehicleMoveDetails from '../../components/VehicleMoveDetails'
 import VehicleMoveActions from '../../components/VehicleMoveActions'
@@ -20,25 +20,22 @@ const Dashboard = () => {
 
 
     return (
-        <div>
-            <div className="row gx-2">
-                <div className="col-md-8 mt-1">
-                    <VehicleMovesList />
-                </div>
-                <div className="col-md-4 mt-1">
-                    <Stack>
-                        <VehicleMoveDetails move={vmState.items.find(move => move.id === vmState.selectedId)} />
-                        <Stack className='mt-1' direction='horizontal' gap={2}>
-                            {/* <PrintPass /> */}
-                        </Stack>
-                        <VehicleMoveActions vehicleMoveId={vmState.selectedId} className='mt-2' />
-                    </Stack>
-                </div>
-            </div>
-            <Row>
-                <PrintPass />
-            </Row>
-        </div>
+
+        <Row className="gx-2">
+            <Col className="mt-1" md='8'>
+                <VehicleMovesList />
+            </Col>
+            <Col className="mt-1" md='4'>
+                <Stack className='mb-1' direction='horizontal' gap={2}>
+                    <PrintPass />
+                </Stack>
+                <Stack>
+
+                    <VehicleMoveDetails move={vmState.items.find(move => move.id === vmState.selectedId)} />
+                    <VehicleMoveActions vehicleMoveId={vmState.selectedId} className='mt-2' />
+                </Stack>
+            </Col>
+        </Row>
 
     )
 }
