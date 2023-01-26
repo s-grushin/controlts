@@ -22,7 +22,7 @@ const Dashboard = () => {
     return (
 
         <Row className="gx-2">
-            <Col className="mt-1" md='8'>
+            <Col className="mt-1 overflow-auto vh-100" md='8'>
                 <VehicleMovesList />
             </Col>
             <Col className="mt-1" md='4'>
@@ -30,7 +30,6 @@ const Dashboard = () => {
                     <PrintPass />
                 </Stack>
                 <Stack>
-
                     <VehicleMoveDetails move={vmState.items.find(move => move.id === vmState.selectedId)} />
                     <VehicleMoveActions vehicleMoveId={vmState.selectedId} className='mt-2' />
                 </Stack>
