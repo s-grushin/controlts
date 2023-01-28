@@ -21,11 +21,11 @@ const Dashboard = () => {
 
     return (
 
-        <Row className="gx-2">
-            <Col className="mt-1 overflow-auto vh-100" md='8'>
+        <Row className="gx-2 mt-1">
+            <Col className="overflow-auto vh-100" md='8'>
                 <VehicleMovesList />
             </Col>
-            <Col className="mt-1" md='4'>
+            <Col md='4'>
                 <Stack className='mb-1' direction='horizontal' gap={2}>
                     <PrintPass />
                 </Stack>

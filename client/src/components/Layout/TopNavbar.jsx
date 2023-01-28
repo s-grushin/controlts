@@ -29,7 +29,9 @@ const TopNavbar = () => {
                                 <Button variant='outline-warning'>Оформить въезд</Button>
                             </LinkContainer>
                             <NavDropdown title="Сервис" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">Настройки</NavDropdown.Item>
+                                <LinkContainer to='/settings'>
+                                    <NavDropdown.Item>Настройки</NavDropdown.Item>
+                                </LinkContainer>
                                 <LinkContainer to='/catalog'>
                                     <NavDropdown.Item>Справочники</NavDropdown.Item>
                                 </LinkContainer>

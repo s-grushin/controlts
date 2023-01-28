@@ -24,7 +24,7 @@ import CreateUpdateVehicleType from './Catalog/VehicleTypes/CreateUpdateVehicleT
 import Dashboard from '../pages/Dashboard'
 import VehicleDetailsProvider from '../context/VehicleDetailsProvider'
 import ProfilePage from '../pages/ProfilePage'
-import PrintPass from '../printForms/Pass/PrintPass'
+import SettingsPage from '../pages/Settings'
 
 
 const AppRouter = () => {
@@ -43,12 +43,7 @@ const AppRouter = () => {
                         <Route path='profile' element={<ProfilePage />} />
                         <Route path='checkout' element={<VehicleDetailsProvider><CheckoutPage /></VehicleDetailsProvider>} />
                         <Route path='login' element={<Navigate to={'/'} />} />
-
-                        <Route path='printForms'>
-                            <Route index element={<PrintPass />} />
-                            <Route path='pass' element={< PrintPass />} />
-                        </Route>
-
+                        <Route path='Settings' element={<SettingsPage />} />
 
                         <Route path='catalog' element={<CatalogPage />}>
                             <Route path='services'>
