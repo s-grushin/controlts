@@ -5,7 +5,7 @@ async function getAll(req, res) {
 
     const data = await Constant.findAll()
     return res.json(data)
-    
+
 }
 
 async function getByName(req, res) {
@@ -23,11 +23,17 @@ async function getByName(req, res) {
 async function update(req, res) {
 
     const data = req.body
-    const updated = await Constant.update(data, { where: { id: data.id }, })
+
+    const bulkUpdate = Object.keys(data).map(key => {
+        return Constant.update({ value: data[key] }, { where: { name: key } })
+    })
+
+    const updated = await Promise.all(bulkUpdate)
+
     if (updated) {
         return res.status(200).json({ message: 'updated' })
     } else {
-        return res.status(400).json({ message: 'id not found' })
+        return res.status(400).json({ message: 'update error' })
     }
 }
 
