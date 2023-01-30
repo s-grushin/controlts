@@ -27,6 +27,7 @@ const Button = ({ children, variant, title, size, withSpinner, loading, disabled
                     role="status"
                     aria-hidden="true"
                 />}
+                &nbsp;
             {title}
             {children}
 

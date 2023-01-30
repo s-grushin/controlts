@@ -1,10 +1,9 @@
 import { useState, useCallback } from 'react'
 import axios from '../utils/axios'
 
+const useHttp = (initLoading = false) => {
 
-const useHttp = () => {
-
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(initLoading)
     const [error, setError] = useState('')
     const [requestName, setRequestName] = useState('')
 
@@ -22,17 +21,6 @@ const useHttp = () => {
 
     const clearError = useCallback(() => {
         setError('')
-    }, [])
-
-    //test
-    // eslint-disable-next-line
-    const requestWithDelay = useCallback((url, method, data, delay = 10000) => {
-        return new Promise((resolve) => {
-            setTimeout(async () => {
-                const res = await axios.request({ url, method, data })
-                resolve(res)
-            }, delay)
-        })
     }, [])
 
     return { request, loading, error, clearError, requestName, setRequestName }

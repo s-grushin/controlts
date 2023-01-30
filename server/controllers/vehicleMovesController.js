@@ -15,6 +15,7 @@ const VehicleModel = require('../models/VehicleModel')
 const Company = require('../models/Company')
 const VehicleType = require('../models/VehicleType');
 const User = require('../models/User');
+const Constant = require('../models/Constant');
 
 
 async function getAll(req, res) {
@@ -103,6 +104,47 @@ async function getPhotos(req, res) {
 
 }
 
+async function getCheckoutPassPrintData(req, res) {
+
+    const { vehicleMoveId } = req.query
+
+    if (!vehicleMoveId) {
+        console.log('not provided');
+        return res.status(400).json({ message: 'vehicleMoveId not provided' })
+    }
+
+    console.log(vehicleMoveId);
+
+    const printData = {}
+
+    printData.customZone = await Constant.findOne({ where: { name: 'customZone' }, attributes: ['value'] })
+    printData.vm = await VehicleMove.findByPk(vehicleMoveId, {
+        include: [
+            { model: Driver, as: 'driver' },
+            { model: Parking, as: 'parking' },
+            { model: VehicleBrand, as: 'brand' },
+            { model: VehicleModel, as: 'model' },
+            { model: DeliveryType, as: 'deliveryType' },
+            { model: Company, as: 'company' },
+            { model: User, as: 'userIn' },
+            { model: User, as: 'userOut' },
+            {
+                model: VehicleMoveDetail,
+                as: 'vehicleDetails', include: [
+                    { model: VehicleType, as: 'vehicleType' }
+                ]
+            },
+        ]
+    })
+
+    try {
+        return res.status(200).json({ printData })
+    } catch (error) {
+        return res.status(500).json({ message: `Не удалось получить фотографии. ${error.message}` })
+    }
+
+}
+
 async function create(req, res) {
 
     const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment, vehicleDetails } = req.body
@@ -179,10 +221,10 @@ async function test(req, res) {
     return res.json({ message: 'ok', data: asd })
 }
 
-
 module.exports.getCheckoutData = asyncHandler(getCheckoutData)
 module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
+module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
 module.exports.create = asyncHandler(create)
 module.exports.getAll = asyncHandler(getAll)
 module.exports.getById = asyncHandler(getById)

@@ -4,7 +4,7 @@ import VehicleMovesList from '../../components/VehicleMovesList'
 import VehicleMoveDetails from '../../components/VehicleMoveDetails'
 import VehicleMoveActions from '../../components/VehicleMoveActions'
 import { Stack } from 'react-bootstrap'
-import PrintPass from '../../printForms/Pass/PrintPass'
+import PrintPass from '../CheckoutPage/PrintForms/Pass/PrintPass'
 import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
 
 
@@ -27,7 +27,7 @@ const Dashboard = () => {
             </Col>
             <Col md='4'>
                 <Stack className='mb-1' direction='horizontal' gap={2}>
-                    <PrintPass />
+                    <PrintPass vehicleMoveId={vmState.selectedId} />
                 </Stack>
                 <Stack>
                     <VehicleMoveDetails move={vmState.items.find(move => move.id === vmState.selectedId)} />

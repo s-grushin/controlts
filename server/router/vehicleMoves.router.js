@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express()
-const { getCheckoutData, getAll, create, getWeightAndCameraData, getPhotos, getById, test } = require('../controllers/vehicleMovesController')
+const { getCheckoutData, getAll, create, getWeightAndCameraData, getPhotos, getById, getCheckoutPassPrintData, test } = require('../controllers/vehicleMovesController')
 
 router.get('/', getAll)
 router.get('/getCheckoutData', getCheckoutData)
 router.get('/getWeightAndCameraData', getWeightAndCameraData)
+router.get('/getCheckoutPassPrintData', getCheckoutPassPrintData)
 router.get('/:id', getById)
 router.get('/getPhotos', getPhotos)
 router.post('/', create)

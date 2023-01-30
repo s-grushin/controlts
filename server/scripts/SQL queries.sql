@@ -23,3 +23,10 @@ drop table users
 
 --UPDATES
 update vehicle_moves set date_in='2023-01-23 21:59:59.999' where id=4013 
+
+
+
+--getCheckoutPassPrintData
+select value from constants where name='customZone'
+
+select * from vehicle_moves where id=4013
