@@ -46,6 +46,7 @@ export const PrintButton = ({ clickHandler, title, loading }) => {
       withSpinner={true}
     >
       <Printer />
+      &nbsp;
       {title}
     </Button>
   )

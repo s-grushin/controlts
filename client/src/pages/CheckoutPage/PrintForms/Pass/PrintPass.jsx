@@ -2,7 +2,7 @@ import { useState, useRef } from "react"
 import { Row, Col, Container, Stack, Card } from "react-bootstrap"
 import ReactToPrint, { PrintButton } from "../../../../printForms/Pass/ReactToPrint"
 import useHttp from '../../../../hooks/useHttp'
-import Spinner from '../../../../components/Spinner'
+import { formatDate } from '../../../../utils/common'
 
 const styles = {
   fontSize: '12px'
@@ -13,7 +13,7 @@ const PrintPass = ({ vehicleMoveId }) => {
   const [contentReady, setContentReady] = useState(false)
   const printParams = useRef({})
 
-  const { request, loading, error } = useHttp()
+  const { request, loading } = useHttp(false, 1000)
 
   const clickHandler = async () => {
     if (!vehicleMoveId) {
@@ -34,17 +34,11 @@ const PrintPass = ({ vehicleMoveId }) => {
             onPrintFinished={() => setContentReady(false)}
 
           >
-            {
-              loading ? <Spinner />
-                :
-                error ? error
-                  :
-                  <Container fluid style={styles} className='mt-2'>
-                    <Form isFirst={true} params={printParams.current} />
-                    <hr style={{ borderTop: 'dotted 3px black' }} />
-                    <Form isFirst={false} params={printParams.current} />
-                  </Container>
-            }
+            <Container fluid style={styles} className='mt-2'>
+              <Form isFirst={true} params={printParams.current} />
+              <hr style={{ borderTop: 'dotted 3px black' }} />
+              <Form isFirst={false} params={printParams.current} />
+            </Container>
           </ReactToPrint>
           :
           null
@@ -57,7 +51,6 @@ const PrintPass = ({ vehicleMoveId }) => {
 
 const Form = ({ isFirst, params }) => {
 
-  console.log(params);
   const truck = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'truck')
   const trailer = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'trailer')
   const container = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'container')
@@ -191,8 +184,8 @@ const Form = ({ isFirst, params }) => {
 
               <div className='w-50 p-1'>
                 Дата прибуття: <br />
-                <b>15.04.2020 11:03</b><br />
-                Стоянка:
+                <b>{formatDate(params?.vm?.dateIn)}</b><br />
+                Стоянка: {params?.vm?.parking?.name}
               </div>
 
               <div className='w-50 border border-secondary p-4'>
