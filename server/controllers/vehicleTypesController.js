@@ -32,6 +32,7 @@ async function create(req, res) {
 async function update(req, res) {
 
     const data = req.body
+    delete req.body.progName
     const updated = await VehicleType.update(data, { where: { id: data.id } })
     if (updated) {
         return res.status(200).json({ message: 'updated' })
@@ -44,6 +45,7 @@ async function update(req, res) {
 async function deleteOne(req, res) {
 
     const { id } = req.body
+
     const deleted = await VehicleType.destroy({ where: { id } })
     if (deleted) {
         return res.status(200).json({ message: 'deleted' })

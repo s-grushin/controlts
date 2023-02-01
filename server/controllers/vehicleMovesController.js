@@ -113,8 +113,6 @@ async function getCheckoutPassPrintData(req, res) {
         return res.status(400).json({ message: 'vehicleMoveId not provided' })
     }
 
-    console.log(vehicleMoveId);
-
     const printData = {}
 
     printData.customZone = await Constant.findOne({ where: { name: 'customZone' }, attributes: ['value'] })

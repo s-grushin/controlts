@@ -23,7 +23,15 @@ const mssql = new Sequelize({
     define: {
         timestamps: false,
         underscored: true,
-    },
+    }
+})
+
+mssql.addHook('beforeBulkDestroy', async (options) => {
+
+    const entry = await options.model.findByPk(options.where.id)
+    if (entry?.dataValues?.progName) {
+        throw new Error('Запрещено удалять предпределенные элементы')
+    }
 
 })
 

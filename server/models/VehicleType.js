@@ -12,7 +12,15 @@ const VehicleType = db.define('VehicleType', {
         validate: {
             min: 1,
         }
+    },
+    progName: {
+        type: DataTypes.STRING(50)
     }
+
+})
+
+VehicleType.addHook('beforeBulkDestroy', (item, options) => {
+    //console.log(item, options);
 })
 
 module.exports = VehicleType

@@ -1,24 +1,41 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 const Constant = require('../models/Constant')
-const colors = require('colors')
+const VehicleType = require('../models/VehicleType')
 
 async function init() {
 
     await createRootUser()
     await fillConstants()
+    await fillVehicleTypes()
 }
 
 async function fillConstants() {
 
-    const defaultSettings = [
-        { name: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' },
+    const constants = [
+        { name: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' }
     ]
 
-    for (const item of defaultSettings) {
+    for (const item of constants) {
         const exists = await Constant.findOne({ where: { name: item.name } })
         if (!exists) {
             await Constant.create(item)
+        }
+    }
+}
+
+async function fillVehicleTypes() {
+
+    const vehicleTypes = [
+        { name: 'Тягач', orderInCheckout: 1, progName: 'truck' },
+        { name: 'Прицеп', orderInCheckout: 2, progName: 'trailer' },
+        { name: 'Контейнер', orderInCheckout: null, progName: 'container' },
+    ]
+
+    for (const item of vehicleTypes) {
+        const exists = await VehicleType.findOne({ where: { progName: item.progName } })
+        if (!exists) {
+            await VehicleType.create(item)
         }
     }
 }

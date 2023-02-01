@@ -25,26 +25,31 @@ const PrintPass = ({ vehicleMoveId }) => {
     printParams.current = data.printData
   }
 
-
   return (
     <>
-      <ReactToPrint title='Печать пропуска'
-        contentReady={contentReady}
-        onPrintFinished={() => setContentReady(false)}
+      {
+        contentReady ?
+          <ReactToPrint title='Печать пропуска'
+            contentReady={contentReady}
+            onPrintFinished={() => setContentReady(false)}
 
-      >
-        {
-          loading ? <Spinner />
-            :
-            error ? error
-              :
-              <Container fluid style={styles} className='mt-2'>
-                <Form isFirst={true} params={printParams.current} />
-                <hr style={{ borderTop: 'dotted 3px black' }} />
-                <Form isFirst={false} params={printParams.current} />
-              </Container>
-        }
-      </ReactToPrint>
+          >
+            {
+              loading ? <Spinner />
+                :
+                error ? error
+                  :
+                  <Container fluid style={styles} className='mt-2'>
+                    <Form isFirst={true} params={printParams.current} />
+                    <hr style={{ borderTop: 'dotted 3px black' }} />
+                    <Form isFirst={false} params={printParams.current} />
+                  </Container>
+            }
+          </ReactToPrint>
+          :
+          null
+      }
+
       <PrintButton clickHandler={clickHandler} title='Печать пропуска' loading={loading} />
     </>
   )
@@ -53,6 +58,9 @@ const PrintPass = ({ vehicleMoveId }) => {
 const Form = ({ isFirst, params }) => {
 
   console.log(params);
+  const truck = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'truck')
+  const trailer = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'trailer')
+  const container = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'container')
 
   return (
 
@@ -88,13 +96,14 @@ const Form = ({ isFirst, params }) => {
                 <hr />
                 <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>(вказується марка автомобіля)</span>
               </Stack>
+
               <Stack direction="vertical">
-                <span style={{ position: 'relative', top: 15 }}>WX3577A</span>
+                <span style={{ position: 'relative', top: 15 }}>{truck?.number}</span>
                 <hr />
                 <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>№(тягача)</span>
               </Stack>
               <Stack direction="vertical">
-                <span style={{ position: 'relative', top: 15 }}>WX3577A</span>
+                <span style={{ position: 'relative', top: 15 }}>{trailer?.number}</span>
                 <hr />
                 <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>№(причепу)</span>
               </Stack>
@@ -103,7 +112,7 @@ const Form = ({ isFirst, params }) => {
             <Stack direction="horizontal" gap={3} >
               <b>Контейнер:&nbsp;</b>
               <Stack direction="vertical">
-                <span style={{ position: 'relative', top: 15 }}>АА555ВВ</span>
+                <span style={{ position: 'relative', top: 15 }}>{container?.number}</span>
                 <hr className="w-50" />
                 <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>(в разі наявності вказується номер контейнера)</span>
               </Stack>
@@ -112,7 +121,7 @@ const Form = ({ isFirst, params }) => {
             <Stack direction="horizontal" gap={3} style={{ height: '50px' }}>
               <b>Вага:&nbsp;</b>
               <Stack direction="vertical">
-                <span style={{ position: 'relative', top: 15 }}>45500</span>
+                <span style={{ position: 'relative', top: 15 }}>{params?.vm?.weightIn}</span>
                 <Stack direction="horizontal">
                   <hr className="w-25" />
                   &nbsp;<span style={{ position: 'relative', bottom: 5 }}>кг.</span>
@@ -124,7 +133,7 @@ const Form = ({ isFirst, params }) => {
             <Stack direction="horizontal" gap={3} >
               <b>Водій:&nbsp;</b>
               <Stack direction="vertical">
-                <span style={{ position: 'relative', top: 15 }}>Ярмоленко В.І</span>
+                <span style={{ position: 'relative', top: 15 }}>{params?.vm?.driver?.fullName}</span>
                 <hr className="w-50" />
                 <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>(вказується прізвище та ініціали водія)</span>
               </Stack>
@@ -133,7 +142,7 @@ const Form = ({ isFirst, params }) => {
             Вище вказаний транспортний засіб (контейнер) зареєстрував та пропустив на територію місця прибуття диспетчер:
             <Stack direction="horizontal" gap={3}>
               <Stack direction="vertical">
-                <span className="ml-4" style={{ position: 'relative', top: 15 }}>Диспетчер І.Ф</span>
+                <span className="ml-4" style={{ position: 'relative', top: 15 }}>{params?.vm?.userIn?.fullName}</span>
                 <hr className="w-75" />
                 <span style={{ position: 'relative', bottom: 15, fontSize: '12px' }}>(П.І.Б., підпис)</span>
               </Stack>
