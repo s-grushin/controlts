@@ -79,7 +79,7 @@ const Form = ({ isFirst, params }) => {
         <Row>
           <Col xs={9}>
             <div className='text-center'>
-              <b>РАЗОВА ПЕРЕПУСТКА № 123885</b>
+              <b>РАЗОВА ПЕРЕПУСТКА № {params?.vm?.id}</b>
               <p>для в'їзду на територію <span className="text-decoration-underline">{params?.customZone?.value}</span></p>
             </div>
             <Stack direction="horizontal" gap={3} >
