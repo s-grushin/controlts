@@ -31,6 +31,7 @@ const VehicleMovesList = () => {
             <Table className='mt-1'>
               <thead>
                 <tr style={{ fontSize: 13, fontWeight: 'bold' }}>
+                  <th>№</th>
                   <th>Водитель</th>
                   <th>Дата въезда</th>
                   <th>Дата выезда</th>
@@ -46,6 +47,7 @@ const VehicleMovesList = () => {
                       onClick={() => dispatch({ type: 'setSelectedItem', payload: item.id })}
                       className={item.id === state.selectedId ? 'selectedTableRow' : 'asd'}
                     >
+                      <td>{item.id}</td>
                       <td>{item.driver.fullName}</td>
                       <td>{formatDate(item.dateIn, { withSeconds: true })}</td>
                       <td>{formatDate(item.dateOut, { withSeconds: true })}</td>
