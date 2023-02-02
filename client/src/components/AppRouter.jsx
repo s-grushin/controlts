@@ -25,6 +25,7 @@ import Dashboard from '../pages/Dashboard'
 import VehicleDetailsProvider from '../context/VehicleDetailsProvider'
 import ProfilePage from '../pages/ProfilePage'
 import SettingsPage from '../pages/Settings'
+import OutgoPage from '../pages/OutgoPage/OutgoPage'
 
 
 const AppRouter = () => {
@@ -42,6 +43,7 @@ const AppRouter = () => {
                         <Route index element={<Dashboard />} />
                         <Route path='profile' element={<ProfilePage />} />
                         <Route path='arrival' element={<VehicleDetailsProvider><ArrivalPage /></VehicleDetailsProvider>} />
+                        <Route path='outgo' element={<OutgoPage />} />
                         <Route path='login' element={<Navigate to={'/'} />} />
                         <Route path='Settings' element={<SettingsPage />} />
 

@@ -1,21 +1,24 @@
 import { Tabs, Tab } from 'react-bootstrap'
+import Dispatcher from './Dispatcher/Dispatcher'
 
 const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {
     return (
         <Tabs
             id="vehicle-move-actions"
             justify
+            defaultActiveKey='dispatcher'
             {...props}
         >
-            <Tab eventKey="dispatcher" title="Диспетчер">
-                Диспетчер
-            </Tab>
             <Tab eventKey="accountant" title="Бухгалтер">
                 Бухгалтер
             </Tab>
             <Tab eventKey="inspector" title="Инспектор">
                 Инспектор
             </Tab>
+            <Tab eventKey="dispatcher" title="Диспетчер" className='mt-2'>
+                <Dispatcher />
+            </Tab>
+
         </Tabs>
     )
 }
