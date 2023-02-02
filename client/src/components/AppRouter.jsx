@@ -5,7 +5,7 @@ import CatalogPage from '../pages/CatalogPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import LoginPage from '../pages/LoginPage'
 import { AppGlobalDataContext } from '../context/AppGlobalDataProvider'
-import CheckoutPage from '../pages/CheckoutPage/CheckoutPage'
+import ArrivalPage from '../pages/ArrivalPage'
 import UsersList from './Catalog/Users/UsersList'
 import CreateUpdateUser from './Catalog/Users/CreateUpdateUser'
 import CompaniesList from './Catalog/Companies/CompaniesList'
@@ -41,7 +41,7 @@ const AppRouter = () => {
                     <Route path='/' element={<Layout />}>
                         <Route index element={<Dashboard />} />
                         <Route path='profile' element={<ProfilePage />} />
-                        <Route path='checkout' element={<VehicleDetailsProvider><CheckoutPage /></VehicleDetailsProvider>} />
+                        <Route path='arrival' element={<VehicleDetailsProvider><ArrivalPage /></VehicleDetailsProvider>} />
                         <Route path='login' element={<Navigate to={'/'} />} />
                         <Route path='Settings' element={<SettingsPage />} />
 

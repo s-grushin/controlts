@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express()
-const { getCheckoutData, getAll, create, getWeightAndCameraData, getPhotos, getById, getCheckoutPassPrintData, test } = require('../controllers/vehicleMovesController')
+const { getArrivalData, getAll, create, getWeightAndCameraData, getPhotos, getById, getCheckoutPassPrintData, test } = require('../controllers/vehicleMovesController')
 
 router.get('/', getAll)
-router.get('/getCheckoutData', getCheckoutData)
+router.get('/getArrivalData', getArrivalData)
 router.get('/getWeightAndCameraData', getWeightAndCameraData)
 router.get('/getCheckoutPassPrintData', getCheckoutPassPrintData)
 router.get('/:id', getById)

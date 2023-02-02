@@ -11,7 +11,7 @@ import { VehicleDetailsContext } from '../../context/VehicleDetailsProvider'
 import VehiclePhoto from '../../components/VehiclePhoto'
 
 
-const CheckoutPage = () => {
+const ArrivalPage = () => {
 
     const [brandOptions, setBrandOptions] = useState([])
     const [modelOptions, setModelOptions] = useState([])
@@ -68,14 +68,14 @@ const CheckoutPage = () => {
     }
 
     useEffect(() => {
-        const getCheckoutData = async () => {
-            const { brands, deliveryTypes, parkings } = await request('/vehicleMoves/getCheckoutData')
+        const getArrivalData = async () => {
+            const { brands, deliveryTypes, parkings } = await request('/vehicleMoves/getArrivalData')
             setBrandOptions(brands)
             setDeliveryTypesOptions(deliveryTypes)
             setParkingOptions(parkings)
             setFormIsLoaded(true)
         }
-        getCheckoutData()
+        getArrivalData()
     }, [request])
 
     useEffect(() => {
@@ -278,4 +278,4 @@ const CheckoutPage = () => {
     )
 }
 
-export default CheckoutPage
+export default ArrivalPage

@@ -25,7 +25,7 @@ const TopNavbar = () => {
                         <Nav className="me-auto">
                             <Nav.Link href="#features">
                             </Nav.Link>
-                            <LinkContainer to="/checkout">
+                            <LinkContainer to="/arrival">
                                 <Button variant='outline-warning'>Оформить въезд</Button>
                             </LinkContainer>
                             <NavDropdown title="Сервис" id="collasible-nav-dropdown">

@@ -68,7 +68,7 @@ async function getById(req, res) {
 }
 
 
-async function getCheckoutData(req, res) {
+async function getArrivalData(req, res) {
 
     const brands = await VehicleBrand.findAll({})
     const deliveryTypes = await DeliveryType.findAll({})
@@ -219,7 +219,7 @@ async function test(req, res) {
     return res.json({ message: 'ok', data: asd })
 }
 
-module.exports.getCheckoutData = asyncHandler(getCheckoutData)
+module.exports.getArrivalData = asyncHandler(getArrivalData)
 module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
