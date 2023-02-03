@@ -10,7 +10,9 @@ const Service = db.define('Service', {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: 0
     },
+    progName: {
+        type: DataTypes.STRING(50)
+    }
 })
-
 
 module.exports = Service

@@ -1,12 +1,15 @@
 import { Button } from 'react-bootstrap'
 
-const AppButton = ({ children, onClick, variant, size, ...rest }) => {
+const AppButton = ({ children, onClick, variant, size, className, ...rest }) => {
+
+    const defaultClasses = 'd-flex align-items-center'
 
     return (
         <Button
             onClick={onClick}
             size={size}
             variant={variant}
+            className={[defaultClasses, className].join(' ')}
             {...rest}
         >
             {children}
@@ -16,7 +19,8 @@ const AppButton = ({ children, onClick, variant, size, ...rest }) => {
 
 AppButton.defaultProps = {
     variant: 'outline-primary',
-    size: 'sm'
+    size: 'sm',
+    className: ''
 }
 
 export default AppButton

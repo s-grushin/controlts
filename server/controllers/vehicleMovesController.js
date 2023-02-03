@@ -16,6 +16,7 @@ const Company = require('../models/Company')
 const VehicleType = require('../models/VehicleType');
 const User = require('../models/User');
 const Constant = require('../models/Constant');
+const Service = require('../models/Service')
 
 
 async function getAll(req, res) {
@@ -143,6 +144,13 @@ async function getCheckoutPassPrintData(req, res) {
 
 }
 
+async function getStartingServices(req, res) {
+
+    const parkingPerDay = await Service.findOne({ where: { progName: 'parkingPerDay' } })
+    return res.status(200).json([parkingPerDay])
+
+}
+
 async function create(req, res) {
 
     const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment, vehicleDetails } = req.body
@@ -193,37 +201,11 @@ async function create(req, res) {
     res.status(200).json({ message: 'created' })
 }
 
-async function test(req, res) {
-
-    const data = [{
-        number: 'AA 1234 XX',
-        photo: '/asdasd.jpg',
-        vehicleTypeId: 1,
-    },
-    {
-        number: 'CC 5689 SS',
-        photo: '/asdasd2.jpg',
-        vehicleTypeId: 2,
-    }]
-
-    const vm = await VehicleMove.findByPk(1)
-
-    try {
-        const detail1 = await vm.createVehicleDetail(data[0])
-        const detail2 = await vm.createVehicleDetail(data[1])
-    } catch (error) {
-        console.log(error);
-        throw error
-    }
-
-    return res.json({ message: 'ok', data: asd })
-}
-
 module.exports.getArrivalData = asyncHandler(getArrivalData)
 module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
+module.exports.getStartingServices = asyncHandler(getStartingServices)
 module.exports.create = asyncHandler(create)
 module.exports.getAll = asyncHandler(getAll)
 module.exports.getById = asyncHandler(getById)
-module.exports.test = asyncHandler(test)

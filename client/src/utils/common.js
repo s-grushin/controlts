@@ -28,3 +28,14 @@ export function formatDate(date, options = {}) {
     return dateString + timeString
 
 }
+
+export function calculateDiffBwDates(fromDate, toDate = new Date(), period = 'days') {
+
+    const diffMs = toDate.getTime() - fromDate.getTime()
+    if (period === 'days') {
+        return diffMs / (1000 * 60 * 60 * 24)
+    } else {
+        return 0
+    }
+
+}

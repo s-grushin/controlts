@@ -1,4 +1,5 @@
 import { Tabs, Tab } from 'react-bootstrap'
+import Accountant from './Accountant/Accountant'
 import Dispatcher from './Dispatcher/Dispatcher'
 
 const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {
@@ -10,7 +11,7 @@ const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {
             {...props}
         >
             <Tab eventKey="accountant" title="Бухгалтер">
-                Бухгалтер
+                <Accountant />
             </Tab>
             <Tab eventKey="inspector" title="Инспектор">
                 Инспектор
