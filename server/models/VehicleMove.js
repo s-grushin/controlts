@@ -8,6 +8,7 @@ const Parking = require('./Parking')
 const Company = require('./Company')
 const DeliveryType = require('./DeliveryType')
 const User = require('./User')
+const VehicleMoveService = require('./VehicleMoveService')
 
 
 const VehicleMove = db.define('VehicleMove', {
@@ -93,6 +94,9 @@ const VehicleMove = db.define('VehicleMove', {
 
 VehicleMove.hasMany(VehicleMoveDetail, { as: 'vehicleDetails', foreignKey: 'vehicleMoveId' })
 VehicleMoveDetail.belongsTo(VehicleMove)
+
+VehicleMove.hasMany(VehicleMoveService, { as: 'services', foreignKey: 'vehicleMoveId' })
+VehicleMoveService.belongsTo(VehicleMove)
 
 VehicleMove.belongsTo(VehicleModel, { foreignKey: 'modelId' })
 
