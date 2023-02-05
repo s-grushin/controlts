@@ -5,6 +5,7 @@ select * from vehicle_types
 select * from companies
 select * from constants
 select * from users
+select * from services
 
 DELETE vehicle_move_details 
 
@@ -24,6 +25,13 @@ drop table users
 --UPDATES
 update vehicle_moves set date_in='2023-01-23 21:59:59.999' where id=4013 
 update vehicle_types set prog_name='trailer' where id=2
+
+--add vehicle move service
+INSERT INTO vehicle_move_services
+VALUES (5023, 3, 2.5, 400, 1000);
+select * from vehicle_move_services
+DELETE FROM vehicle_move_services WHERE id=3
+
 
 
 

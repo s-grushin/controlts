@@ -34,8 +34,6 @@ const VehicleMoveService = db.define('VehicleMoveService', {
     },
 })
 
-VehicleMoveService.belongsTo(Service, { foreignKey: 'serviceId' })
-
-VehicleMoveService.sync({ force: true })
+VehicleMoveService.belongsTo(Service, { as: 'service', foreignKey: 'serviceId' })
 
 module.exports = VehicleMoveService

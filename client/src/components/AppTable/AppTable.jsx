@@ -1,56 +1,49 @@
-import { Table } from 'react-bootstrap'
-import uuid from 'react-uuid'
-import Topbar from './Topbar/Topbar'
+import Topbar from './Topbar'
+import Table from './Table'
+import { Column, Cell, Row } from './Table/classes'
+import AppTableContextProvider from './AppTableContextProvider'
 
-const AppTable = ({ columns, data, onCellChanged, headStyles, ...props }) => {
+const AppTable = ({ columns, initItems, handlers, options }) => {
 
-    return (
-        <>
-            <Topbar />
-            <Table bordered hover size="sm" {...props}>
-                <thead style={headStyles}>
-                    <tr>
-                        {columns.map(item => (
-                            <th
-                                key={item.id}
-                            >
-                                {item.title}
-                            </th>))}
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {data.map(row => (
-                        <tr
-                            key={uuid()}
-                        >
-                            {row.map(cell => (
-                                <td
-                                    key={uuid()}
-                                >
-                                    {cell}
-                                </td>))}
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
-        </>
-    )
+  return (
+    <AppTableContextProvider
+      columns={columns}
+      initItems={initItems}
+      options={options}
+      handlers={handlers}
+    >
+      {
+        options.withTopbar && <Topbar />
+      }
+      <Table />
+    </AppTableContextProvider>
+  )
 }
 
 AppTable.defaultProps = {
-    columns: [
-        { id: 1, name: 'number', title: '#' },
-        { id: 2, name: 'firstName', title: 'First Name' },
-        { id: 3, name: 'lastName', title: 'Last Name' },
-        { id: 4, name: 'username', title: 'Username' },
-    ],
-    data: [
-        ['1', 'Mark', 'Otto', '@mdo'],
-        ['2', 'Jacob', 'Thornton', '@fat'],
-        ['3', 'Larry the Bird', 'Lorem, ipsum.', 'iusto aliquam'],
-    ],
-    headStyles: {}
+
+  columns: [
+    new Column('number', '#'),
+    new Column('first', 'First name'),
+    new Column('last', 'Last name'),
+    new Column('handle', 'Handle'),
+  ],
+
+  initItems: [
+    new Row(new Cell('Mark', 'Mark'), new Cell('Otto', 'Otto'), new Cell('@mdo', '@mdo')),
+    new Row(new Cell('Jacob', 'Jacob'), new Cell('Thornton', 'Thornton'), new Cell('@fat', '@fat')),
+    new Row(new Cell('Larry the Bird', 'Larry the Bird'), new Cell(null, 'none'), new Cell('@twitter', '@twitter'))
+  ],
+
+  handlers: {
+    onItemAdded: () => { },
+    onSave: () => { }
+  },
+
+  options: {
+    withTopbar: true
+  }
+
 }
 
 export default AppTable

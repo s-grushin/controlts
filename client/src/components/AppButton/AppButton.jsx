@@ -1,19 +1,26 @@
+import Tooltip from '../Tooltip'
+import ConditionalWrapper from '../ConditionalWrapper'
 import { Button } from 'react-bootstrap'
 
-const AppButton = ({ children, onClick, variant, size, className, ...rest }) => {
+const AppButton = ({ children, onClick, variant, size, className, tooltipText, ...rest }) => {
 
     const defaultClasses = 'd-flex align-items-center'
 
     return (
-        <Button
-            onClick={onClick}
-            size={size}
-            variant={variant}
-            className={[defaultClasses, className].join(' ')}
-            {...rest}
+        <ConditionalWrapper
+            condition={tooltipText}
+            wrapper={(children) => <Tooltip tooltipText={tooltipText}>{children}</Tooltip>}
         >
-            {children}
-        </Button>
+            <Button
+                onClick={onClick}
+                size={size}
+                variant={variant}
+                className={[defaultClasses, className].join(' ')}
+                {...rest}
+            >
+                {children}
+            </Button>
+        </ConditionalWrapper>
     )
 }
 

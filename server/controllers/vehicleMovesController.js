@@ -16,7 +16,8 @@ const Company = require('../models/Company')
 const VehicleType = require('../models/VehicleType');
 const User = require('../models/User');
 const Constant = require('../models/Constant');
-const Service = require('../models/Service')
+const Service = require('../models/Service');
+const VehicleMoveService = require('../models/VehicleMoveService');
 
 
 async function getAll(req, res) {
@@ -51,6 +52,7 @@ async function getAll(req, res) {
                     { model: VehicleType, as: 'vehicleType' }
                 ]
             },
+            { model: VehicleMoveService, as: 'services', include: [{ model: Service, as: 'service' }] },
         ]
     })
     return res.json(data)

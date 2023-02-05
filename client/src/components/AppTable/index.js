@@ -1,3 +1,3 @@
-import AppTable from './AppTable'
+import AppTable from "./AppTable"
 
 export default AppTable
