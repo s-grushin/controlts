@@ -1,10 +1,10 @@
 import Accountant from './Accountant'
 import AccountantContextProvider from './context/AccountantContextProvider'
 
-const AccountantWrapper = () => {
+const AccountantWrapper = ({ vehicleMoveId }) => {
 
     return (
-        <AccountantContextProvider>
+        <AccountantContextProvider vehicleMoveId={vehicleMoveId}>
             <Accountant />
         </AccountantContextProvider>)
 

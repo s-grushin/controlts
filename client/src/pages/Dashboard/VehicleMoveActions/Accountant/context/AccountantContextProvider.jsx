@@ -1,4 +1,4 @@
-import { useReducer, createContext } from "react"
+import { useEffect, useReducer, createContext } from "react"
 import uuid from "react-uuid"
 import axios from '../../../../../utils/axios'
 
@@ -36,6 +36,9 @@ const reducer = (state, action) => {
         case 'setIsLoading':
             return { ...state, isLoading: action.payload }
 
+        case 'setVehicleMoveId':
+            return { ...state, vehicleMoveId: action.payload }
+
         default:
             return { ...state }
     }
@@ -57,7 +60,8 @@ const initState = {
     services: [],
     selectedServiceId: null,
     servicesModified: false,
-    isLoading: false
+    isLoading: false,
+    vehicleMoveId: null
 }
 
 
@@ -65,7 +69,7 @@ export const saveServices = async (state, dispatch) => {
 
     dispatch({ type: 'setIsLoading', payload: true })
     try {
-        const res = await axios('/vehicleMoves/saveServices', { method: 'patch', data: { vmId: state.selectedServiceId, services: state.services } })
+        const res = await axios('/vehicleMoves/saveServices', { method: 'patch', data: { vmId: state.vehicleMoveId, services: state.services } })
         console.log(res);
     } catch (error) {
 
@@ -79,6 +83,10 @@ export const saveServices = async (state, dispatch) => {
 const AccountantContextProvider = ({ children, vehicleMoveId }) => {
 
     const [state, dispatch] = useReducer(reducer, initState)
+
+    useEffect(() => {
+        dispatch({ type: 'setVehicleMoveId', payload: vehicleMoveId })
+    }, [vehicleMoveId])
 
     return (
         <AccountantContext.Provider value={{ state, dispatch }}>

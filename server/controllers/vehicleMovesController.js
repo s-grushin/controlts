@@ -157,14 +157,22 @@ async function saveServices(req, res) {
 
     const { vmId, services } = req.body
 
-    console.log({ vmId, services })
+    const servicesForCreate = services.map(item => {
+        return {
+            vehicleMoveId: vmId,
+            serviceId: item.serviceId,
+            quantity: item.quantity,
+            price: item.price,
+            summ: item.summ,
+        }
+    })
 
-    const vehicleMove = await VehicleMove.findByPk(vmId)
-    console.log(vehicleMove);
-    console.log(services);
-    //const parkingPerDay = await Service.findOne({ where: { progName: 'parkingPerDay' } })
+    await db.transaction(async (t) => {
+        await VehicleMoveService.destroy({ where: { vehicleMoveId: vmId }, transaction: t })
+        await VehicleMoveService.bulkCreate(servicesForCreate, { transaction: t })
+    })
+
     return res.status(200).json({ message: 'ok' })
-
 }
 
 async function create(req, res) {

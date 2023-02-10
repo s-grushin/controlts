@@ -1,6 +1,7 @@
 select * from vehicle_moves order by date_in
 select * from parkings
 select * from vehicle_move_details
+select * from vehicle_move_services
 select * from vehicle_types
 select * from companies
 select * from constants
