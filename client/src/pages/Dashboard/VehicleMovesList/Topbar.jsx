@@ -1,15 +1,17 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
-import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
-import DateRangePicker from '../DateRangePicker'
-import { availableFilters } from '../../context/VehicleMovesProvider'
-import { formatDate } from '../../utils/common'
+import DateRangePicker from '../../../components/DateRangePicker'
+import { availableFilters } from './context/VehicleMovesProvider'
+import { formatDate } from '../../../utils/common'
+import useVehicleMovesContext from './hooks/useVehicleMovesContext'
+
 
 const Topbar = ({ ...props }) => {
 
     const [vehicleFilterText, setVehicleFilterText] = useState('Все')
 
-    const { state, dispatch } = useContext(VehicleMovesContext)
+    const { contextValue } = useVehicleMovesContext()
+    const { state, dispatch } = contextValue
 
     const setVehicleFilterHandler = (filterOptions, event) => {
         dispatch({ type: 'setVehicleFilter', payload: filterOptions })

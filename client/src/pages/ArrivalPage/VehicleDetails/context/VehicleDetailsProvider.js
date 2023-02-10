@@ -1,4 +1,14 @@
+import { useEffect, useReducer, createContext, useCallback } from "react"
+import useHttp from "../../../../hooks/useHttp"
 import uuid from "react-uuid"
+
+
+const ititState = {
+    emptyRow: { id: '', vehicleTypeId: '', number: '', photoUrl: '' },
+    selectedRowId: null,
+    vehicleTypes: [],
+    rows: []
+}
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -67,4 +77,34 @@ const reducer = (state, action) => {
     }
 }
 
-export default reducer
+export const VehicleDetailsContext = createContext()
+
+export const VehicleDetailsProvider = ({ children }) => {
+
+    const [state, dispatch] = useReducer(reducer, ititState)
+    const { request } = useHttp()
+
+    const fetchVehicleTypes = useCallback(async () => {
+        const { rows } = await request('/vehicleTypes')
+        dispatch({ type: 'fillVehicleTypes', payload: rows })
+        dispatch({ type: 'setRowsByDefault' })
+    }, [request])
+
+    useEffect(() => {
+
+        fetchVehicleTypes()
+
+    }, [fetchVehicleTypes])
+
+
+    return (
+        <VehicleDetailsContext.Provider value={{ state, dispatch }}>
+            {children}
+        </VehicleDetailsContext.Provider>
+    )
+}
+
+
+export default VehicleDetailsProvider
+
+

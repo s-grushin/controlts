@@ -1,9 +1,9 @@
-import AppToolbar from '../../../../AppTable/Toolbar'
+import AppToolbar from '../../../../../../components/AppTable/Toolbar'
 import useAccountantContext from '../../hooks/useAccountantContext'
 
 const Toolbar = () => {
 
-    const { contextValue } = useAccountantContext()
+    const { contextValue, saveServices } = useAccountantContext()
     const { dispatch, state } = contextValue
 
     const add = () => {
@@ -24,10 +24,7 @@ const Toolbar = () => {
     }
 
     const save = () => {
-
-        console.log('save');
-        dispatch({ type: 'setServicesModified', payload: false })
-
+        saveServices(state, dispatch)
     }
 
     const disabledBtn = {

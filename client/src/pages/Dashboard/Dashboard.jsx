@@ -1,16 +1,17 @@
-import { useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
-import VehicleMovesList from '../../components/VehicleMovesList'
-import VehicleMoveDetails from '../../components/VehicleMoveDetails'
-import VehicleMoveActions from '../../components/VehicleMoveActions'
+import VehicleMovesList from './VehicleMovesList'
+import VehicleMoveDetails from './VehicleMoveDetails'
+import VehicleMoveActions from './VehicleMoveActions'
 import { Stack } from 'react-bootstrap'
 import PrintPass from '../ArrivalPage/PrintForms/Pass/PrintPass'
-import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
+import useVehicleMovesContext from './VehicleMovesList/hooks/useVehicleMovesContext'
 
 
 const Dashboard = () => {
 
-    const { state: vmState, fetchItems } = useContext(VehicleMovesContext)
+    const { contextValue } = useVehicleMovesContext()
+    const { state: vmState, fetchItems } = contextValue
 
     useEffect(() => {
 

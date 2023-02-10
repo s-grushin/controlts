@@ -1,5 +1,5 @@
 import { Card, Row, Col, Stack } from "react-bootstrap"
-import AppButton from '../../../components/AppButton'
+import AppButton from '../../../../components/AppButton'
 
 const Dispatcher = () => {
     return (

@@ -22,7 +22,7 @@ import CreateUpdateVehicleModel from './Catalog/VehicleBrands/CreateUpdateVehicl
 import VehicleTypesList from './Catalog/VehicleTypes/VehicleTypesList'
 import CreateUpdateVehicleType from './Catalog/VehicleTypes/CreateUpdateVehicleType'
 import Dashboard from '../pages/Dashboard'
-import VehicleDetailsProvider from '../context/VehicleDetailsProvider'
+import VehicleDetailsProvider from '../pages/ArrivalPage/VehicleDetails/context/VehicleDetailsProvider'
 import ProfilePage from '../pages/ProfilePage'
 import SettingsPage from '../pages/Settings'
 import OutgoPage from '../pages/OutgoPage/OutgoPage'

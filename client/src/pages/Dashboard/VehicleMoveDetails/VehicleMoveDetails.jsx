@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Card, FormCheck, Table, Row, Col, Stack } from 'react-bootstrap'
-import InputGroup from './InputGroup'
-import VehiclePhoto from './VehiclePhoto'
+import InputGroup from '../../../components/InputGroup'
+import VehiclePhoto from '../../../components/VehiclePhoto'
 
 const VehicleMoveDetails = ({ move }) => {
 

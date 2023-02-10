@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from 'react'
-import AppTable from "../../../../AppTable/AppTable"
-import useHttp from '../../../../../hooks/useHttp'
+import AppTable from "../../../../../../components/AppTable"
+import useHttp from '../../../../../../hooks/useHttp'
 import './Table.module.css'
 import useAccountantContext from '../../hooks/useAccountantContext'
-import { VehicleMovesContext } from '../../../../../context/VehicleMovesProvider'
+import { VehicleMovesContext } from '../../../../VehicleMovesList/context/VehicleMovesProvider'
 
 const Table = () => {
 

@@ -6,10 +6,9 @@ import Button from '../../components/Button'
 import Spinner from '../../components/Spinner'
 import useHttp from '../../hooks/useHttp'
 import Selector from '../../components/Selectors/Selector'
-import VehicleDetails from '../../components/VehicleDetails'
-import { VehicleDetailsContext } from '../../context/VehicleDetailsProvider'
+import VehicleDetails from './VehicleDetails'
+import { VehicleDetailsContext } from './VehicleDetails/context/VehicleDetailsProvider'
 import VehiclePhoto from '../../components/VehiclePhoto'
-
 
 const ArrivalPage = () => {
 

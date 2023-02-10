@@ -1,5 +1,6 @@
-import { useReducer, createContext } from "react";
-import uuid from "react-uuid";
+import { useReducer, createContext } from "react"
+import uuid from "react-uuid"
+import axios from '../../../../../utils/axios'
 
 export const AccountantContext = createContext()
 
@@ -32,6 +33,9 @@ const reducer = (state, action) => {
         case 'setServicesModified':
             return { ...state, servicesModified: action.payload }
 
+        case 'setIsLoading':
+            return { ...state, isLoading: action.payload }
+
         default:
             return { ...state }
     }
@@ -52,11 +56,27 @@ export const getEmptyServiceRow = () => {
 const initState = {
     services: [],
     selectedServiceId: null,
-    servicesModified: false
+    servicesModified: false,
+    isLoading: false
 }
 
 
-const AccountantContextProvider = ({ children }) => {
+export const saveServices = async (state, dispatch) => {
+
+    dispatch({ type: 'setIsLoading', payload: true })
+    try {
+        const res = await axios('/vehicleMoves/saveServices', { method: 'patch', data: { vmId: state.selectedServiceId, services: state.services } })
+        console.log(res);
+    } catch (error) {
+
+    } finally {
+        dispatch({ type: 'setIsLoading', payload: false })
+    }
+
+}
+
+
+const AccountantContextProvider = ({ children, vehicleMoveId }) => {
 
     const [state, dispatch] = useReducer(reducer, initState)
 

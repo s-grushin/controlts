@@ -153,6 +153,20 @@ async function getStartingServices(req, res) {
 
 }
 
+async function saveServices(req, res) {
+
+    const { vmId, services } = req.body
+
+    console.log({ vmId, services })
+
+    const vehicleMove = await VehicleMove.findByPk(vmId)
+    console.log(vehicleMove);
+    console.log(services);
+    //const parkingPerDay = await Service.findOne({ where: { progName: 'parkingPerDay' } })
+    return res.status(200).json({ message: 'ok' })
+
+}
+
 async function create(req, res) {
 
     const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment, vehicleDetails } = req.body
@@ -209,5 +223,6 @@ module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
 module.exports.getStartingServices = asyncHandler(getStartingServices)
 module.exports.create = asyncHandler(create)
+module.exports.saveServices = asyncHandler(saveServices)
 module.exports.getAll = asyncHandler(getAll)
 module.exports.getById = asyncHandler(getById)

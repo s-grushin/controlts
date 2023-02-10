@@ -1,15 +1,14 @@
-import Table from '../Table'
-import { formatDate } from '../../utils/common'
+import Table from '../../../components/Table'
+import { formatDate } from '../../../utils/common'
 import Topbar from './Topbar'
-import { VehicleMovesContext } from '../../context/VehicleMovesProvider'
-import { useContext } from 'react'
-import Spinner from '../../components/Spinner'
-import AppAlert from '../../components/AppAlert'
-
+import Spinner from '../../../components/Spinner'
+import AppAlert from '../../../components/AppAlert'
+import useVehicleMovesContext from './hooks/useVehicleMovesContext'
 
 const VehicleMovesList = () => {
 
-  const { state, dispatch } = useContext(VehicleMovesContext)
+  const { contextValue } = useVehicleMovesContext()
+  const { state, dispatch } = contextValue
 
   return (
     <>

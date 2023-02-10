@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 import { Stack } from 'react-bootstrap'
 import { DashCircle, PlusCircle } from 'react-bootstrap-icons'
-import { VehicleDetailsContext } from '../../context/VehicleDetailsProvider'
-import Button from '../Button'
-import Table from '../Table'
+import { VehicleDetailsContext } from './context/VehicleDetailsProvider'
+import Button from '../../../components/Button'
+import Table from '../../../components/Table'
 
 const VehicleDetails = () => {
 

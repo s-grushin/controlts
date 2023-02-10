@@ -1,5 +1,5 @@
 import Dashboard from './Dashboard'
-import VehicleMovesProvider from '../../context/VehicleMovesProvider'
+import VehicleMovesProvider from './VehicleMovesList/context/VehicleMovesProvider'
 
 
 const DashboardWrapper = () => {

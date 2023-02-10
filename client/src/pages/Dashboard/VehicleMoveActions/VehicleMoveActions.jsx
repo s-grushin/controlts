@@ -11,7 +11,7 @@ const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {
             {...props}
         >
             <Tab eventKey="accountant" title="Бухгалтер">
-                <Accountant />
+                <Accountant vehicleMoveId/>
             </Tab>
             <Tab eventKey="inspector" title="Инспектор">
                 Инспектор
