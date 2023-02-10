@@ -6,7 +6,7 @@ async function getAll(req, res) {
     let limit = parseInt(req.query.limit) || 0
     let offset = parseInt(req.query.offset) || 0
 
-    const data = await Service.findAndCountAll({ limit, offset })
+    const data = await Service.findAndCountAll({ limit, offset, order: [['name']] })
     return res.json(data)
 }
 

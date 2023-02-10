@@ -1,3 +1,3 @@
-import ServiceTable2 from "./ServiceTable"
+import ServiceTable from './ServiceTable'
 
-export default ServiceTable2
+export default ServiceTable

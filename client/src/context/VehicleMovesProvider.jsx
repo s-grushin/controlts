@@ -61,6 +61,37 @@ const reducer = (state, action) => {
         case 'setDateInFilter':
             return { ...state, filters: { ...state.filters, dateIn: action.payload } }
 
+        case 'changeService':
+
+            const { rowId, key, value } = action.payload
+            const vehicleMove = state.items.find((item) => item.id === state.selectedId)
+            const services = vehicleMove.services
+            const updatedServices = services.map(item => {
+                if (item.id === rowId) {
+                    return { ...item, [key]: value }
+                } else {
+                    return { ...item }
+                }
+            })
+
+            vehicleMove.services = updatedServices
+
+            return { ...state }
+
+        case 'addService':
+
+            const vm1 = state.items.find((item) => item.id === state.selectedId)
+            const vm1Services = vm1.services
+            const vm1UpdatedServices = [...vm1Services, action.payload]
+            vm1.services = vm1UpdatedServices
+            return { ...state }
+
+        case 'deleteService':
+            return { ...state }
+
+        case 'deleteAllServices':
+            return { ...state, }
+
         default:
             return { ...state }
     }

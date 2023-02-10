@@ -1,5 +1,5 @@
 import { Tabs, Tab } from 'react-bootstrap'
-import Accountant from './Accountant/Accountant'
+import Accountant from './Accountant'
 import Dispatcher from './Dispatcher/Dispatcher'
 
 const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {

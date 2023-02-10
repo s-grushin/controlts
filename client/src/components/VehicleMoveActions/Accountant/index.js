@@ -1,3 +1,13 @@
 import Accountant from './Accountant'
+import AccountantContextProvider from './context/AccountantContextProvider'
 
-export default Accountant
+const AccountantWrapper = () => {
+
+    return (
+        <AccountantContextProvider>
+            <Accountant />
+        </AccountantContextProvider>)
+
+}
+
+export default AccountantWrapper
