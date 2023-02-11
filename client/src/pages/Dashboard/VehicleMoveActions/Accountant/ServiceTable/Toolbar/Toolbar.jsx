@@ -1,10 +1,14 @@
 import AppToolbar from '../../../../../../components/AppTable/Toolbar'
 import useAccountantContext from '../../hooks/useAccountantContext'
+import useVehicleMovesContext from '../../../../VehicleMovesList/hooks/useVehicleMovesContext'
 
 const Toolbar = () => {
 
     const { contextValue, saveServices } = useAccountantContext()
     const { dispatch, state } = contextValue
+
+    const vmContext = useVehicleMovesContext()
+    const vmDispatch = vmContext.contextValue.dispatch
 
     const add = () => {
         dispatch({ type: 'addService' })
@@ -24,7 +28,15 @@ const Toolbar = () => {
     }
 
     const save = () => {
+
+        if (state.services.find(item => item.serviceId === '0')) {
+            return dispatch({ type: 'setError', payload: 'Не заполнены услуги' })
+        }
+
         saveServices(state, dispatch)
+        const preparedServices = state.services.map(item => { return { ...item, service: { id: item.serviceId, name: item.serviceId } } })
+        vmDispatch({ type: 'setServices', payload: preparedServices })
+        dispatch({ type: 'setServicesModified', payload: false })
     }
 
     const disabledBtn = {

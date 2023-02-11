@@ -39,6 +39,9 @@ const reducer = (state, action) => {
         case 'setVehicleMoveId':
             return { ...state, vehicleMoveId: action.payload }
 
+        case 'setError':
+            return { ...state, error: action.payload }
+
         default:
             return { ...state }
     }
@@ -61,6 +64,7 @@ const initState = {
     selectedServiceId: null,
     servicesModified: false,
     isLoading: false,
+    error: null,
     vehicleMoveId: null
 }
 
@@ -68,11 +72,12 @@ const initState = {
 export const saveServices = async (state, dispatch) => {
 
     dispatch({ type: 'setIsLoading', payload: true })
+    dispatch({ type: 'setError', payload: null })
     try {
-        const res = await axios('/vehicleMoves/saveServices', { method: 'patch', data: { vmId: state.vehicleMoveId, services: state.services } })
-        console.log(res);
+        await axios('/vehicleMoves/saveServices', { method: 'patch', data: { vmId: state.vehicleMoveId, services: state.services } })
     } catch (error) {
-
+        const errorMsg = `${error.message} ${error.response?.data?.message}`
+        dispatch({ type: 'setError', payload: errorMsg })
     } finally {
         dispatch({ type: 'setIsLoading', payload: false })
     }

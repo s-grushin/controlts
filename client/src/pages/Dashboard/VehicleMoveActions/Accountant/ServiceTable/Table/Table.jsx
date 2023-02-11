@@ -56,6 +56,7 @@ const Table = () => {
         }
 
         dispatch({ type: 'editService', payload: { rowId, key: e.target.name, value: e.target.value } })
+        dispatch({ type: 'setServicesModified', payload: true })
     }
 
     return (

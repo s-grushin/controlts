@@ -9,14 +9,14 @@ const VehicleMoveService = db.define('VehicleMoveService', {
     },
     serviceId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
     },
     quantity: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         validate: {
-            notEmpty: true
-        }
+            notEmpty: true,
+        },
     },
     price: {
         type: DataTypes.DECIMAL(10, 2),

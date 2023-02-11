@@ -86,6 +86,12 @@ const reducer = (state, action) => {
             vm1.services = vm1UpdatedServices
             return { ...state }
 
+        case 'setServices':
+            const vm2 = state.items.find((item) => item.id === state.selectedId)
+            const newServices = action.payload
+            vm2.services = newServices
+            return { ...state }
+
         case 'deleteService':
             return { ...state }
 
