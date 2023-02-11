@@ -21,15 +21,15 @@ const Toolbar = () => {
         dispatch({ type: 'setServicesModified', payload: true })
     }
 
-    const deleteAll = () => {
-        dispatch({ type: 'deleteAllServices' })
-        dispatch({ type: 'setSelectedServiceId', payload: null })
-        dispatch({ type: 'setServicesModified', payload: true })
-    }
+    // const deleteAll = () => {
+    //     dispatch({ type: 'deleteAllServices' })
+    //     dispatch({ type: 'setSelectedServiceId', payload: null })
+    //     dispatch({ type: 'setServicesModified', payload: true })
+    // }
 
     const save = () => {
 
-        if (state.services.find(item => item.serviceId === '0')) {
+        if (state.services.find(item => !item.serviceId)) {
             return dispatch({ type: 'setError', payload: 'Не заполнены услуги' })
         }
 
@@ -47,7 +47,7 @@ const Toolbar = () => {
 
     return (
         <div>
-            <AppToolbar handlers={{ add, deleteOne, deleteAll, save }} disabledBtn={disabledBtn} />
+            <AppToolbar handlers={{ add, deleteOne, save }} disabledBtn={disabledBtn} />
         </div>
     )
 }

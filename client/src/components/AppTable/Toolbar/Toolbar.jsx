@@ -27,14 +27,18 @@ const Toolbar = ({ handlers, disabledBtn, renderExtraButtons }) => {
                 <DashCircle />
             </AppButton>
 
-            <AppButton
-                variant='outline-danger'
-                onClick={deleteAll}
-                tooltipText='Очистить все'
-                disabled={deleteAllDisabled}
-            >
-                <XCircleFill />
-            </AppButton>
+            {
+                deleteAll &&
+                <AppButton
+                    variant='outline-danger'
+                    onClick={deleteAll}
+                    tooltipText='Очистить все'
+                    disabled={deleteAllDisabled}
+                >
+                    <XCircleFill />
+                </AppButton>
+            }
+
 
             <AppButton
                 variant='outline-success'
