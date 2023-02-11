@@ -4,7 +4,7 @@ select * from vehicle_move_details
 select * from vehicle_move_services
 select * from vehicle_types
 select * from companies
-select * from constants
+select * from settings
 select * from users
 select * from services
 
@@ -37,6 +37,6 @@ DELETE FROM vehicle_move_services WHERE id=3
 
 
 --getCheckoutPassPrintData
-select value from constants where name='customZone'
+select value from settings where prog_name='customZone'
 
 select * from vehicle_moves where id=4013

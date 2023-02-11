@@ -25,7 +25,7 @@ async function update(req, res) {
     const data = req.body
 
     const bulkUpdate = Object.keys(data).map(key => {
-        return Setting.update({ value: data[key] }, { where: { name: key } })
+        return Setting.update({ value: data[key] }, { where: { progName: key } })
     })
 
     const updated = await Promise.all(bulkUpdate)
