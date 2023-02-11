@@ -1,27 +1,27 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
-const Constant = require('../models/Constant')
+const Setting = require('../models/Setting')
 const VehicleType = require('../models/VehicleType')
 const Service = require('../models/Service')
 
 async function init() {
 
     await createRootUser()
-    await fillConstants()
+    await fillSettings()
     await fillVehicleTypes()
     await fillServices()
 }
 
-async function fillConstants() {
+async function fillSettings() {
 
-    const constants = [
-        { name: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' }
+    const settings = [
+        { progName: 'customZone', value: 'Таможенная зона', description: 'Название таможенной зоны для пропуска на вьезд' }
     ]
 
-    for (const item of constants) {
-        const exists = await Constant.findOne({ where: { name: item.name } })
+    for (const item of settings) {
+        const exists = await Setting.findOne({ where: { progName: item.progName } })
         if (!exists) {
-            await Constant.create(item)
+            await Setting.create(item)
         }
     }
 }

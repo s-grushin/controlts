@@ -15,7 +15,7 @@ const VehicleModel = require('../models/VehicleModel')
 const Company = require('../models/Company')
 const VehicleType = require('../models/VehicleType');
 const User = require('../models/User');
-const Constant = require('../models/Constant');
+const Setting = require('../models/Setting');
 const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
 
@@ -118,7 +118,7 @@ async function getCheckoutPassPrintData(req, res) {
 
     const printData = {}
 
-    printData.customZone = await Constant.findOne({ where: { name: 'customZone' }, attributes: ['value'] })
+    printData.customZone = await Setting.findOne({ where: { progName: 'customZone' }, attributes: ['value'] })
     printData.vm = await VehicleMove.findByPk(vehicleMoveId, {
         include: [
             { model: Driver, as: 'driver' },

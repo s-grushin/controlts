@@ -1,8 +1,14 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 
-const Constant = db.define('Constant', {
-    name: {
+const Setting = db.define('Setting', {
+    value: {
+        type: DataTypes.STRING,
+    },
+    description: {
+        type: DataTypes.STRING,
+    },
+    progName: {
         type: DataTypes.STRING(50),
         allowNull: false,
         validate: {
@@ -10,12 +16,9 @@ const Constant = db.define('Constant', {
         },
         unique: true
     },
-    value: {
-        type: DataTypes.STRING(100),
+    userId: {
+        type: DataTypes.INTEGER,
     },
-    description: {
-        type: DataTypes.STRING,
-    }
 })
 
-module.exports = Constant
+module.exports = Setting

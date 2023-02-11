@@ -1,9 +1,9 @@
 const asyncHandler = require('express-async-handler')
-const Constant = require('../models/Constant')
+const Setting = require('../models/Setting')
 
 async function getAll(req, res) {
 
-    const data = await Constant.findAll()
+    const data = await Setting.findAll()
     return res.json(data)
 
 }
@@ -11,7 +11,7 @@ async function getAll(req, res) {
 async function getByName(req, res) {
 
     const { name } = req.params
-    const data = await Constant.findOne({ where: { name } })
+    const data = await Setting.findOne({ where: { name } })
     if (data) {
         return res.status(200).json(data)
     } else {
@@ -25,7 +25,7 @@ async function update(req, res) {
     const data = req.body
 
     const bulkUpdate = Object.keys(data).map(key => {
-        return Constant.update({ value: data[key] }, { where: { name: key } })
+        return Setting.update({ value: data[key] }, { where: { name: key } })
     })
 
     const updated = await Promise.all(bulkUpdate)

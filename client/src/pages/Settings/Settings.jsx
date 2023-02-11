@@ -1,18 +1,18 @@
 import { Row, Col, Tab, Nav } from 'react-bootstrap'
 import PersonalSettings from './Tabs/PersonalSettings'
-import Constants from './Tabs/Constants'
+import GlobalSettings from './Tabs/GlobalSettings'
 
 
 const menu = [
-    { id: 1, title: 'Персональные настройки', name: 'personalSettings' },
-    { id: 2, title: 'Константы', name: 'constants' },
+    { id: 1, title: 'Глобальные настройки', name: 'globalSettings' },
+    { id: 2, title: 'Персональные настройки', name: 'personalSettings' },
     { id: 3, title: 'Прочее', name: 'other' },
 ]
 
 const Settings = () => {
 
     return (
-        <Tab.Container defaultActiveKey="personalSettings" className='mt-1'>
+        <Tab.Container defaultActiveKey="settings" className='mt-1'>
             <Row className='mx-auto mt-2'>
                 <Col sm={4}>
                     <Nav variant="pills" className="flex-column">
@@ -34,14 +34,14 @@ const Settings = () => {
                 </Col>
                 <Col sm={5}>
                     <Tab.Content>
+                        <Tab.Pane eventKey="globalSettings">
+                            <GlobalSettings />
+                        </Tab.Pane>
                         <Tab.Pane eventKey="personalSettings">
                             <PersonalSettings />
                         </Tab.Pane>
-                        <Tab.Pane eventKey="constants">
-                            <Constants />
-                        </Tab.Pane>
                         <Tab.Pane eventKey="other">
-                            Пусто
+                            Other
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>

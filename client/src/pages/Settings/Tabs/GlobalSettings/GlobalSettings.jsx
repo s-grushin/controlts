@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Form, Stack } from 'react-bootstrap'
-import Button from '../../../components/Button'
-import Spinner from '../../../components/Spinner'
-import useHttp from '../../../hooks/useHttp'
-import useInputChange from '../../../hooks/useInputChange'
+import Button from '../../../../components/Button'
+import Spinner from '../../../../components/Spinner'
+import useHttp from '../../../../hooks/useHttp'
+import useInputChange from '../../../../hooks/useInputChange'
 
-const Constants = () => {
+const GlobalSettings = () => {
 
     const [customZone, setCustomZone] = useState('')
 
@@ -16,9 +16,9 @@ const Constants = () => {
     useEffect(() => {
 
         const fetchData = async () => {
-            const data = await request('constants')
+            const data = await request('settings')
             data.forEach(item => {
-                switch (item.name) {
+                switch (item.progName) {
                     case 'customZone':
                         setCustomZone(item.value)
                         break
@@ -34,7 +34,7 @@ const Constants = () => {
 
 
     const saveHandler = async () => {
-        await request('/constants', 'put', { customZone })
+        await request('/settings', 'put', { customZone })
     }
 
     return (
@@ -70,4 +70,4 @@ const Constants = () => {
     )
 }
 
-export default Constants
+export default GlobalSettings

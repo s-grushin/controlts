@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
+const Setting = require('./Setting')
 
 const User = db.define('User', {
     username: {
@@ -42,5 +43,6 @@ const User = db.define('User', {
     }
 }, { timestamps: true })
 
+User.hasMany(Setting, { as: 'settings', foreignKey: 'userId' })
 
 module.exports = User
