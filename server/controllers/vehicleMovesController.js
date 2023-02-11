@@ -18,6 +18,7 @@ const User = require('../models/User');
 const Setting = require('../models/Setting');
 const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
+const Accountant = require('../models/Accountant');
 
 
 async function getAll(req, res) {
@@ -129,6 +130,7 @@ async function getCheckoutPassPrintData(req, res) {
             { model: Company, as: 'company' },
             { model: User, as: 'userIn' },
             { model: User, as: 'userOut' },
+            { model: Accountant, as: 'accountant' },
             {
                 model: VehicleMoveDetail,
                 as: 'vehicleDetails', include: [

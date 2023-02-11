@@ -1,6 +1,7 @@
 import ServiceTable from "./ServiceTable"
 import AppAlert from '../../../../components/AppAlert'
 import useAccountantContext from "./hooks/useAccountantContext"
+import PayData from "./PayData/PayData"
 
 const Accountant = () => {
 
@@ -15,7 +16,8 @@ const Accountant = () => {
                     text={state.error} clear={() => dispatch({ type: 'setError', payload: null })}
                 />
             </div>
-            < ServiceTable />
+            <PayData />
+            <ServiceTable />
         </>
     )
 }
