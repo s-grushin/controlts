@@ -7,8 +7,9 @@ select * from companies
 select * from settings
 select * from users
 select * from services
+select * from accountant
 
-DELETE vehicle_move_details 
+DELETE accountant 
 
 DELETE vehicle_move_details where id in (15,16)
 
@@ -27,11 +28,11 @@ drop table users
 update vehicle_moves set date_in='2023-01-23 21:59:59.999' where id=4013 
 update vehicle_types set prog_name='trailer' where id=2
 
---add vehicle move service
 INSERT INTO accountant
 VALUES (1, '2023-02-11 15:00:00.000', 1, 6026);
 select * from vehicle_move_services
-DELETE FROM vehicle_move_services WHERE id=3
+
+DELETE FROM accountant WHERE id=1
 
 
 

@@ -9,7 +9,7 @@ const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, is
         <Modal
             show={show}
             backdrop="static"
-            keyboard={false}
+            onHide={() => cancelHandler()}
         >
             <Modal.Header>
                 <Modal.Title>{title}</Modal.Title>
@@ -19,7 +19,7 @@ const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, is
             </Modal.Body>
             <Modal.Footer>
                 <Button clickHandler={cancelHandler} title='Отмена' />
-                <Button clickHandler={confirmHandler} title='Подтвердить' withSpinner={true} />
+                <Button clickHandler={confirmHandler} title='Подтвердить' withSpinner={true} loading={isConfirming} autoFocus />
             </Modal.Footer>
         </Modal>
     )

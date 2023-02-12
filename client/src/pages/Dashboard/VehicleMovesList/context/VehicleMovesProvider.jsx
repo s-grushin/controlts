@@ -98,6 +98,11 @@ const reducer = (state, action) => {
         case 'deleteAllServices':
             return { ...state, }
 
+        case 'setPaid':
+            const vehicleMove1 = state.items.find((item) => item.id === state.selectedId)
+            vehicleMove1.accountant = action.payload
+            return { ...state, }
+
         default:
             return { ...state }
     }

@@ -12,7 +12,7 @@ const Accountant = db.define('Accountant', {
         type: DataTypes.DATE,
     },
 
-    accountantId: {
+    userId: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
@@ -24,7 +24,7 @@ const Accountant = db.define('Accountant', {
 
 }, { tableName: 'accountant' })
 
-Accountant.belongsTo(User, { foreignKey: 'accountantId' })
+Accountant.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
 
 module.exports = Accountant

@@ -47,6 +47,7 @@ async function getAll(req, res) {
             { model: Company, as: 'company' },
             { model: User, as: 'userIn' },
             { model: User, as: 'userOut' },
+            { model: Accountant, as: 'accountant', attributes: ['userId', 'paidDate', 'isPaid'], include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
             {
                 model: VehicleMoveDetail,
                 as: 'vehicleDetails', include: [
@@ -104,6 +105,34 @@ async function getPhotos(req, res) {
         return res.status(200).json({ data })
     } catch (error) {
         return res.status(500).json({ message: `Не удалось получить фотографии. ${error.message}` })
+    }
+
+}
+
+async function setPaid(req, res) {
+
+    const { vehicleMoveId, isPaid } = req.body
+    if (!vehicleMoveId) {
+        return res.status(400).json({ message: 'vehicleMoveId no provided' })
+    }
+
+    try {
+        const [accountant, created] = await Accountant.findOrCreate({
+            where: { vehicleMoveId },
+            include: [{ model: User, as: 'user', attributes: ['fullName'] }],
+            defaults: { vehicleMoveId, isPaid, userId: req.userId, paidDate: new Date() }
+        })
+        
+        if (!created) {
+            accountant.isPaid = isPaid
+            if (isPaid) {
+                accountant.paidDate = new Date()
+            }
+            await accountant.save()
+        }
+        return res.status(200).json(accountant)
+    } catch (error) {
+        throw new Error(`Не удалось установить статус оплаты: ${error.message}`)
     }
 
 }
@@ -232,6 +261,7 @@ module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
 module.exports.getStartingServices = asyncHandler(getStartingServices)
+module.exports.setPaid = asyncHandler(setPaid)
 module.exports.create = asyncHandler(create)
 module.exports.saveServices = asyncHandler(saveServices)
 module.exports.getAll = asyncHandler(getAll)

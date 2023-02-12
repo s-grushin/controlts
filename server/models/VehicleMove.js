@@ -117,7 +117,7 @@ VehicleMove.belongsTo(User, { as: 'userIn', foreignKey: 'userInId' })
 
 VehicleMove.belongsTo(User, { as: 'userOut', foreignKey: 'userOutId' })
 
-VehicleMove.hasOne(Accountant, { as: 'accountant' })
+VehicleMove.hasOne(Accountant, { as: 'accountant', foreignKey: 'vehicleMoveId' })
 Accountant.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
 
 module.exports = VehicleMove
