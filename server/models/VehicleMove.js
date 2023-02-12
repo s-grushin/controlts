@@ -10,6 +10,7 @@ const DeliveryType = require('./DeliveryType')
 const User = require('./User')
 const VehicleMoveService = require('./VehicleMoveService')
 const Accountant = require('./Accountant')
+const Inspector = require('./Inspector')
 
 
 const VehicleMove = db.define('VehicleMove', {
@@ -119,5 +120,8 @@ VehicleMove.belongsTo(User, { as: 'userOut', foreignKey: 'userOutId' })
 
 VehicleMove.hasOne(Accountant, { as: 'accountant', foreignKey: 'vehicleMoveId' })
 Accountant.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
+
+VehicleMove.hasOne(Inspector, { as: 'inspector', foreignKey: 'vehicleMoveId' })
+Inspector.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
 
 module.exports = VehicleMove

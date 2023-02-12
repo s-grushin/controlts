@@ -8,6 +8,7 @@ select * from settings
 select * from users
 select * from services
 select * from accountant
+select * from inspector
 
 DELETE accountant 
 

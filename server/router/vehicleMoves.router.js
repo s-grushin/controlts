@@ -2,7 +2,7 @@ const express = require('express')
 const router = express()
 const { getArrivalData, getAll, create, getWeightAndCameraData,
     getPhotos, getById, getCheckoutPassPrintData, saveServices,
-    getStartingServices, setPaid } = require('../controllers/vehicleMovesController')
+    getStartingServices, setPaid, setOutgo } = require('../controllers/vehicleMovesController')
 
 router.get('/', getAll)
 router.get('/getArrivalData', getArrivalData)
@@ -14,5 +14,6 @@ router.get('/getPhotos', getPhotos)
 router.patch('/saveServices', saveServices)
 router.patch('/setPaid', setPaid)
 router.post('/', create)
+router.post('/setOutgo', setOutgo)
 
 module.exports = router

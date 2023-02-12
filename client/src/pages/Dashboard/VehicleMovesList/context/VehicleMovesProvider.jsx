@@ -96,12 +96,20 @@ const reducer = (state, action) => {
             return { ...state }
 
         case 'deleteAllServices':
-            return { ...state, }
+            return { ...state }
 
         case 'setPaid':
             const vehicleMove1 = state.items.find((item) => item.id === state.selectedId)
             vehicleMove1.accountant = action.payload
-            return { ...state, }
+            return { ...state }
+
+        case 'setOutgo':
+            const { inspector, weightIn, weightOut } = action.payload
+            const vehicleMove2 = state.items.find((item) => item.id === state.selectedId)
+            vehicleMove2.inspector = inspector
+            vehicleMove2.weightIn = weightIn
+            vehicleMove2.weightOut = weightOut
+            return { ...state }
 
         default:
             return { ...state }

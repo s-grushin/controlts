@@ -1,6 +1,7 @@
 import { Tabs, Tab } from 'react-bootstrap'
 import Accountant from './Accountant'
 import Dispatcher from './Dispatcher/Dispatcher'
+import Inspector from './Inspector/Inspector'
 
 const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {
     return (
@@ -14,7 +15,7 @@ const VehicleMoveActions = ({ vehicleMoveId, ...props }) => {
                 <Accountant vehicleMoveId={vehicleMoveId} />
             </Tab>
             <Tab eventKey="inspector" title="Инспектор">
-                Инспектор
+                <Inspector />
             </Tab>
             <Tab eventKey="dispatcher" title="Диспетчер" className='mt-2'>
                 <Dispatcher />

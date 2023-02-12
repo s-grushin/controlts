@@ -19,6 +19,7 @@ const Setting = require('../models/Setting');
 const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
 const Accountant = require('../models/Accountant');
+const Inspector = require('../models/Inspector');
 
 
 async function getAll(req, res) {
@@ -48,6 +49,7 @@ async function getAll(req, res) {
             { model: User, as: 'userIn' },
             { model: User, as: 'userOut' },
             { model: Accountant, as: 'accountant', attributes: ['userId', 'paidDate', 'isPaid'], include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
+            { model: Inspector, as: 'inspector', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
             {
                 model: VehicleMoveDetail,
                 as: 'vehicleDetails', include: [
@@ -122,7 +124,7 @@ async function setPaid(req, res) {
             include: [{ model: User, as: 'user', attributes: ['fullName'] }],
             defaults: { vehicleMoveId, isPaid, userId: req.userId, paidDate: new Date() }
         })
-        
+
         if (!created) {
             accountant.isPaid = isPaid
             if (isPaid) {
@@ -134,6 +136,46 @@ async function setPaid(req, res) {
     } catch (error) {
         throw new Error(`Не удалось установить статус оплаты: ${error.message}`)
     }
+
+}
+
+async function setOutgo(req, res) {
+
+    const { vehicleMoveId, cdn, outgoAllowed, weightIn, weightOut } = req.body
+    if (!vehicleMoveId) {
+        return res.status(400).json({ message: 'vehicleMoveId no provided' })
+    }
+
+    await db.transaction(async (t) => {
+
+        try {
+            const vehicleMove = await VehicleMove.findByPk(vehicleMoveId, { transaction: t, lock: true })
+            vehicleMove.weightIn = weightIn
+            vehicleMove.weightOut = weightOut
+            await vehicleMove.save({ transaction: t })
+
+
+            const [inspector, created] = await Inspector.findOrCreate({
+                where: { vehicleMoveId },
+                include: [{ model: User, as: 'user', attributes: ['fullName'] }],
+                defaults: { vehicleMoveId, cdn, userId: req.userId, date: new Date(), outgoAllowed },
+                transaction: t
+            })
+
+            if (!created) {
+                inspector.outgoAllowed = outgoAllowed
+                inspector.cdn = cdn
+                if (outgoAllowed) {
+                    inspector.date = new Date()
+                }
+                await inspector.save({ transaction: t })
+            }
+            return res.status(200).json(inspector)
+        } catch (error) {
+            throw new Error(`Не удалось установить данные выезда: ${error.message}`)
+        }
+
+    })
 
 }
 
@@ -262,6 +304,7 @@ module.exports.getPhotos = asyncHandler(getPhotos)
 module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
 module.exports.getStartingServices = asyncHandler(getStartingServices)
 module.exports.setPaid = asyncHandler(setPaid)
+module.exports.setOutgo = asyncHandler(setOutgo)
 module.exports.create = asyncHandler(create)
 module.exports.saveServices = asyncHandler(saveServices)
 module.exports.getAll = asyncHandler(getAll)
