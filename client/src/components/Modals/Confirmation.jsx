@@ -3,13 +3,14 @@ import { Modal } from 'react-bootstrap'
 import Button from '../Button'
 
 
-const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, isConfirming }) => {
+const Confirmation = ({ children, title, show, confirmHandler, cancelHandler, isConfirming, ...modalProps }) => {
 
     return (
         <Modal
             show={show}
             backdrop="static"
             onHide={() => cancelHandler()}
+            {...modalProps}
         >
             <Modal.Header>
                 <Modal.Title>{title}</Modal.Title>

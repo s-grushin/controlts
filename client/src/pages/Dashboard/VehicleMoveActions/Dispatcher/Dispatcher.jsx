@@ -3,6 +3,7 @@ import AppButton from '../../../../components/AppButton'
 import useVehicleMovesContext from '../../VehicleMovesList/hooks/useVehicleMovesContext'
 import { formatDate } from '../../../../utils/common'
 import { Check2 } from 'react-bootstrap-icons'
+import OutgoModal from '../../../../pages/OutgoPage/OutgoModal'
 
 const Dispatcher = () => {
 
@@ -65,10 +66,10 @@ const Dispatcher = () => {
                 <AppButton>
                     Проверить разрешение на выезд
                 </AppButton>
-                <AppButton>
+                {/* <AppButton>
                     Оформить выезд
-                </AppButton>
-
+                </AppButton> */}
+                <OutgoModal />
             </Stack>
 
         </Card>

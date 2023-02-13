@@ -1,23 +1,13 @@
-import { useState, useEffect } from 'react'
-import { Card, FormCheck, Table, Row, Col, Stack } from 'react-bootstrap'
+import { Card, FormCheck, Row, Col } from 'react-bootstrap'
 import InputGroup from '../../../components/InputGroup'
-import VehiclePhoto from '../../../components/VehiclePhoto'
+import VehicleDetails from './VehicleDetails/VehicleDetails'
 
 const VehicleMoveDetails = ({ move }) => {
-
-  const [selectedMoveDetailId, setSelectedMoveDetailId] = useState(null)
-
-  useEffect(() => {
-
-    setSelectedMoveDetailId(move?.vehicleDetails[0]?.id)
-
-  }, [move])
 
   if (!move) {
     return null
   }
 
-  const vehicleDetail = selectedMoveDetailId && move.vehicleDetails.find(item => item.id === selectedMoveDetailId)
   return (
     <div>
       <Card>
@@ -54,51 +44,21 @@ const VehicleMoveDetails = ({ move }) => {
           <InputGroup title='Компания' value={move?.company?.name} className='mb-2' />
 
           {/* Клиент ХФК-Биокон */}
-          <FormCheck label='Клиент ХФК-Биокон' id='bioconClient' className='mb-2' checked={move?.isOwnCompany} readOnly />
+          <FormCheck label='Клиент ХФК-Биокон' id='bioconClient' className='mb-2' checked={move?.isOwnCompany || false} readOnly />
 
           {/* Компания-получатель */}
           {move?.comment && <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />}
 
-          <Row className='gx-1'>
-            <Col xl='6'>
-              <Stack direction='vertical'>
-                <Table responsive bordered hover size='sm'>
-                  <thead>
-                    <tr>
-                      <th>Гос знак</th>
-                      <th>Тип</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      move.vehicleDetails.map(item => (
-                        <tr
-                          key={item.id}
-                          onClick={() => setSelectedMoveDetailId(item.id)}
-                          className={item.id === selectedMoveDetailId ? 'selectedTableRow' : ''}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <td>{item.number}</td>
-                          <td>{item.vehicleType.name}</td>
-                        </tr>
-                      ))
-                    }
-                  </tbody>
-                </Table>
-              </Stack>
-            </Col>
-            <Col xl='6'>
-              <VehiclePhoto
-                number={vehicleDetail?.number}
-                photoUrl={vehicleDetail?.photo}
-              />
-            </Col>
-          </Row>
+          <VehicleDetails vehicleDetails={move.vehicleDetails} />
 
         </Card.Body>
       </Card>
     </div >
   )
+}
+
+VehicleMoveDetails.defaultProps = {
+  move: {}
 }
 
 export default VehicleMoveDetails

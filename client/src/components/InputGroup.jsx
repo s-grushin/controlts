@@ -29,7 +29,9 @@ InputGroup.defaultProps = {
         titleFontSize: 12,
         as: 'input' //possible values: 'textarea'
     },
-    readOnly: true
+    readOnly: true,
+    value: '',
+    onChange: () => { }
 }
 
 export default InputGroup

@@ -39,25 +39,7 @@ async function getAll(req, res) {
         limit,
         offset,
         order: [['dateIn', 'DESC']],
-        include: [
-            { model: Driver, as: 'driver' },
-            { model: Parking, as: 'parking' },
-            { model: VehicleBrand, as: 'brand' },
-            { model: VehicleModel, as: 'model' },
-            { model: DeliveryType, as: 'deliveryType' },
-            { model: Company, as: 'company' },
-            { model: User, as: 'userIn' },
-            { model: User, as: 'userOut' },
-            { model: Accountant, as: 'accountant', attributes: ['userId', 'paidDate', 'isPaid'], include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
-            { model: Inspector, as: 'inspector', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
-            {
-                model: VehicleMoveDetail,
-                as: 'vehicleDetails', include: [
-                    { model: VehicleType, as: 'vehicleType' }
-                ]
-            },
-            { model: VehicleMoveService, as: 'services', include: [{ model: Service, as: 'service' }] },
-        ]
+        include: vehicleMoveIncludes
     })
     return res.json(data)
 }
@@ -65,7 +47,9 @@ async function getAll(req, res) {
 async function getById(req, res) {
 
     const { id } = req.params
-    const data = await VehicleMove.findOne({ where: { id } })
+    const data = await VehicleMove.findOne({
+        where: { id }, include: vehicleMoveIncludes
+    })
     if (data) {
         return res.status(200).json(data)
     } else {
@@ -192,23 +176,7 @@ async function getCheckoutPassPrintData(req, res) {
 
     printData.customZone = await Setting.findOne({ where: { progName: 'customZone' }, attributes: ['value'] })
     printData.vm = await VehicleMove.findByPk(vehicleMoveId, {
-        include: [
-            { model: Driver, as: 'driver' },
-            { model: Parking, as: 'parking' },
-            { model: VehicleBrand, as: 'brand' },
-            { model: VehicleModel, as: 'model' },
-            { model: DeliveryType, as: 'deliveryType' },
-            { model: Company, as: 'company' },
-            { model: User, as: 'userIn' },
-            { model: User, as: 'userOut' },
-            { model: Accountant, as: 'accountant' },
-            {
-                model: VehicleMoveDetail,
-                as: 'vehicleDetails', include: [
-                    { model: VehicleType, as: 'vehicleType' }
-                ]
-            },
-        ]
+        include: vehicleMoveIncludes
     })
 
     try {
@@ -297,6 +265,27 @@ async function create(req, res) {
 
     res.status(200).json({ message: 'created' })
 }
+
+
+const vehicleMoveIncludes = [
+    { model: Driver, as: 'driver' },
+    { model: Parking, as: 'parking' },
+    { model: VehicleBrand, as: 'brand' },
+    { model: VehicleModel, as: 'model' },
+    { model: DeliveryType, as: 'deliveryType' },
+    { model: Company, as: 'company' },
+    { model: User, as: 'userIn' },
+    { model: User, as: 'userOut' },
+    { model: Accountant, as: 'accountant', attributes: ['userId', 'paidDate', 'isPaid'], include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
+    { model: Inspector, as: 'inspector', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
+    {
+        model: VehicleMoveDetail,
+        as: 'vehicleDetails', include: [
+            { model: VehicleType, as: 'vehicleType' }
+        ]
+    },
+    { model: VehicleMoveService, as: 'services', include: [{ model: Service, as: 'service' }] },
+]
 
 module.exports.getArrivalData = asyncHandler(getArrivalData)
 module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
