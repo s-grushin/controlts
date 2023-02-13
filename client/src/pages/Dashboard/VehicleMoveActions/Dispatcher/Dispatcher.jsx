@@ -1,7 +1,14 @@
 import { Card, Row, Col, Stack } from "react-bootstrap"
 import AppButton from '../../../../components/AppButton'
+import useVehicleMovesContext from '../../VehicleMovesList/hooks/useVehicleMovesContext'
+import { formatDate } from '../../../../utils/common'
+import { Check2 } from 'react-bootstrap-icons'
 
 const Dispatcher = () => {
+
+    const { contextValue } = useVehicleMovesContext()
+    const vehicleMove = contextValue.state.items.find(item => item.id === contextValue.state.selectedId)
+
     return (
         <Card style={{ fontSize: 13 }} className='p-2'>
 
@@ -12,17 +19,19 @@ const Dispatcher = () => {
                     <hr />
                     <Row>
                         <Col className="fw-bold">ФИО Бухгалтера:</Col>
-                        <Col>!!!ФИО Бухгалтера!!!</Col>
+                        <Col>{vehicleMove?.accountant?.user?.fullName}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Дата:</Col>
-                        <Col>!!!Дата!!!</Col>
+                        <Col>{formatDate(vehicleMove?.accountant?.paidDate)}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Статус оплаты:</Col>
-                        <Col>!!!Статус оплаты!!!</Col>
+                        <Col>
+                            {vehicleMove?.accountant?.isPaid && <Check2 style={{ color: 'green' }} size='30' />}
+                        </Col>
                     </Row>
 
                 </Col>
@@ -33,17 +42,19 @@ const Dispatcher = () => {
                     <hr />
                     <Row>
                         <Col className="fw-bold">ФИО Инспектора:</Col>
-                        <Col>!!!ФИО инспектора!!!</Col>
+                        <Col>{vehicleMove?.inspector?.user?.fullName}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Дата:</Col>
-                        <Col>!!!Дата!!!</Col>
+                        <Col>{formatDate(vehicleMove?.inspector?.date)}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Разрешение на выезд:</Col>
-                        <Col>!!!Разрешение на выезд!!!</Col>
+                        <Col>
+                            {vehicleMove?.inspector?.outgoAllowed && <Check2 style={{ color: 'green' }} size='30' />}
+                        </Col>
                     </Row>
 
                 </Col>
@@ -60,46 +71,6 @@ const Dispatcher = () => {
 
             </Stack>
 
-            {/* <Stack direction="horizontal">
-
-                <Stack direction="vertical" gap={3}>
-
-                    <Stack direction="horizontal" gap={3}>
-                        <div>ФИО Инспектора</div>
-                        <b>!!!ФИО инспектора!!!</b>
-                    </Stack>
-
-                    <Stack direction="horizontal" gap={3}>
-                        <div>Дата</div>
-                        <b>!!!Дата!!!</b>
-                    </Stack>
-
-                    <Stack direction="horizontal" gap={3}>
-                        <div>Разрешение на выезд</div>
-                        <b>!!!Разрешение на выезд!!!</b>
-                    </Stack>
-
-                </Stack>
-
-                <Stack direction="vertical" gap={3}>
-
-                    <Stack direction="horizontal" gap={3}>
-                        <div>ФИО Бухгалтера</div>
-                        <b>!!!ФИО инспектора!!!</b>
-                    </Stack>
-
-                    <Stack direction="horizontal" gap={3}>
-                        <div>Дата</div>
-                        <b>!!!Дата!!!</b>
-                    </Stack>
-
-                    <Stack direction="horizontal" gap={3}>
-                        <div>Статус оплаты</div>
-                        <b>!!!Разрешение на выезд!!!</b>
-                    </Stack>
-
-                </Stack>
-            </Stack> */}
         </Card>
     )
 }
