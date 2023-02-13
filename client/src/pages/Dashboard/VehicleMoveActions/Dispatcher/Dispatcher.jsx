@@ -66,10 +66,7 @@ const Dispatcher = () => {
                 <AppButton>
                     Проверить разрешение на выезд
                 </AppButton>
-                {/* <AppButton>
-                    Оформить выезд
-                </AppButton> */}
-                <OutgoModal />
+                <OutgoModal vehicleMoveId={contextValue.state.selectedId} />
             </Stack>
 
         </Card>

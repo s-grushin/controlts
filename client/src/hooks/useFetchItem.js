@@ -15,7 +15,7 @@ const useFetchItem = (url, delay) => {
 
         fetchItem()
 
-    }, [fetchItem])
+    }, [fetchItem, url])
 
     return { loading, error, clearError, item }
 }

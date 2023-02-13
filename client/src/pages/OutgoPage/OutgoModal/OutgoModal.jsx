@@ -4,7 +4,7 @@ import { ArrowRight } from 'react-bootstrap-icons'
 import Confirmation from '../../../components/Modals/Confirmation'
 import OutgoPage from '../OutgoPage'
 
-const OutgoModal = () => {
+const OutgoModal = ({ vehicleMoveId }) => {
 
   const [isShow, setIsShow] = useState(false)
 
@@ -34,7 +34,7 @@ const OutgoModal = () => {
           size='lg'
         >
 
-          <OutgoPage vehicleMoveId='6027' />
+          <OutgoPage vehicleMoveId={vehicleMoveId} />
 
         </Confirmation>
       }
