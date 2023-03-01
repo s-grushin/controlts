@@ -11,21 +11,27 @@ const Toolbar = ({ handlers, disabledBtn, renderExtraButtons }) => {
     return (
         <Stack direction='horizontal' gap={2} className='p-1'>
 
-            <AppButton
-                variant='outline-success'
-                onClick={add}
-                disabled={addDisabled}
-            >
-                <PlusCircle />
-            </AppButton>
+            {
+                add &&
+                <AppButton
+                    variant='outline-success'
+                    onClick={add}
+                    disabled={addDisabled}
+                >
+                    <PlusCircle />
+                </AppButton>
+            }
 
-            <AppButton
-                variant='outline-danger'
-                onClick={deleteOne}
-                disabled={deleteOneDisabled}
-            >
-                <DashCircle />
-            </AppButton>
+            {
+                deleteOne &&
+                <AppButton
+                    variant='outline-danger'
+                    onClick={deleteOne}
+                    disabled={deleteOneDisabled}
+                >
+                    <DashCircle />
+                </AppButton>
+            }
 
             {
                 deleteAll &&
@@ -40,14 +46,17 @@ const Toolbar = ({ handlers, disabledBtn, renderExtraButtons }) => {
             }
 
 
-            <AppButton
-                variant='outline-success'
-                onClick={save}
-                tooltipText='Сохранить изменения'
-                disabled={saveDisabled}
-            >
-                <Check2 />
-            </AppButton>
+            {
+                save &&
+                <AppButton
+                    variant='outline-success'
+                    onClick={save}
+                    tooltipText='Сохранить изменения'
+                    disabled={saveDisabled}
+                >
+                    <Check2 />
+                </AppButton>
+            }
 
             {renderExtraButtons()}
 

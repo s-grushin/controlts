@@ -1,48 +1,28 @@
 import AppToolbar from '../../../../../../components/AppTable/Toolbar'
-import useAccountantContext from '../../hooks/useAccountantContext'
-import useVehicleMovesContext from '../../../../VehicleMovesList/hooks/useVehicleMovesContext'
+import { useSelector, useDispatch } from 'react-redux'
+import { addNewService, deleteService, setSelectedId, saveServices } from '../../../../../../redux/slices/vehicleMoveServicesSlice'
 
 const Toolbar = () => {
 
-    const { contextValue, saveServices } = useAccountantContext()
-    const { dispatch, state } = contextValue
-
-    const vmContext = useVehicleMovesContext()
-    const vmDispatch = vmContext.contextValue.dispatch
+    const services = useSelector(state => state.vehicleMoveServices)
+    const dispatch = useDispatch()
 
     const add = () => {
-        dispatch({ type: 'addService' })
-        dispatch({ type: 'setServicesModified', payload: true })
+        dispatch(addNewService())
     }
 
     const deleteOne = () => {
-        dispatch({ type: 'deleteService', payload: state.selectedServiceId })
-        dispatch({ type: 'setSelectedServiceId', payload: null })
-        dispatch({ type: 'setServicesModified', payload: true })
+        dispatch(deleteService({ id: services.selectedId }))
+        dispatch(setSelectedId({ id: null }))
     }
 
-    // const deleteAll = () => {
-    //     dispatch({ type: 'deleteAllServices' })
-    //     dispatch({ type: 'setSelectedServiceId', payload: null })
-    //     dispatch({ type: 'setServicesModified', payload: true })
-    // }
-
     const save = () => {
-
-        if (state.services.find(item => !item.serviceId)) {
-            return dispatch({ type: 'setError', payload: 'Не заполнены услуги' })
-        }
-
-        saveServices(state, dispatch)
-        const preparedServices = state.services.map(item => { return { ...item, service: { id: item.serviceId, name: item.serviceId } } })
-        vmDispatch({ type: 'setServices', payload: preparedServices })
-        dispatch({ type: 'setServicesModified', payload: false })
+        dispatch(saveServices())
     }
 
     const disabledBtn = {
-        deleteOneDisabled: !state.selectedServiceId,
-        deleteAllDisabled: !state.services.length,
-        saveDisabled: !state.servicesModified,
+        deleteOneDisabled: !services.selectedId,
+        saveDisabled: !services.isModified,
     }
 
     return (

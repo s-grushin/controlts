@@ -7,7 +7,7 @@ const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
 const DriverHistory = require('../models/DriverHistory')
 const { getCameraData } = require('../services/nomerok')
-const { getWeight } = require('../services/weight')
+const { getWeightData } = require('../services/weight')
 const VehicleMoveDetail = require('../models/VehicleMoveDetail')
 const Driver = require('../models/Driver')
 const VehicleBrand = require('../models/VehicleBrand')
@@ -18,8 +18,8 @@ const User = require('../models/User');
 const Setting = require('../models/Setting');
 const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
-const Accountant = require('../models/Accountant');
-const Inspector = require('../models/Inspector');
+const PayData = require('../models/PayData');
+const Outgo = require('../models/Outgo');
 
 
 async function getAll(req, res) {
@@ -71,61 +71,69 @@ async function getArrivalData(req, res) {
     })
 }
 
-async function getWeightAndCameraData(req, res) {
-
-    const cameraData = await getCameraData()
-    for (const item of cameraData) {
-        const publicPhotoPath = await copyPhotos(item.filePath, item.file, item.birthTime)
-        item.publicPhotoPath = publicPhotoPath
-    }
-
-    const weight = await getWeight()
-    return res.status(200).json({ cameraData, weight })
-
-}
-
 async function getPhotos(req, res) {
 
     try {
-        const data = await getCameraData()
-        return res.status(200).json({ data })
+        const cameraData = await getCameraData()
+        for (const item of cameraData) {
+            const publicPhotoPath = await copyPhotos(item.filePath, item.file, item.birthTime)
+            item.publicPhotoPath = publicPhotoPath
+        }
+        return res.status(200).json({ cameraData })
     } catch (error) {
-        return res.status(500).json({ message: `Не удалось получить фотографии. ${error.message}` })
+        throw new Error(`Не удалось получить фотографии. ${error.message}`)
     }
 
 }
 
-async function setPaid(req, res) {
+async function getWeight(req, res) {
 
-    const { vehicleMoveId, isPaid } = req.body
+    try {
+        const weight = await getWeightData()
+        return res.status(200).json({ weight })
+    } catch (error) {
+        return res.status(500).json({ message: `Не удалось получить вес. ${error.message}` })
+    }
+
+}
+
+async function savePayData(req, res) {
+
+    const { vehicleMoveId } = req.body
     if (!vehicleMoveId) {
         return res.status(400).json({ message: 'vehicleMoveId no provided' })
     }
 
-    try {
-        const [accountant, created] = await Accountant.findOrCreate({
-            where: { vehicleMoveId },
-            include: [{ model: User, as: 'user', attributes: ['fullName'] }],
-            defaults: { vehicleMoveId, isPaid, userId: req.userId, paidDate: new Date() }
-        })
+    await db.transaction(async (t) => {
 
-        if (!created) {
-            accountant.isPaid = isPaid
-            if (isPaid) {
-                accountant.paidDate = new Date()
+        try {
+            const [payData, created] = await PayData.findOrCreate({
+                where: { vehicleMoveId },
+                include: [{ model: User, as: 'user', attributes: ['fullName'] }],
+                defaults: { vehicleMoveId, isPaid: true, userId: req.userId, paidDate: new Date() },
+                transaction: t, lock: true
+            })
+
+            if (!created) {
+                //record exist
+                payData.isPaid = !payData.isPaid
+                if (payData.isPaid) {
+                    payData.paidDate = new Date()
+                }
+                await payData.save({ transaction: t })
             }
-            await accountant.save()
+            return res.status(200).json(payData)
+        } catch (error) {
+            throw new Error(`Не удалось установить статус оплаты: ${error.message}`)
         }
-        return res.status(200).json(accountant)
-    } catch (error) {
-        throw new Error(`Не удалось установить статус оплаты: ${error.message}`)
-    }
+
+    })
 
 }
 
-async function setOutgo(req, res) {
+async function saveOutgo(req, res) {
 
-    const { vehicleMoveId, cdn, outgoAllowed, weightIn, weightOut } = req.body
+    const { vehicleMoveId, cdn, outgoAllowed } = req.body
     if (!vehicleMoveId) {
         return res.status(400).json({ message: 'vehicleMoveId no provided' })
     }
@@ -134,12 +142,9 @@ async function setOutgo(req, res) {
 
         try {
             const vehicleMove = await VehicleMove.findByPk(vehicleMoveId, { transaction: t, lock: true })
-            vehicleMove.weightIn = weightIn
-            vehicleMove.weightOut = weightOut
             await vehicleMove.save({ transaction: t })
 
-
-            const [inspector, created] = await Inspector.findOrCreate({
+            const [outgo, created] = await Outgo.findOrCreate({
                 where: { vehicleMoveId },
                 include: [{ model: User, as: 'user', attributes: ['fullName'] }],
                 defaults: { vehicleMoveId, cdn, userId: req.userId, date: new Date(), outgoAllowed },
@@ -147,14 +152,14 @@ async function setOutgo(req, res) {
             })
 
             if (!created) {
-                inspector.outgoAllowed = outgoAllowed
-                inspector.cdn = cdn
-                if (outgoAllowed) {
-                    inspector.date = new Date()
+                outgo.outgoAllowed = outgoAllowed
+                outgo.cdn = cdn
+                if (outgo.outgoAllowed) {
+                    outgo.date = new Date()
                 }
-                await inspector.save({ transaction: t })
+                await outgo.save({ transaction: t })
             }
-            return res.status(200).json(inspector)
+            return res.status(200).json(outgo)
         } catch (error) {
             throw new Error(`Не удалось установить данные выезда: ${error.message}`)
         }
@@ -168,7 +173,6 @@ async function getCheckoutPassPrintData(req, res) {
     const { vehicleMoveId } = req.query
 
     if (!vehicleMoveId) {
-        console.log('not provided');
         return res.status(400).json({ message: 'vehicleMoveId not provided' })
     }
 
@@ -196,24 +200,18 @@ async function getStartingServices(req, res) {
 
 async function saveServices(req, res) {
 
-    const { vmId, services } = req.body
+    const { vehicleMoveId, services } = req.body
 
-    const servicesForCreate = services.map(item => {
-        return {
-            vehicleMoveId: vmId,
-            serviceId: item.serviceId,
-            quantity: item.quantity,
-            price: item.price,
-            summ: item.summ,
-        }
-    })
+    if (!vehicleMoveId) {
+        throw new Error('vehicleMoveId not provided')
+    }
 
     await db.transaction(async (t) => {
-        await VehicleMoveService.destroy({ where: { vehicleMoveId: vmId }, transaction: t })
-        await VehicleMoveService.bulkCreate(servicesForCreate, { transaction: t })
+        await VehicleMoveService.destroy({ where: { vehicleMoveId }, transaction: t })
+        const updatedServices = await VehicleMoveService.bulkCreate(services, { transaction: t })
+        return res.status(200).json({ services: updatedServices })
     })
 
-    return res.status(200).json({ message: 'ok' })
 }
 
 async function create(req, res) {
@@ -276,8 +274,8 @@ const vehicleMoveIncludes = [
     { model: Company, as: 'company' },
     { model: User, as: 'userIn' },
     { model: User, as: 'userOut' },
-    { model: Accountant, as: 'accountant', attributes: ['userId', 'paidDate', 'isPaid'], include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
-    { model: Inspector, as: 'inspector', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
+    { model: PayData, as: 'payData', attributes: ['userId', 'paidDate', 'isPaid'], include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
+    { model: Outgo, as: 'outgo', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
     {
         model: VehicleMoveDetail,
         as: 'vehicleDetails', include: [
@@ -288,13 +286,13 @@ const vehicleMoveIncludes = [
 ]
 
 module.exports.getArrivalData = asyncHandler(getArrivalData)
-module.exports.getWeightAndCameraData = asyncHandler(getWeightAndCameraData)
 module.exports.getPhotos = asyncHandler(getPhotos)
+module.exports.getWeight = asyncHandler(getWeight)
 module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
 module.exports.getStartingServices = asyncHandler(getStartingServices)
-module.exports.setPaid = asyncHandler(setPaid)
-module.exports.setOutgo = asyncHandler(setOutgo)
+module.exports.saveOutgo = asyncHandler(saveOutgo)
 module.exports.create = asyncHandler(create)
 module.exports.saveServices = asyncHandler(saveServices)
+module.exports.savePayData = asyncHandler(savePayData)
 module.exports.getAll = asyncHandler(getAll)
 module.exports.getById = asyncHandler(getById)

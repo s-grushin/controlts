@@ -1,31 +1,43 @@
+import { useEffect } from 'react'
 import Table from '../../../components/Table'
 import { formatDate } from '../../../utils/common'
 import Topbar from './Topbar'
 import Spinner from '../../../components/Spinner'
 import AppAlert from '../../../components/AppAlert'
-import useVehicleMovesContext from './hooks/useVehicleMovesContext'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchVehicleMoves, setSelectedId } from '../../../redux/slices/vehicleMovesSlice'
 
 const VehicleMovesList = () => {
 
-  const { contextValue } = useVehicleMovesContext()
-  const { state, dispatch } = contextValue
+  const vehicleMoves = useSelector(state => state.vehicleMoves)
+  const dispatch = useDispatch()
+
+  useEffect(() => { dispatch(fetchVehicleMoves()) }, [dispatch, vehicleMoves.filters])
+
+  const rowClickHandler = (selectedId) => {
+    dispatch(setSelectedId({ id: selectedId }))
+  }
 
   return (
     <>
       <Topbar />
       {
-        state.error
+        vehicleMoves.status === 'failed'
           ?
-          <AppAlert
-            show={state.error}
-            text={state.error}
-            title='Ошибка при загрузке списка'
-            clear={() => dispatch({ type: 'clearError' })}
-          />
+          <div className='mt-2'>
+            <AppAlert
+              show={vehicleMoves.error}
+              text={vehicleMoves.error}
+              title='Ошибка при загрузке списка'
+              clear={() => dispatch({ type: 'clearError' })}
+            />
+          </div>
           :
-          state.loading
+          vehicleMoves.status === 'loading'
             ?
-            <Spinner />
+            <div className='mt-5 d-flex justify-content-center align-middle'>
+              <Spinner />
+            </div>
             :
             <Table className='mt-1'>
               <thead>
@@ -40,11 +52,11 @@ const VehicleMovesList = () => {
               </thead>
               <tbody style={{ fontSize: '14px' }}>
                 {
-                  state.items.map(item => (
+                  vehicleMoves.items.map(item => (
                     <tr
                       key={item.id}
-                      onClick={() => dispatch({ type: 'setSelectedItem', payload: item.id })}
-                      className={item.id === state.selectedId ? 'selectedTableRow' : 'asd'}
+                      onClick={() => rowClickHandler(item.id)}
+                      className={item.id === vehicleMoves.selectedId ? 'selectedTableRow' : 'asd'}
                     >
                       <td>{item.id}</td>
                       <td>{item.driver.fullName}</td>

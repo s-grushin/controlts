@@ -2,14 +2,19 @@ const { DataTypes } = require('sequelize')
 const db = require('../db/mssql')
 const User = require('./User')
 
-const Accountant = db.define('Accountant', {
+const Outgo = db.define('Outgo', {
 
-    isPaid: {
-        type: DataTypes.BOOLEAN,
+    //cdn - customs declaration number
+    cdn: {
+        type: DataTypes.STRING(50),
     },
 
-    paidDate: {
+    date: {
         type: DataTypes.DATE,
+    },
+
+    outgoAllowed: {
+        type: DataTypes.BOOLEAN,
     },
 
     userId: {
@@ -22,9 +27,9 @@ const Accountant = db.define('Accountant', {
         allowNull: false
     },
 
-}, { tableName: 'accountant' })
+}, { tableName: 'vehicle_move_outgo' })
 
-Accountant.belongsTo(User, { as: 'user', foreignKey: 'userId' })
+Outgo.belongsTo(User, { as: 'user', foreignKey: 'userId' })
 
 
-module.exports = Accountant
+module.exports = Outgo

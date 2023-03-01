@@ -9,6 +9,13 @@ import Selector from '../../components/Selectors/Selector'
 import VehicleDetails from './VehicleDetails'
 import { VehicleDetailsContext } from './VehicleDetails/context/VehicleDetailsProvider'
 import VehiclePhoto from '../../components/VehiclePhoto'
+import VehicleTypeDetails from 'features/VehicleTypeDetails/VehicleTypeDetails'
+import Photos from 'features/VehicleTypeDetails/Photos'
+import useGetPhotos from 'features/VehicleTypeDetails/Photos/useGetPhotos'
+import useGetWeight from 'features/Weight/useGetWeight'
+import { STORAGE_KEYS } from 'constants/appConstants'
+import VehicleTypeDetailsProvider from 'features/VehicleTypeDetails/ContextProvider'
+
 
 const ArrivalPage = () => {
 
@@ -27,6 +34,8 @@ const ArrivalPage = () => {
     const [isOwnCompany, setIsOwnCompany] = useState(false)
     const [comment, setComment] = useState('')
 
+    const [cameraData, setCameraData] = useState([])
+
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
     const { state: vdState, dispatch: vdDispatch } = useContext(VehicleDetailsContext)
@@ -35,6 +44,9 @@ const ArrivalPage = () => {
     const inputChangeHandler = useInputChange()
 
     const navigate = useNavigate()
+
+    const { getPhotos, loading: photosLoading, error: photosError } = useGetPhotos()
+    const { getWeight, loading: weightLoading, error: weightError } = useGetWeight()
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -59,11 +71,14 @@ const ArrivalPage = () => {
 
     const getWeightAndCameraData = async () => {
 
-        const { cameraData, weight } = await request('/vehicleMoves/getWeightAndCameraData')
-        vdDispatch({ type: 'setRowsByDefault' })
-        vdDispatch({ type: 'fillCameraData', payload: cameraData })
-        setWeight(parseInt(weight) || 0)
+        //const newVehicleDetails = JSON.parse(localStorage.getItem(STORAGE_KEYS.newVehicleDetails))
+        //console.log(newVehicleDetails);
 
+        const [photosData, weightData] = await Promise.all([getPhotos(), getWeight()])
+        const camera = photosData.cameraData
+        const weight = weightData.weight
+        setCameraData(camera)
+        setWeight(weight)
     }
 
     useEffect(() => {
@@ -226,49 +241,57 @@ const ArrivalPage = () => {
                         </Col>
 
                     </Row>
-                    <Row>
-                        <Col md={8}>
-                            <Stack gap={2}>
-                                <div className="bg-light border">
-                                    <div className="d-grid gap-2">
-                                        <Button
-                                            title='Получить данные с весов и камер'
-                                            onClick={getWeightAndCameraData}
-                                            withSpinner={true}
-                                            loading={loading}
-                                            disableFlex={true}
-                                        />
+
+                    <VehicleTypeDetailsProvider isNew={true} cameraData={cameraData}>
+
+                        <Row>
+                            <Col md={8}>
+                                <Stack gap={2}>
+                                    <div className="bg-light border">
+                                        <div className="d-grid gap-2">
+                                            <Button
+                                                title='Получить данные с весов и камер'
+                                                onClick={getWeightAndCameraData}
+                                                withSpinner={true}
+                                                loading={weightLoading || photosLoading}
+                                                disableFlex={true}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="bg-light border">
-                                    <VehicleDetails />
-                                </div>
+                                    <div className="bg-light border">
+                                        {/* <VehicleDetails /> */}
+                                        <VehicleTypeDetails />
+                                    </div>
 
-                                {/* Комментарий */}
-                                <Form.Group>
-                                    <Form.Control placeholder='Комментарий' as="textarea" rows={4} value={comment} onChange={(e) => inputChangeHandler(e, setComment)} />
-                                </Form.Group>
+                                    {/* Комментарий */}
+                                    <Form.Group>
+                                        <Form.Control placeholder='Комментарий' as="textarea" rows={4} value={comment} onChange={(e) => inputChangeHandler(e, setComment)} />
+                                    </Form.Group>
 
-                                <hr />
+                                    <hr />
 
-                                <Stack direction='horizontal' gap='3'>
-                                    <Button variant='outline-success' type='submit' title='Создать запись' withSpinner={true} loading={loading} />
-                                    <Button variant='outline-danger' title='Отмена' className='ms-auto' clickHandler={() => navigate('/')} />
+                                    <Stack direction='horizontal' gap='3'>
+                                        <Button variant='outline-success' type='submit' title='Создать запись' withSpinner={true} loading={loading} />
+                                        <Button variant='outline-danger' title='Отмена' className='ms-auto' clickHandler={() => navigate('/')} />
+                                    </Stack>
+
                                 </Stack>
-
-                            </Stack>
-                        </Col>
-                        <Col md={4}>
-                            {vdState.rows.map((row, index) => (
+                            </Col>
+                            <Col md={4}>
+                                {/* {vdState.rows.map((row, index) => (
                                 <VehiclePhoto
-                                    key={row.id}
-                                    photoUrl={row.photoUrl}
-                                    number={row.number}
-                                    className={index > 0 ? 'mt-2' : ''}
+                                key={row.id}
+                                photoUrl={row.photoUrl}
+                                number={row.number}
+                                className={index > 0 ? 'mt-2' : ''}
                                 />
-                            ))}
-                        </Col>
-                    </Row>
+                            ))} */}
+
+                                <Photos mode='all' />
+                            </Col>
+                        </Row>
+
+                    </VehicleTypeDetailsProvider>
 
                 </Col>
             </Form>

@@ -1,11 +1,5 @@
-async function getWeight() {
-
-    //test
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(45025)
-        }, 2000);
-    })
+async function getWeightData() {
+    return 23000
 }
 
-module.exports.getWeight = getWeight
+module.exports.getWeightData = getWeightData

@@ -1,8 +1,8 @@
 import { Spinner as BootstrapSpinner } from 'react-bootstrap'
 
-const Spinner = ({ animation, variant }) => {
+const Spinner = ({ animation, variant, ...props }) => {
     return (
-        <BootstrapSpinner animation={animation} variant={variant} />
+        <BootstrapSpinner animation={animation} variant={variant} {...props} />
     )
 }
 

@@ -1,24 +1,17 @@
-import { useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import VehicleMovesList from './VehicleMovesList'
-import VehicleMoveDetails from './VehicleMoveDetails'
+import VehicleMoveInfo from './VehicleMoveInfo'
 import VehicleMoveActions from './VehicleMoveActions'
 import { Stack } from 'react-bootstrap'
 import PrintPass from '../ArrivalPage/PrintForms/Pass/PrintPass'
-import useVehicleMovesContext from './VehicleMovesList/hooks/useVehicleMovesContext'
+import { useSelector } from 'react-redux'
+import { getSelectedItem } from '../../redux/slices/vehicleMovesSlice'
+//import useVehicleMovesContext from './VehicleMovesList/hooks/useVehicleMovesContext'
 
 
 const Dashboard = () => {
 
-    const { contextValue } = useVehicleMovesContext()
-    const { state: vmState, fetchItems } = contextValue
-
-    useEffect(() => {
-
-        fetchItems()
-
-    }, [fetchItems])
-
+    const vehicleMoves = useSelector(state => state.vehicleMoves)
 
     return (
 
@@ -28,11 +21,11 @@ const Dashboard = () => {
             </Col>
             <Col md='4'>
                 <Stack className='mb-1' direction='horizontal' gap={2}>
-                    <PrintPass vehicleMoveId={vmState.selectedId} />
+                    <PrintPass vehicleMoveId={vehicleMoves.selectedId} />
                 </Stack>
                 <Stack>
-                    <VehicleMoveDetails move={vmState.items.find(move => move.id === vmState.selectedId)} />
-                    <VehicleMoveActions vehicleMoveId={vmState.selectedId} className='mt-2' />
+                    <VehicleMoveInfo vehicleMove={getSelectedItem(vehicleMoves)} />
+                    <VehicleMoveActions vehicleMove={getSelectedItem(vehicleMoves)} className='mt-2' />
                 </Stack>
             </Col>
         </Row>

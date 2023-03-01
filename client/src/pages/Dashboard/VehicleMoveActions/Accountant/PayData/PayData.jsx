@@ -1,13 +1,12 @@
 import { Row, Col } from 'react-bootstrap'
 import { Check2 } from 'react-bootstrap-icons'
 import SetPayModal from './SetPayModal/SetPayModal'
-import useVehicleMovesContext from '../../../VehicleMovesList/hooks/useVehicleMovesContext'
 import { formatDate } from '../../../../../utils/common'
+import { useSelector } from 'react-redux'
 
 const PayData = () => {
 
-    const { contextValue } = useVehicleMovesContext()
-    const accountant = contextValue.state.items.find(item => item.id === contextValue.state.selectedId)?.accountant
+    const vmPayData = useSelector(state => state.vehicleMovePayData)
 
     return (
         <>
@@ -16,7 +15,7 @@ const PayData = () => {
                 <Col lg='6'>
                     <Row>
                         <Col className="fw-bold">ФИО Бухгалтера:</Col>
-                        <Col>{accountant?.user?.fullName}</Col>
+                        <Col>{vmPayData?.payData?.user?.fullName}</Col>
                     </Row>
 
                     <Row className='mt-2'>
@@ -27,22 +26,20 @@ const PayData = () => {
 
                         </Col>
                     </Row>
-
                 </Col>
-
 
                 <Col lg='6'>
 
                     <Row>
                         <Col className="fw-bold">Дата оплаты:</Col>
-                        <Col>{formatDate(accountant?.paidDate)}</Col>
+                        <Col>{formatDate(vmPayData?.payData?.paidDate)}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Статус оплаты:</Col>
                         <Col>
                             {
-                                accountant?.isPaid ? <Check2 style={{ color: 'green' }} size='30' /> : ''
+                                vmPayData?.payData?.isPaid ? <Check2 style={{ color: 'green' }} size='30' /> : ''
                             }
                         </Col>
                     </Row>

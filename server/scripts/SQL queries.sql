@@ -3,12 +3,13 @@ select * from parkings
 select * from vehicle_move_details
 select * from vehicle_move_services
 select * from vehicle_types
+select * from delivery_types
 select * from companies
 select * from settings
 select * from users
 select * from services
-select * from accountant
-select * from inspector
+select * from pay_data
+select * from vehicle_move_outgo
 
 DELETE accountant 
 

@@ -1,34 +1,28 @@
-import { useState } from 'react'
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
 import DateRangePicker from '../../../components/DateRangePicker'
-import { availableFilters } from './context/VehicleMovesProvider'
 import { formatDate } from '../../../utils/common'
-import useVehicleMovesContext from './hooks/useVehicleMovesContext'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilter, getActiveFilter } from '../../../redux/slices/vehicleMovesSlice'
 
 const Topbar = ({ ...props }) => {
 
-    const [vehicleFilterText, setVehicleFilterText] = useState('Все')
+    const filters = useSelector(state => state.vehicleMoves.filters)
+    const dispatch = useDispatch()
 
-    const { contextValue } = useVehicleMovesContext()
-    const { state, dispatch } = contextValue
+    const activeVehicleFilter = getActiveFilter(filters, 'vehicles')
 
-    const setVehicleFilterHandler = (filterOptions, event) => {
-        dispatch({ type: 'setVehicleFilter', payload: filterOptions })
-        setVehicleFilterText(event.target.innerText)
+    const setVehicleFilterHandler = (pickedFilterName) => {
+
+        if (pickedFilterName === 'pickedDateIn') {
+
+        } else {
+            dispatch(setFilter({ filterType: 'vehicles', filterName: pickedFilterName }))
+        }
     }
 
     const setDateRangeHandler = (range) => {
-
-        dispatch({ type: 'setDateInFilter', payload: range })
-
+        dispatch(setFilter({ filterType: 'vehicles', filterName: 'pickedDateIn', value: range }))
     }
-
-    const dateRangePickerText = state.filters.dateIn.from || state.filters.dateIn.To
-        ?
-        `${formatDate(state.filters.dateIn.from, { withTime: false })} - ${formatDate(state.filters.dateIn.to, { withTime: false })}`
-        :
-        'Период по дате въезда'
 
     return (
         <Stack
@@ -44,21 +38,30 @@ const Topbar = ({ ...props }) => {
                     size='sm'
                 />
 
-                <NavDropdown title={`Показать автомобили (${vehicleFilterText})`} className='my-auto'>
-                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler(null, e)}>Все</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.onTerritory.name, value: true }, e)}>На территории</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.lastDays.name, value: 2 }, e)}>За двое суток</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.lastDays.name, value: 7 }, e)}>За последнюю неделю</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.lastDays.name, value: 31 }, e)}>За последний месяц</NavDropdown.Item>
-                    <NavDropdown.Item onClick={(e) => setVehicleFilterHandler({ name: availableFilters.thisYear.name, value: true }, e)}>За этот год</NavDropdown.Item>
-                </NavDropdown>
-
-                <DateRangePicker
-                    buttonText={dateRangePickerText}
-                    onPicked={setDateRangeHandler}
-                    defaultRange={{ from: state.filters.dateIn.from, to: state.filters.dateIn.to }}
-                />
             </Form>
+
+            <NavDropdown title={`Показать автомобили (${activeVehicleFilter.title})`} className='my-auto'>
+                {
+                    filters.vehicles.map(item =>
+                    (<NavDropdown.Item
+                        key={item.name}
+                        onClick={() => setVehicleFilterHandler(item.name)}
+                    >
+                        {item.name === 'pickedDateIn'
+                            ?
+                            <DateRangePicker
+                                onPicked={setDateRangeHandler}
+                                buttonText={item.title}
+                                defaultRange={{ from: '', to: '' }}
+                                renderButton={() => item.title}
+                            />
+                            : item.title}
+
+                    </NavDropdown.Item>)
+                    )
+                }
+            </NavDropdown>
+
         </Stack >
 
     )

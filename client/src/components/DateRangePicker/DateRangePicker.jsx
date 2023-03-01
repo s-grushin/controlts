@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { Stack } from 'react-bootstrap'
+import { Form, Stack } from 'react-bootstrap'
 import Confirmation from '../Modals/Confirmation'
 import Button from '../Button'
+import AppButton from '../AppButton'
 import { Calendar4Range } from 'react-bootstrap-icons'
+import { dateRangeToISO } from '../../utils/common'
 
-const DateRangePicker = ({ onPicked, defaultRange, buttonText }) => {
+const DateRangePicker = ({ onPicked, defaultRange, buttonText, renderButton }) => {
 
     const [show, setShow] = useState(false)
     const [from, setFrom] = useState(defaultRange.from)
@@ -14,39 +16,74 @@ const DateRangePicker = ({ onPicked, defaultRange, buttonText }) => {
         setShow(true)
     }
 
-    const changeDateHandler = (setter, e) => {
+    const confirmHandler = () => {
+        setShow(false)
+        console.log({ from, to });
+        onPicked(dateRangeToISO(from, to))
+    }
+
+    const dateChangeHandler = (e, setter) => {
         setter(e.target.value)
     }
 
-    const confirmHandler = () => {
-        setShow(false)
-        onPicked({ from, to, tzOffset: new Date().getTimezoneOffset() })
+    const dateClickHandler = (e) => {
+        e.stopPropagation()
     }
 
     return (
         <>
             {
-                show ?
-                    (<Confirmation
-                        show={show}
-                        confirmHandler={confirmHandler}
-                        cancelHandler={() => setShow(false)}
-                        title={buttonText}
-                    >
+                show &&
+                <Confirmation
+                    show={show}
+                    confirmHandler={confirmHandler}
+                    cancelHandler={() => setShow(false)}
+                    title={buttonText}
+                >
+                    <Form>
                         <Stack direction='horizontal' gap={3}>
-                            <input type="date" name='from' value={from} onChange={(e) => changeDateHandler(setFrom, e)} />
-                            <button onClick={() => setFrom('')}>x</button>
-                            <input type="date" name='to' value={to} onChange={(e) => changeDateHandler(setTo, e)} />
-                            <button onClick={() => setTo('')}>x</button>
+
+                            <Form.Control
+                                size='sm'
+                                type="date"
+                                onClick={dateClickHandler}
+                                value={from}
+                                onChange={(e) => dateChangeHandler(e, setFrom)}
+                            />
+                            <AppButton variant='outline-danger' onClick={() => setFrom('')}>x</AppButton>
+
+                            <Form.Control
+                                onClick={dateClickHandler}
+                                size='sm'
+                                type="date"
+                                value={to}
+                                onChange={(e) => dateChangeHandler(e, setTo)}
+                            />
+                            <AppButton variant='outline-danger' onClick={() => setTo('')}>x</AppButton>
 
                         </Stack>
-                    </Confirmation>)
-                    :
-                    <Button title='' variant='light' onClick={onClickHandler}>
-                        {buttonText}
-                        &nbsp;<Calendar4Range />
-                    </Button>
+                    </Form>
+
+                </Confirmation>
+
             }
+
+            {
+                <div onClick={onClickHandler}>
+                    {
+
+                        renderButton()
+                        ||
+                        <Button title='' variant='light' >
+                            {buttonText}
+                            &nbsp;<Calendar4Range />
+                        </Button>
+                    }
+                </div>
+            }
+
+
+
         </>
     )
 }
@@ -54,7 +91,8 @@ const DateRangePicker = ({ onPicked, defaultRange, buttonText }) => {
 DateRangePicker.defaultProps = {
     onPicked: () => { },
     defaultRange: { from: '', to: '' },
-    buttonText: 'Выбрать период'
+    buttonText: 'Выбрать период',
+    renderButton: () => { }
 }
 
 export default DateRangePicker

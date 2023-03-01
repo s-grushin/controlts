@@ -1,18 +1,17 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import AppTable from "../../../../../../components/AppTable"
 import useHttp from '../../../../../../hooks/useHttp'
 import './Table.module.css'
-import useAccountantContext from '../../hooks/useAccountantContext'
-import { VehicleMovesContext } from '../../../../VehicleMovesList/context/VehicleMovesProvider'
+import { useSelector, useDispatch } from 'react-redux'
+import { setSelectedId, editService } from '../../../../../../redux/slices/vehicleMoveServicesSlice'
 
 const Table = () => {
 
     const [allServices, setAllServices] = useState([])
     const { request, loading, error } = useHttp()
-    const vmContext = useContext(VehicleMovesContext)
 
-    const { contextValue } = useAccountantContext()
-    const { state, dispatch } = contextValue
+    const vehicleMoveServices = useSelector(state => state.vehicleMoveServices)
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
@@ -25,45 +24,22 @@ const Table = () => {
 
     }, [request])
 
-
-    useEffect(() => {
-
-        const vmServices = vmContext.state.items.find(item => item.id === vmContext.state.selectedId)?.services
-        if (vmServices) {
-
-            const mappedService = vmServices.map(item => {
-                return {
-                    id: item.id,
-                    serviceId: item.serviceId,
-                    quantity: item.quantity,
-                    price: item.price,
-                    summ: item.summ
-                }
-            })
-
-            dispatch({ type: 'addServicesBulk', payload: mappedService })
-        }
-
-    }, [vmContext.state.selectedId, vmContext.state.items, dispatch])
-
-
-    const onChangeHandler = (e, rowId) => {
+    const onChangeHandler = (e, serviceId) => {
 
         if (e.target.name === 'serviceId') {
             //достаем цену услуги
             const price = allServices.find(item => item.id === parseInt(e.target.value))?.price || 0
-            dispatch({ type: 'editService', payload: { rowId, key: 'price', value: price } })
+            dispatch(editService({ id: serviceId, key: 'price', value: price }))
         }
 
-        dispatch({ type: 'editService', payload: { rowId, key: e.target.name, value: e.target.value } })
-        dispatch({ type: 'setServicesModified', payload: true })
+        dispatch(editService({ id: serviceId, key: e.target.name, value: e.target.value }))
     }
 
     return (
         <>
             {
                 loading ? 'Загрузка...' : error ? `ошибка загрузки ${error}` :
-                    <AppTable style={{ fontSize: '12px' }}>
+                    <AppTable style={{ fontSize: '12px' }} bordered>
                         <thead>
                             <tr>
                                 <th scope="col">Наименование</th>
@@ -75,11 +51,11 @@ const Table = () => {
                         {
                             <tbody>
                                 {
-                                    state.services.map(row => (
+                                    vehicleMoveServices.items.map(row => (
                                         <tr
+                                            onClick={() => dispatch(setSelectedId({ id: row.id }))}
                                             key={row.id}
-                                            onClick={() => dispatch({ type: 'setSelectedServiceId', payload: row.id })}
-                                            className={row.id === state.selectedServiceId ? 'selectedTableRow' : ''}
+                                            className={row.id === vehicleMoveServices.selectedId ? 'selectedTableRow' : ''}
                                         >
 
                                             <td>
@@ -106,11 +82,6 @@ const Table = () => {
 
                                             <td>
                                                 {row.price}
-                                                {/* <input type="number"
-                                                    name='price'
-                                                    value={row.price}
-                                                    onChange={e => onChangeHandler(e, row.id)}
-                                                /> */}
                                             </td>
 
                                             <td>

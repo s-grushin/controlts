@@ -13,7 +13,6 @@ const OutgoModal = ({ vehicleMoveId }) => {
     setIsShow(false)
   }
 
-
   return (
     <>
 

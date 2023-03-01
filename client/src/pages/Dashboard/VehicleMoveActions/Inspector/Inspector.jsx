@@ -1,36 +1,32 @@
 import { Card, Row, Col } from 'react-bootstrap'
 import { Check2 } from 'react-bootstrap-icons'
-import useVehicleMovesContext from '../../VehicleMovesList/hooks/useVehicleMovesContext'
 import AllowOutgoModal from './AllowOutgoModal/AllowOutgoModal'
 import { formatDate } from '../../../../utils/common'
+import { useSelector } from 'react-redux'
+import { getSelectedItem } from '../../../../redux/slices/vehicleMovesSlice'
 
 const Inspector = () => {
 
-  const { contextValue } = useVehicleMovesContext()
-  const vehicleMoveId = contextValue.state.selectedId
-  const vehicleMove = contextValue.state.items.find(item => item.id === vehicleMoveId)
-  const inspector = vehicleMove?.inspector
-
+  const outgo = useSelector(state => state.vehicleMoveOutgo)
+  const vehicleMove = getSelectedItem(useSelector(state => state.vehicleMoves)) 
 
   return (
     <Card style={{ fontSize: 13 }} className='p-2 mt-2'>
-
       <Row>
-
         <Col>
           <Row>
             <Col className="fw-bold" xs='4'>ФИО Инспектора:</Col>
-            <Col>{inspector?.user?.fullName}</Col>
+            <Col>{outgo?.data?.user?.fullName}</Col>
           </Row>
 
           <Row className="mt-3">
             <Col className="fw-bold" xs='4'>№ ГТД:</Col>
-            <Col>{inspector?.cdn}</Col>
+            <Col>{outgo?.data?.cdn}</Col>
           </Row>
 
           <Row className="mt-3">
             <Col className="fw-bold" xs='4'>Дата:</Col>
-            <Col>{formatDate(inspector?.date)}</Col>
+            <Col>{formatDate(outgo?.data?.date)}</Col>
           </Row>
 
           <Row className="mt-3">
@@ -47,7 +43,7 @@ const Inspector = () => {
             <Col className="fw-bold" xs='4'>Выезд разрешен:</Col>
             <Col>
               {
-                inspector?.outgoAllowed && <Check2 style={{ color: 'green' }} size='30' />
+                outgo?.data?.outgoAllowed && <Check2 style={{ color: 'green' }} size='30' />
               }
             </Col>
           </Row>

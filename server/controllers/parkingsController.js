@@ -33,7 +33,7 @@ async function create(req, res) {
 async function update(req, res) {
 
     const data = req.body
-    const updated = await Parking.update(data, { where: { id: data.id } })
+    const updated = await Parking.update({ ...data }, { where: { id: data.id } })
     if (updated) {
         return res.status(200).json({ message: 'updated' })
     } else {

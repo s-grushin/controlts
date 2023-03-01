@@ -7,6 +7,8 @@ const initState = {
     items: []
 }
 
+
+
 const reducer = (state, action) => {
     switch (action.type) {
         case 'setWeight':

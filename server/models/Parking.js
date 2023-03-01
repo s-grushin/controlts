@@ -15,4 +15,5 @@ const Parking = db.define('Parking', {
 }, { tableName: 'parkings' })
 
 
+
 module.exports = Parking

@@ -1,15 +1,19 @@
 import Toolbar from './Toolbar'
 import Table from './Table'
-import { useState } from 'react'
+import AppAlert from '../../../../../components/AppAlert'
+import { useSelector, useDispatch } from 'react-redux'
+import { clearError } from '../../../../../redux/slices/vehicleMoveServicesSlice'
 
 const ServiceTable = () => {
 
-    const [selectedId, setSelectedId] = useState(null)
+    const services = useSelector(state => state.vehicleMoveServices)
+    const dispatch = useDispatch()
 
     return (
         <>
-            <Toolbar selectedId={selectedId} />
-            <Table onRowSelected={(id) => setSelectedId(id)} />
+            <AppAlert show={services.error} text={services.error} clear={() => dispatch(clearError())} />
+            <Toolbar />
+            <Table />
         </>
     )
 }

@@ -1,14 +1,16 @@
 import { Card, Row, Col, Stack } from "react-bootstrap"
 import AppButton from '../../../../components/AppButton'
-import useVehicleMovesContext from '../../VehicleMovesList/hooks/useVehicleMovesContext'
 import { formatDate } from '../../../../utils/common'
 import { Check2 } from 'react-bootstrap-icons'
 import OutgoModal from '../../../../pages/OutgoPage/OutgoModal'
+import { useSelector } from 'react-redux'
+import { getSelectedItem } from '../../../../redux/slices/vehicleMovesSlice'
+
 
 const Dispatcher = () => {
 
-    const { contextValue } = useVehicleMovesContext()
-    const vehicleMove = contextValue.state.items.find(item => item.id === contextValue.state.selectedId)
+    const vehicleMoves = useSelector(state => state.vehicleMoves)
+    const vehicleMove = getSelectedItem(vehicleMoves)
 
     return (
         <Card style={{ fontSize: 13 }} className='p-2'>
@@ -20,18 +22,18 @@ const Dispatcher = () => {
                     <hr />
                     <Row>
                         <Col className="fw-bold">ФИО Бухгалтера:</Col>
-                        <Col>{vehicleMove?.accountant?.user?.fullName}</Col>
+                        <Col>{vehicleMove?.payData?.user?.fullName}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Дата:</Col>
-                        <Col>{formatDate(vehicleMove?.accountant?.paidDate)}</Col>
+                        <Col>{formatDate(vehicleMove?.payData?.paidDate)}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Статус оплаты:</Col>
                         <Col>
-                            {vehicleMove?.accountant?.isPaid && <Check2 style={{ color: 'green' }} size='30' />}
+                            {vehicleMove?.payData?.isPaid && <Check2 style={{ color: 'green' }} size='30' />}
                         </Col>
                     </Row>
 
@@ -43,18 +45,18 @@ const Dispatcher = () => {
                     <hr />
                     <Row>
                         <Col className="fw-bold">ФИО Инспектора:</Col>
-                        <Col>{vehicleMove?.inspector?.user?.fullName}</Col>
+                        <Col>{vehicleMove?.outgo?.user?.fullName}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Дата:</Col>
-                        <Col>{formatDate(vehicleMove?.inspector?.date)}</Col>
+                        <Col>{formatDate(vehicleMove?.outgo?.date)}</Col>
                     </Row>
 
                     <Row className="mt-3">
                         <Col className="fw-bold">Разрешение на выезд:</Col>
                         <Col>
-                            {vehicleMove?.inspector?.outgoAllowed && <Check2 style={{ color: 'green' }} size='30' />}
+                            {vehicleMove?.outgo?.outgoAllowed && <Check2 style={{ color: 'green' }} size='30' />}
                         </Col>
                     </Row>
 
@@ -66,7 +68,7 @@ const Dispatcher = () => {
                 <AppButton>
                     Проверить разрешение на выезд
                 </AppButton>
-                <OutgoModal vehicleMoveId={contextValue.state.selectedId} />
+                <OutgoModal vehicleMoveId={vehicleMove?.id} />
             </Stack>
 
         </Card>

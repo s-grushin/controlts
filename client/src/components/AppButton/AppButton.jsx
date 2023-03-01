@@ -27,7 +27,8 @@ const AppButton = ({ children, onClick, variant, size, className, tooltipText, .
 AppButton.defaultProps = {
     variant: 'outline-primary',
     size: 'sm',
-    className: ''
+    className: '',
+    tooltipText: ''
 }
 
 export default AppButton

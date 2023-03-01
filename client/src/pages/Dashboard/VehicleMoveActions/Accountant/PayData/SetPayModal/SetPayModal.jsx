@@ -1,27 +1,27 @@
 import { useState } from 'react'
 import Confirmation from '../../../../../../components/Modals/Confirmation'
 import AppButton from '../../../../../../components/AppButton'
-import useHttp from '../../../../../../hooks/useHttp'
 import AppAlert from '../../../../../../components/AppAlert'
-import useVehicleMovesContext from '../../../../VehicleMovesList/hooks/useVehicleMovesContext'
+import { useSelector, useDispatch } from 'react-redux'
+import { clearError, savePayData } from '../../../../../../redux/slices/vehicleMovePayDataSlice'
 
 const SetPayModal = () => {
 
     const [isShow, setIsShow] = useState(false)
-    const { request, loading, error, clearError } = useHttp(false, 500)
+    const vmPayData = useSelector(state => state.vehicleMovePayData)
 
-    const { contextValue } = useVehicleMovesContext()
-    const vehicleMoveId = contextValue.state.selectedId
-    const vmDispatch = contextValue.dispatch
-    const isPaid = contextValue.state.items.find(item => item.id === vehicleMoveId)?.accountant?.isPaid
+    const dispatch = useDispatch()
 
     const confirmHandler = async () => {
-        const accountant = await request('/vehicleMoves/setPaid', 'patch', { vehicleMoveId, isPaid: !isPaid })
-        if (accountant) {
-            vmDispatch({ type: 'setPaid', payload: accountant })
-            setIsShow(false)
-        }
+        dispatch(savePayData()).then(() => setIsShow(false))
     }
+
+    const cancelHandler = () => {
+        setIsShow(false)
+        dispatch(clearError())
+    }
+
+    const isPaid = vmPayData.payData?.isPaid
 
     const btnText = isPaid ? 'Установить "Не оплачено"' : 'Установить "Оплачено"'
 
@@ -31,9 +31,9 @@ const SetPayModal = () => {
                 {btnText}
             </AppButton>
 
-            <Confirmation show={isShow} cancelHandler={() => setIsShow(false)} title='Подтверждение' confirmHandler={confirmHandler} isConfirming={loading}>
+            <Confirmation show={isShow} cancelHandler={cancelHandler} title='Подтверждение' confirmHandler={confirmHandler} isConfirming={vmPayData.status === 'loading'}>
                 Установить статус оплаты на {isPaid ? <b>"Не оплачено"</b> : <b>"Оплачено"</b>} ?
-                <AppAlert show={error} text={error} clear={clearError} />
+                <AppAlert show={vmPayData.error} text={vmPayData.error} clear={() => dispatch(clearError())} />
             </Confirmation>
         </>
 

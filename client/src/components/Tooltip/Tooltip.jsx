@@ -18,7 +18,7 @@ const Tooltip = ({ children, placement, tooltipText, show, hide }) => {
 Tooltip.defaultProps = {
     placement: 'top',
     show: 750,
-    hide: 400,
+    hide: 120,
 }
 
 export default Tooltip

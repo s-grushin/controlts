@@ -9,8 +9,8 @@ const Company = require('./Company')
 const DeliveryType = require('./DeliveryType')
 const User = require('./User')
 const VehicleMoveService = require('./VehicleMoveService')
-const Accountant = require('./Accountant')
-const Inspector = require('./Inspector')
+const PayData = require('./PayData')
+const Outgo = require('./Outgo')
 
 
 const VehicleMove = db.define('VehicleMove', {
@@ -89,7 +89,12 @@ const VehicleMove = db.define('VehicleMove', {
                 msg: 'Не указан водитель'
             }
         }
-    }
+    },
+    version: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
 
 }, { timestamps: true, createdAt: 'dateIn' })
 
@@ -118,10 +123,10 @@ VehicleMove.belongsTo(User, { as: 'userIn', foreignKey: 'userInId' })
 
 VehicleMove.belongsTo(User, { as: 'userOut', foreignKey: 'userOutId' })
 
-VehicleMove.hasOne(Accountant, { as: 'accountant', foreignKey: 'vehicleMoveId' })
-Accountant.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
+VehicleMove.hasOne(PayData, { as: 'payData', foreignKey: 'vehicleMoveId' })
+PayData.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
 
-VehicleMove.hasOne(Inspector, { as: 'inspector', foreignKey: 'vehicleMoveId' })
-Inspector.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
+VehicleMove.hasOne(Outgo, { as: 'outgo', foreignKey: 'vehicleMoveId' })
+Outgo.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
 
 module.exports = VehicleMove

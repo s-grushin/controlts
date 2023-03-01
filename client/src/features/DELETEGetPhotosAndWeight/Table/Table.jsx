@@ -1,10 +1,10 @@
 import AppTable from '../../../components/AppTable'
-import usePhotosAndWeightContext from '../hooks/usePhotosAndWeightContext'
+//import usePhotosAndWeightContext from '../hooks/usePhotosAndWeightContext'
 
 const Table = () => {
 
-    const { contextValue } = usePhotosAndWeightContext()
-    console.log(contextValue);
+    //const { contextValue } = usePhotosAndWeightContext()
+    //console.log(contextValue);
 
     return (
         <AppTable>
