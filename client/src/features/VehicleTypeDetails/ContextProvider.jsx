@@ -33,7 +33,7 @@ const getNewItem = () => {
 }
 
 const convertVehicleTypesToItems = (vehicleTypes) => {
-    return vehicleTypes.map(vt => {
+    return vehicleTypes.filter(item => item.orderInCheckout).map(vt => {
         const newItem = getNewItem()
         return { ...newItem, vehicleTypeId: vt.id }
     })

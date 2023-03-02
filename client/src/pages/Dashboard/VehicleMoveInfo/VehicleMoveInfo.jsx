@@ -54,7 +54,7 @@ const VehicleMoveInfo = ({ vehicleMove }) => {
           {vehicleMove?.comment && <InputGroup title='Комментарий' value={vehicleMove?.comment} className='mb-2' options={{ as: 'textarea' }} />}
 
 
-          <VehicleTypeDetailsProvider vehicleTypeDetails={vehicleMove.vehicleDetails} readonly={true}>
+          <VehicleTypeDetailsProvider vehicleTypeDetails={vehicleMove.vehicleDetails?.filter(item => item.moveKind === 0)} readonly={true}>
             <Row className='gx-1'>
               <Col>
                 <VehicleTypeDetails />

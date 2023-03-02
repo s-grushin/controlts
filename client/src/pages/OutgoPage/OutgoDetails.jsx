@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Card, Row, Col } from 'react-bootstrap'
 import Photos from 'features/VehicleTypeDetails/Photos'
 import VehicleTypeDetailsProvider from 'features/VehicleTypeDetails/ContextProvider'
@@ -11,10 +10,10 @@ import InputGroup from 'components/InputGroup'
 
 
 
-const OutgoDetails = () => {
+const OutgoDetails = ({ weightOptions, cameraDataOptions }) => {
 
-    const [weight, setWeight] = useState(0)
-    const [cameraData, setCameraData] = useState([])
+    const { weight, setWeight } = weightOptions
+    const { cameraData, setCameraData } = cameraDataOptions
 
     const { getPhotos, loading: photosLoading, error: errorPhoto, clearError: clearPhotoError } = useGetPhotos()
     const { getWeight, loading: weightLoading, error: errorWeight, clearError: clearWeightError } = useGetWeight()
@@ -35,6 +34,7 @@ const OutgoDetails = () => {
     }
 
     return (
+
         <VehicleTypeDetailsProvider isNew={true} cameraData={cameraData}>
             < Card >
                 <Row>
@@ -56,6 +56,7 @@ const OutgoDetails = () => {
                 </Row>
             </ Card>
         </VehicleTypeDetailsProvider>
+
     )
 }
 

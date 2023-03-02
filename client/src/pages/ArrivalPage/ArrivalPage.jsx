@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
 import useInputChange from '../../hooks/useInputChange'
@@ -6,9 +6,6 @@ import Button from '../../components/Button'
 import Spinner from '../../components/Spinner'
 import useHttp from '../../hooks/useHttp'
 import Selector from '../../components/Selectors/Selector'
-import VehicleDetails from './VehicleDetails'
-import { VehicleDetailsContext } from './VehicleDetails/context/VehicleDetailsProvider'
-import VehiclePhoto from '../../components/VehiclePhoto'
 import VehicleTypeDetails from 'features/VehicleTypeDetails/VehicleTypeDetails'
 import Photos from 'features/VehicleTypeDetails/Photos'
 import useGetPhotos from 'features/VehicleTypeDetails/Photos/useGetPhotos'
@@ -38,8 +35,6 @@ const ArrivalPage = () => {
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
-    const { state: vdState, dispatch: vdDispatch } = useContext(VehicleDetailsContext)
-
     const { request, error, loading, clearError } = useHttp()
     const inputChangeHandler = useInputChange()
 
@@ -50,6 +45,9 @@ const ArrivalPage = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault()
+
+        const vehicleDetails = JSON.parse(localStorage.getItem(STORAGE_KEYS.newVehicleDetails))
+
         const formData = {
             brandId: selectedBrandId,
             modelId: selectedModelId,
@@ -60,7 +58,7 @@ const ArrivalPage = () => {
             companyId: selectedCompanyId,
             isOwnCompany,
             comment,
-            vehicleDetails: vdState.rows
+            vehicleDetails,
         }
 
         const res = await request('/vehicleMoves', 'post', formData)
@@ -70,9 +68,6 @@ const ArrivalPage = () => {
     }
 
     const getWeightAndCameraData = async () => {
-
-        //const newVehicleDetails = JSON.parse(localStorage.getItem(STORAGE_KEYS.newVehicleDetails))
-        //console.log(newVehicleDetails);
 
         const [photosData, weightData] = await Promise.all([getPhotos(), getWeight()])
         const camera = photosData.cameraData

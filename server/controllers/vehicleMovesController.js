@@ -249,7 +249,7 @@ async function create(req, res) {
         const vmd = vehicleDetails.map(item => {
             return {
                 number: item.number,
-                photo: item.photoUrl,
+                photo: item.photo,
                 vehicleMoveId: vehicleMove.id,
                 vehicleTypeId: item.vehicleTypeId
             }
@@ -262,6 +262,51 @@ async function create(req, res) {
     })
 
     res.status(200).json({ message: 'created' })
+}
+
+async function checkout(req, res) {
+    //Оформление выезда
+
+    const { vehicleMoveId, vehicleDetails, weight } = req.body
+
+    await db.transaction(async (t) => {
+
+        const vehicleMove = await VehicleMove.findByPk(vehicleMoveId, { lock: true })
+        vehicleMove.weightOut = weight
+        await vehicleMove.save({ transaction: t })
+
+        await VehicleMoveDetail.destroy({ where: { vehicleMoveId, moveKind: 1 }, transaction: t })
+
+        const vehicleDetailsToSave = vehicleDetails.map(item => {
+            return {
+                number: item.number,
+                photo: item.photo,
+                vehicleMoveId: vehicleMoveId,
+                vehicleTypeId: item.vehicleTypeId,
+                moveKind: 1,
+            }
+        })
+
+        await VehicleMoveDetail.bulkCreate(vehicleDetailsToSave, { transaction: t })
+
+    })
+
+    return res.status(200).json({ message: 'ok' })
+
+}
+
+const getVehicleTypeByCameraName = (cameraName, vehicleTypes) => {
+
+    let vt
+
+    if (cameraName === 'front') {
+        vt = vehicleTypes.find(item => item.progName === 'truck')
+    }
+    if (cameraName === 'back') {
+        vt = vehicleTypes.find(item => item.progName === 'trailer')
+    }
+
+    return vt
 }
 
 
@@ -278,7 +323,8 @@ const vehicleMoveIncludes = [
     { model: Outgo, as: 'outgo', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
     {
         model: VehicleMoveDetail,
-        as: 'vehicleDetails', include: [
+        as: 'vehicleDetails', 
+        include: [
             { model: VehicleType, as: 'vehicleType' }
         ]
     },
@@ -292,6 +338,7 @@ module.exports.getCheckoutPassPrintData = asyncHandler(getCheckoutPassPrintData)
 module.exports.getStartingServices = asyncHandler(getStartingServices)
 module.exports.saveOutgo = asyncHandler(saveOutgo)
 module.exports.create = asyncHandler(create)
+module.exports.checkout = asyncHandler(checkout)
 module.exports.saveServices = asyncHandler(saveServices)
 module.exports.savePayData = asyncHandler(savePayData)
 module.exports.getAll = asyncHandler(getAll)
