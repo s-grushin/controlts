@@ -273,6 +273,7 @@ async function checkout(req, res) {
 
         const vehicleMove = await VehicleMove.findByPk(vehicleMoveId, { lock: true })
         vehicleMove.weightOut = weight
+        vehicleMove.dateOut = new Date()
         await vehicleMove.save({ transaction: t })
 
         await VehicleMoveDetail.destroy({ where: { vehicleMoveId, moveKind: 1 }, transaction: t })
@@ -323,7 +324,7 @@ const vehicleMoveIncludes = [
     { model: Outgo, as: 'outgo', include: [{ model: User, as: 'user', attributes: ['fullName'] }] },
     {
         model: VehicleMoveDetail,
-        as: 'vehicleDetails', 
+        as: 'vehicleDetails',
         include: [
             { model: VehicleType, as: 'vehicleType' }
         ]

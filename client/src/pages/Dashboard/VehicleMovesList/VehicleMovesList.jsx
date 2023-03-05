@@ -1,74 +1,45 @@
-import { useEffect } from 'react'
-import Table from '../../../components/Table'
-import { formatDate } from '../../../utils/common'
 import Topbar from './Topbar'
 import Spinner from '../../../components/Spinner'
 import AppAlert from '../../../components/AppAlert'
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchVehicleMoves, setSelectedId } from '../../../redux/slices/vehicleMovesSlice'
+import { useGetMovesQuery } from 'redux/api/movesApi'
+import MovesTable from './MovesTable/MovesTable'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSelectedId } from 'redux/slices/movesSlice'
 
 const VehicleMovesList = () => {
 
-  const vehicleMoves = useSelector(state => state.vehicleMoves)
+  const { data, isFetching, isError } = useGetMovesQuery('', { pollingInterval: 50000000 })
   const dispatch = useDispatch()
+  const state = useSelector(state => state.movesInfo)
 
-  useEffect(() => { dispatch(fetchVehicleMoves()) }, [dispatch, vehicleMoves.filters])
 
-  const rowClickHandler = (selectedId) => {
+  const handleRowClicked = (selectedId) => {
     dispatch(setSelectedId({ id: selectedId }))
   }
 
   return (
     <>
       <Topbar />
+
       {
-        vehicleMoves.status === 'failed'
+        isError
           ?
           <div className='mt-2'>
             <AppAlert
-              show={vehicleMoves.error}
-              text={vehicleMoves.error}
+              show={isError}
+              text={isError}
               title='Ошибка при загрузке списка'
               clear={() => dispatch({ type: 'clearError' })}
             />
           </div>
           :
-          vehicleMoves.status === 'loading'
+          isFetching
             ?
             <div className='mt-5 d-flex justify-content-center align-middle'>
               <Spinner />
             </div>
             :
-            <Table className='mt-1'>
-              <thead>
-                <tr style={{ fontSize: 13, fontWeight: 'bold' }}>
-                  <th>№</th>
-                  <th>Водитель</th>
-                  <th>Дата въезда</th>
-                  <th>Дата выезда</th>
-                  <th>Диспетчер</th>
-                  <th>Место стоянки</th>
-                </tr>
-              </thead>
-              <tbody style={{ fontSize: '14px' }}>
-                {
-                  vehicleMoves.items.map(item => (
-                    <tr
-                      key={item.id}
-                      onClick={() => rowClickHandler(item.id)}
-                      className={item.id === vehicleMoves.selectedId ? 'selectedTableRow' : 'asd'}
-                    >
-                      <td>{item.id}</td>
-                      <td>{item.driver.fullName}</td>
-                      <td>{formatDate(item.dateIn, { withSeconds: true })}</td>
-                      <td>{formatDate(item.dateOut, { withSeconds: true })}</td>
-                      <td>{item.userIn.username}</td>
-                      <td>{item.parking.name}</td>
-                    </tr>
-                  ))
-                }
-              </tbody>
-            </Table>
+            <MovesTable moves={data.rows} onRowClicked={handleRowClicked} selectedId={state.selectedId} />
       }
     </>
   )

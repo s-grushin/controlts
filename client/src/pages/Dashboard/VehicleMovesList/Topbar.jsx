@@ -1,28 +1,21 @@
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
 import DateRangePicker from '../../../components/DateRangePicker'
-import { formatDate } from '../../../utils/common'
-import { useDispatch, useSelector } from 'react-redux'
-import { setFilter, getActiveFilter } from '../../../redux/slices/vehicleMovesSlice'
+//import { formatDate } from '../../../utils/common'
+//import { useDispatch, useSelector } from 'react-redux'
+//import { setFilter, getActiveFilter } from '../../../redux/slices/vehicleMovesSlice'
 
 const Topbar = ({ ...props }) => {
 
-    const filters = useSelector(state => state.vehicleMoves.filters)
-    const dispatch = useDispatch()
-
-    const activeVehicleFilter = getActiveFilter(filters, 'vehicles')
 
     const setVehicleFilterHandler = (pickedFilterName) => {
-
-        if (pickedFilterName === 'pickedDateIn') {
-
-        } else {
-            dispatch(setFilter({ filterType: 'vehicles', filterName: pickedFilterName }))
-        }
     }
 
     const setDateRangeHandler = (range) => {
-        dispatch(setFilter({ filterType: 'vehicles', filterName: 'pickedDateIn', value: range }))
+
     }
+
+    const filters = []
+    const activeVehicleFilter = {}
 
     return (
         <Stack
@@ -42,7 +35,7 @@ const Topbar = ({ ...props }) => {
 
             <NavDropdown title={`Показать автомобили (${activeVehicleFilter.title})`} className='my-auto'>
                 {
-                    filters.vehicles.map(item =>
+                    filters.map(item =>
                     (<NavDropdown.Item
                         key={item.name}
                         onClick={() => setVehicleFilterHandler(item.name)}
