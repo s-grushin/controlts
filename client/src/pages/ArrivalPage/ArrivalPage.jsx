@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Row, Col, Form, Stack } from 'react-bootstrap'
-import useInputChange from '../../hooks/useInputChange'
-import Button from '../../components/Button'
-import Spinner from '../../components/Spinner'
-import useHttp from '../../hooks/useHttp'
-import Selector from '../../components/Selectors/Selector'
+import useInputChange from 'hooks/useInputChange'
+import Button from 'components/Button'
+import Spinner from 'components/Spinner'
+import useHttp from 'hooks/useHttp'
+import Selector from 'components/Selectors/Selector'
 import VehicleTypeDetails from 'features/VehicleTypeDetails/VehicleTypeDetails'
 import Photos from 'features/VehicleTypeDetails/Photos'
 import useGetPhotos from 'features/VehicleTypeDetails/Photos/useGetPhotos'
 import useGetWeight from 'features/Weight/useGetWeight'
 import { STORAGE_KEYS } from 'constants/appConstants'
 import VehicleTypeDetailsProvider from 'features/VehicleTypeDetails/ContextProvider'
+import { useCreateMoveMutation } from 'redux/api/movesApi'
+import AppAlert from 'components/AppAlert'
 
 
 const ArrivalPage = () => {
@@ -31,6 +33,9 @@ const ArrivalPage = () => {
     const [isOwnCompany, setIsOwnCompany] = useState(false)
     const [comment, setComment] = useState('')
 
+    const [errorSave, setErrorSave] = useState('')
+
+
     const [cameraData, setCameraData] = useState([])
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
@@ -42,6 +47,8 @@ const ArrivalPage = () => {
 
     const { getPhotos, loading: photosLoading, error: photosError } = useGetPhotos()
     const { getWeight, loading: weightLoading, error: weightError } = useGetWeight()
+
+    const [createMove, { isLoading: createLoading, isError: createIsError, error: createError, reset: createReset }] = useCreateMoveMutation()
 
     const submitHandler = async (e) => {
         e.preventDefault()
@@ -61,9 +68,11 @@ const ArrivalPage = () => {
             vehicleDetails,
         }
 
-        const res = await request('/vehicleMoves', 'post', formData)
-        if (res) {
+        try {
+            await createMove(formData).unwrap()
             navigate('/')
+        } catch (error) {
+            setErrorSave(error)
         }
     }
 
@@ -273,20 +282,14 @@ const ArrivalPage = () => {
                                 </Stack>
                             </Col>
                             <Col md={4}>
-                                {/* {vdState.rows.map((row, index) => (
-                                <VehiclePhoto
-                                key={row.id}
-                                photoUrl={row.photoUrl}
-                                number={row.number}
-                                className={index > 0 ? 'mt-2' : ''}
-                                />
-                            ))} */}
-
                                 <Photos mode='all' />
                             </Col>
                         </Row>
 
                     </VehicleTypeDetailsProvider>
+
+                    {/* save alert */}
+                    <AppAlert show={createIsError} title='Ошибка при создании записи' text={JSON.stringify(createError)} clear={createReset} />
 
                 </Col>
             </Form>

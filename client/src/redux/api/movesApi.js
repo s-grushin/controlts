@@ -50,6 +50,14 @@ const movesApi = createApi({
             invalidatesTags: ['Moves']
         }),
 
+        createMove: builder.mutation({
+            query: (body) => ({
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['Moves']
+        }),
+
         checkout: builder.mutation({
             query: (body) => ({
                 url: 'checkout',
@@ -63,5 +71,5 @@ const movesApi = createApi({
 })
 
 
-export const { useGetMovesQuery, useGetMoveByIdQuery, useSaveServicesMutation, useSavePayDataMutation, useSaveOutgoMutation, useCheckoutMutation } = movesApi
+export const { useGetMovesQuery, useGetMoveByIdQuery, useSaveServicesMutation, useSavePayDataMutation, useSaveOutgoMutation, useCreateMoveMutation, useCheckoutMutation } = movesApi
 export default movesApi
