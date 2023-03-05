@@ -33,14 +33,11 @@ const ArrivalPage = () => {
     const [isOwnCompany, setIsOwnCompany] = useState(false)
     const [comment, setComment] = useState('')
 
-    const [errorSave, setErrorSave] = useState('')
-
-
     const [cameraData, setCameraData] = useState([])
 
     const [formIsLoaded, setFormIsLoaded] = useState(false)
 
-    const { request, error, loading, clearError } = useHttp()
+    const { request, loading } = useHttp()
     const inputChangeHandler = useInputChange()
 
     const navigate = useNavigate()
@@ -68,12 +65,8 @@ const ArrivalPage = () => {
             vehicleDetails,
         }
 
-        try {
-            await createMove(formData).unwrap()
-            navigate('/')
-        } catch (error) {
-            setErrorSave(error)
-        }
+        await createMove(formData).unwrap().then(() => navigate('/'))
+
     }
 
     const getWeightAndCameraData = async () => {
@@ -116,15 +109,6 @@ const ArrivalPage = () => {
         setSelectedDriverId(null)
 
     }, [selectedCompanyId])
-
-
-    useEffect(() => {
-        if (error) {
-            alert(error)
-            clearError()
-        }
-    }, [error, clearError])
-
 
 
     if (loading && !formIsLoaded) {
@@ -262,6 +246,7 @@ const ArrivalPage = () => {
                                             />
                                         </div>
                                     </div>
+                                    <AppAlert show={weightError || photosError} title='Ошибка' text={`${weightError} ${photosError}`} />
                                     <div className="bg-light border">
                                         {/* <VehicleDetails /> */}
                                         <VehicleTypeDetails />
@@ -275,7 +260,7 @@ const ArrivalPage = () => {
                                     <hr />
 
                                     <Stack direction='horizontal' gap='3'>
-                                        <Button variant='outline-success' type='submit' title='Создать запись' withSpinner={true} loading={loading} />
+                                        <Button variant='outline-success' type='submit' title='Создать запись' withSpinner={true} loading={createLoading} />
                                         <Button variant='outline-danger' title='Отмена' className='ms-auto' clickHandler={() => navigate('/')} />
                                     </Stack>
 
