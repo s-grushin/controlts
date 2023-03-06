@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react'
 
-const useLocalStorage = (key) => {
+const useLocalStorage = (key, defaultValue) => {
 
-    const [value, setValue] = useState(null)
+    const [value, setValue] = useState(defaultValue)
 
     useEffect(() => {
-        setValue(JSON.parse(localStorage.getItem(key)))
-    }, [key])
+        const storedValue = JSON.parse(localStorage.getItem(key))
+        if (storedValue) {
+            setValue(storedValue)
+        } else {
+            setValue(defaultValue)
+        }
+    }, [key, defaultValue])
 
     const saveValue = (value) => {
         localStorage.setItem(key, JSON.stringify(value))

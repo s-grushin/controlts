@@ -15,7 +15,8 @@ const VehicleMovesList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useDispatch()
   const state = useSelector(state => state.movesInfo)
-  const [pageSize, setPageSize] = useLocalStorage(STORAGE_KEYS.movesPageSize)
+  const [pageSize, setPageSize] = useLocalStorage(STORAGE_KEYS.movesPageSize, 20)
+  console.log(pageSize);
 
   const { data, isFetching, isError } = useGetMovesQuery({
     limit: pageSize,
