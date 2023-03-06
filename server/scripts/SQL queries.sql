@@ -1,4 +1,4 @@
-select * from vehicle_moves order by date_in
+select * from vehicle_moves order by date_in desc
 select * from parkings
 select * from vehicle_move_details
 select * from vehicle_move_services

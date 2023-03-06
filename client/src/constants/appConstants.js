@@ -8,5 +8,6 @@ export const STORAGE_KEYS = {
     catalogSelectedRowId: 'catalog.selectedRowId',
     catalogPage: 'catalog.page',
     authToken: 'authToken',
-    newVehicleDetails: 'newVehicleDetails'
+    newVehicleDetails: 'newVehicleDetails',
+    movesPageSize: 'movesPageSize'
 }

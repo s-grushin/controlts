@@ -11,15 +11,16 @@ const movesApi = createApi({
     endpoints: builder => ({
 
         getMoves: builder.query({
-            query: (query = '') => ({
-                url: query
+            query: (params) => ({
+                url: '',
+                params
             }),
             providesTags: ['Moves']
         }),
 
         getMoveById: builder.query({
-            query: (query) => ({
-                url: query
+            query: (id) => ({
+                url: id
             })
         }),
 

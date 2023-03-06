@@ -5,12 +5,24 @@ import { useGetMovesQuery } from 'redux/api/movesApi'
 import MovesTable from './MovesTable/MovesTable'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedId } from 'redux/slices/movesSlice'
+import MovePagination from './MovePagination'
+import { useState } from 'react'
+import useLocalStorage from 'hooks/useLocalStorage'
+import { STORAGE_KEYS } from 'constants/appConstants'
 
 const VehicleMovesList = () => {
 
-  const { data, isFetching, isError } = useGetMovesQuery('', { pollingInterval: 50000000 })
+  const [currentPage, setCurrentPage] = useState(1)
   const dispatch = useDispatch()
   const state = useSelector(state => state.movesInfo)
+  const [pageSize, setPageSize] = useLocalStorage(STORAGE_KEYS.movesPageSize)
+
+  const { data, isFetching, isError } = useGetMovesQuery({
+    limit: pageSize,
+    offset: (currentPage - 1) * pageSize
+  }, { pollingInterval: 50000000, skip: !pageSize })
+
+  const pagesQty = Math.ceil(data?.count / pageSize)
 
 
   const handleRowClicked = (selectedId) => {
@@ -20,7 +32,6 @@ const VehicleMovesList = () => {
   return (
     <>
       <Topbar />
-
       {
         isError
           ?
@@ -39,7 +50,12 @@ const VehicleMovesList = () => {
               <Spinner />
             </div>
             :
-            <MovesTable moves={data.rows} onRowClicked={handleRowClicked} selectedId={state.selectedId} />
+            <>
+              {data?.rows && <MovesTable moves={data.rows} onRowClicked={handleRowClicked} selectedId={state.selectedId} />}
+              <div className='d-flex justify-content-center'>
+                {data && <MovePagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagesQty={pagesQty} pageSize={pageSize} onPageSizeChange={setPageSize} />}
+              </div>
+            </>
       }
     </>
   )

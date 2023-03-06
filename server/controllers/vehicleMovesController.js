@@ -39,7 +39,8 @@ async function getAll(req, res) {
         limit,
         offset,
         order: [['dateIn', 'DESC']],
-        include: vehicleMoveIncludes
+        include: vehicleMoveIncludes,
+        distinct: true
     })
     return res.json(data)
 }
