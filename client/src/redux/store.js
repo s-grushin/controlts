@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import movesApi from './api/movesApi'
-import movesInfoReducer from './slices/movesSlice'
+import movesInfoReducer from './slices/movesInfoSlice'
 
 const store = configureStore({
     reducer: {

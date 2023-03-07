@@ -5,7 +5,7 @@ const movesApi = createApi({
     reducerPath: 'moves',
     tagTypes: ['Moves'],
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.REACT_APP_SERVER}/api/vehicleMoves/`,
+        baseUrl: `${process.env.REACT_APP_SERVER}/api/vehicleMoves`,
         prepareHeaders,
     }),
     endpoints: builder => ({

@@ -1,5 +1,5 @@
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
-import DateRangePicker from '../../../components/DateRangePicker'
+import DateRangePicker from 'components/DateRangePicker'
 //import { formatDate } from '../../../utils/common'
 //import { useDispatch, useSelector } from 'react-redux'
 //import { setFilter, getActiveFilter } from '../../../redux/slices/vehicleMovesSlice'
