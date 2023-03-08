@@ -9,5 +9,6 @@ export const STORAGE_KEYS = {
     catalogPage: 'catalog.page',
     authToken: 'authToken',
     newVehicleDetails: 'newVehicleDetails',
-    movesPageSize: 'movesPageSize'
+    movesPageSize: 'movesPageSize',
+    moveActionsTab: 'moveActionsTab'
 }
