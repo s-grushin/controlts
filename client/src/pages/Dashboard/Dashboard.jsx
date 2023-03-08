@@ -3,12 +3,9 @@ import VehicleMovesList from './VehicleMovesList'
 import MoveInfo from './MoveInfo'
 import MoveActions from './MoveActions'
 import { Stack } from 'react-bootstrap'
-import PrintPass from '../ArrivalPage/PrintForms/Pass/PrintPass'
+import MoveCommands from './MoveCommands'
 
 const Dashboard = () => {
-
-    // const vehicleMoves = useSelector(state => state.vehicleMoves)
-    const vehicleMoves = []
 
     return (
 
@@ -17,13 +14,10 @@ const Dashboard = () => {
                 <VehicleMovesList />
             </Col>
             <Col md='4'>
-                <Stack className='mb-1' direction='horizontal' gap={2}>
-                    <PrintPass vehicleMoveId={vehicleMoves.selectedId} />
-                </Stack>
+                <MoveCommands/>
                 <Stack>
                     <MoveInfo />
                     <MoveActions />
-                    {/* <VehicleMoveActions vehicleMove={getSelectedItem(vehicleMoves)} className='mt-2' /> */}
                 </Stack>
             </Col>
         </Row>

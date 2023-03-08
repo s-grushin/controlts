@@ -8,7 +8,7 @@ const styles = {
   fontSize: '12px'
 }
 
-const PrintPass = ({ vehicleMoveId }) => {
+const PrintPass = ({ moveId }) => {
 
   const [contentReady, setContentReady] = useState(false)
   const printParams = useRef({})
@@ -16,11 +16,11 @@ const PrintPass = ({ vehicleMoveId }) => {
   const { request, loading } = useHttp(false, 1000)
 
   const clickHandler = async () => {
-    if (!vehicleMoveId) {
+    if (!moveId) {
       return
     }
     setContentReady(false)
-    const data = await request(`vehicleMoves/getCheckoutPassPrintData?vehicleMoveId=${vehicleMoveId}`)
+    const data = await request(`vehicleMoves/getCheckoutPassPrintData?vehicleMoveId=${moveId}`)
     setContentReady(true)
     printParams.current = data.printData
   }
@@ -44,7 +44,7 @@ const PrintPass = ({ vehicleMoveId }) => {
           null
       }
 
-      <PrintButton clickHandler={clickHandler} title='Печать пропуска' loading={loading} />
+      <PrintButton clickHandler={clickHandler} title='Печать пропуска' loading={loading} disabled={!moveId} />
     </>
   )
 }

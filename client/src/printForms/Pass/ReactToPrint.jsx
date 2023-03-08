@@ -36,7 +36,7 @@ const ReactToPrint = ({ children, title, contentReady, onPrintFinished }) => {
   )
 }
 
-export const PrintButton = ({ clickHandler, title, loading }) => {
+export const PrintButton = ({ clickHandler, title, loading, ...props }) => {
 
   return (
     <Button onClick={clickHandler}
@@ -44,6 +44,7 @@ export const PrintButton = ({ clickHandler, title, loading }) => {
       title=''
       loading={loading}
       withSpinner={true}
+      {...props}
     >
       <Printer />
       &nbsp;
