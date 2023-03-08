@@ -1,13 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useGetMovesQuery } from 'redux/api/movesApi'
-import { setPagination, setSelectedId } from 'redux/slices/movesInfoSlice'
+import { prepareFiltersForQuery, setPagination, setSelectedId } from 'redux/slices/movesInfoSlice'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { STORAGE_KEYS } from 'constants/appConstants'
 
 const useMovesHelper = () => {
 
-    const { currentPage } = useSelector(state => state.movesInfo.pagination)
+    const { pagination, filters } = useSelector(state => state.movesInfo)
     const [pageSize, setPageSize] = useLocalStorage(STORAGE_KEYS.movesPageSize, 20)
+
+    const { currentPage } = pagination
+
+    const filtersQuery = prepareFiltersForQuery(filters)
 
     //redux
     const dispatch = useDispatch()
@@ -16,6 +20,7 @@ const useMovesHelper = () => {
     const query = useGetMovesQuery({
         limit: pageSize,
         offset: (currentPage - 1) * pageSize,
+        ...filtersQuery
     }, { pollingInterval: 50000000, skip: !pageSize })
 
 

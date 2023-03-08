@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Form, Stack } from 'react-bootstrap'
-import Confirmation from '../Modals/Confirmation'
-import Button from '../Button'
-import AppButton from '../AppButton'
+import Confirmation from 'components/Modals/Confirmation'
+import Button from 'components/Button'
+import AppButton from 'components/AppButton'
 import { Calendar4Range } from 'react-bootstrap-icons'
-import { dateRangeToISO } from '../../utils/common'
+import { endOfDateLocale, startOfDateLocale } from 'utils/common'
 
 const DateRangePicker = ({ onPicked, defaultRange, buttonText, renderButton }) => {
 
@@ -17,9 +17,13 @@ const DateRangePicker = ({ onPicked, defaultRange, buttonText, renderButton }) =
     }
 
     const confirmHandler = () => {
+
+        onPicked({
+            from: from ? startOfDateLocale(new Date(from)) : new Date(0),
+            to: to ? endOfDateLocale(new Date(to)) : endOfDateLocale(new Date())
+        })
+
         setShow(false)
-        console.log({ from, to });
-        onPicked(dateRangeToISO(from, to))
     }
 
     const dateChangeHandler = (e, setter) => {

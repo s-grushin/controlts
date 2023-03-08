@@ -1,21 +1,44 @@
 import { Form, NavDropdown, Stack } from 'react-bootstrap'
 import DateRangePicker from 'components/DateRangePicker'
-//import { formatDate } from '../../../utils/common'
-//import { useDispatch, useSelector } from 'react-redux'
-//import { setFilter, getActiveFilter } from '../../../redux/slices/vehicleMovesSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilter, availableFilters, getFilterById } from 'redux/slices/movesInfoSlice'
+import { dateToLocaleISO } from 'utils/common'
+import useMovesHelper from './hooks/useMovesHelper'
+
+const getDateInRangeDefault = (value) => {
+
+    const range = {
+        from: dateToLocaleISO(new Date(value.from)).split('T')[0],
+        to: dateToLocaleISO(new Date(value.to)).split('T')[0]
+    }
+    return range
+}
 
 const Topbar = ({ ...props }) => {
 
+    const dispatch = useDispatch()
+    const { filters } = useSelector(state => state.movesInfo)
 
-    const setVehicleFilterHandler = (pickedFilterName) => {
+    const { changePage } = useMovesHelper()
+
+    const selectedMovesInFilter = getFilterById('movesIn', filters.movesIn.id)
+
+    const setMovesInFilterHandler = (filterId) => {
+        if (filterId === 8) {
+            return
+        }
+
+        const filter = getFilterById('movesIn', filterId)
+        dispatch(setFilter({ name: 'movesIn', filter: { id: filterId, value: filter.getValue() } }))
+        changePage(1)
     }
 
-    const setDateRangeHandler = (range) => {
-
+    const setMovesInRangeHandler = (range) => {
+        const filter = getFilterById('movesIn', 8)
+        const value = filter.getValue(range.from, range.to)
+        dispatch(setFilter({ name: 'movesIn', filter: { id: 8, value } }))
+        changePage(1)
     }
-
-    const filters = []
-    const activeVehicleFilter = {}
 
     return (
         <Stack
@@ -33,19 +56,20 @@ const Topbar = ({ ...props }) => {
 
             </Form>
 
-            <NavDropdown title={`Показать автомобили (${activeVehicleFilter.title})`} className='my-auto'>
+            <NavDropdown title={`Показать автомобили (${selectedMovesInFilter.title})`} className='my-auto'>
                 {
-                    filters.map(item =>
+                    availableFilters.movesIn.map(item =>
                     (<NavDropdown.Item
-                        key={item.name}
-                        onClick={() => setVehicleFilterHandler(item.name)}
+                        key={item.id}
+                        onClick={() => setMovesInFilterHandler(item.id)}
+                        active={item.id === selectedMovesInFilter.id}
                     >
-                        {item.name === 'pickedDateIn'
+                        {item.name === 'dateInRange'
                             ?
                             <DateRangePicker
-                                onPicked={setDateRangeHandler}
+                                onPicked={setMovesInRangeHandler}
                                 buttonText={item.title}
-                                defaultRange={{ from: '', to: '' }}
+                                defaultRange={filters?.movesIn?.id === 8 ? getDateInRangeDefault(filters.movesIn.value) : { from: '', to: '' }}
                                 renderButton={() => item.title}
                             />
                             : item.title}

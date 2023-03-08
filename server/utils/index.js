@@ -36,9 +36,7 @@ function startOfYear(date = new Date()) {
     return new Date(date.getFullYear(), 0, 1)
 }
 
-function parseQueryParamDateRange(queryParam, tzOffset) {
-    //Функция парсит параметр запроса вида YYYY-MM-DDtoYYYY-MM-DD
-    //Возвращает массив с двумя элементами: дата начало и дата конец, смещает даты на значение tzOffset
+function parseDateRangeQueryParam(queryParam) {
 
     const result = queryParam.split('to').map((item, index) => {
 
@@ -55,13 +53,8 @@ function parseQueryParamDateRange(queryParam, tzOffset) {
     })
 
     if (result.length === 0) {
-        throw new Error(`parseDateRangeQuery wrong parametr: ${queryParam}`)
+        throw new Error(`parseDateRangeQueryParam wrong parametr: ${queryParam}`)
     }
-
-    //console.log('before', result);
-    result[0] = addTimeZoneToDate(result[0], tzOffset)
-    result[1] = addTimeZoneToDate(new Date(result[1].getTime() + 60 * 60 * 24 * 1000 - 1), tzOffset)
-    //console.log('after', result);
 
     return result
 }
@@ -76,5 +69,5 @@ module.exports.MAX_DATE = MAX_DATE
 module.exports.copyPhotos = copyPhotos
 module.exports.subtractDays = subtractDays
 module.exports.startOfYear = startOfYear
-module.exports.parseQueryParamDateRange = parseQueryParamDateRange
+module.exports.parseDateRangeQueryParam = parseDateRangeQueryParam
 module.exports.addTimeZoneToDate = addTimeZoneToDate

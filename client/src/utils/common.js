@@ -29,42 +29,28 @@ export function formatDate(date, options = {}) {
 
 }
 
-export function dateRangeToISO(from, to) {
-    return {
-        from: subtractTzOffset(new Date(from)).toISOString(),
-        to: getEndOfDayLocale(new Date(to)).toISOString()
-    }
+export const today = () => {
+    //return start of current day in local TZ
+    return startOfDateLocale()
 }
 
-export function subtractTzOffset(date = new Date()) {
-    // Функция вычитает из переданной даты количество миллисекунд timeZone offset
-    const tzMs = getTimezoneOffsetMs(date)
-    const substracted = subtractFromDate(date, { ms: tzMs })
-    return substracted
+export const dateToLocaleISO = (date = new Date()) => {
+    //возвращает дату в формате ISO в текущей таймзоне
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString()
 }
+
+export const startOfDateLocale = (date = new Date()) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}
+
+export const endOfDateLocale = (date = new Date()) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59)
+}
+
 
 export function subtractFromDate(date = new Date(), { ms }) {
-    const result = new Date(date.getTime() + ms)
+    const result = new Date(date.getTime() - ms)
     return result
-}
-
-export function getTimezoneOffsetMs(date = new Date()) {
-    return date.getTimezoneOffset() * 60 * 1000
-}
-
-export function getEndOfDayLocale(date = new Date()) {
-    const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59, 999)
-    return endOfDay
-}
-
-export function calculateDiffBwDates(fromDate, toDate = new Date(), period = 'days') {
-
-    const diffMs = toDate.getTime() - fromDate.getTime()
-    if (period === 'days') {
-        return diffMs / (1000 * 60 * 60 * 24)
-    } else {
-        return 0
-    }
 }
 
 export function formatAxiosError(axiosError) {
