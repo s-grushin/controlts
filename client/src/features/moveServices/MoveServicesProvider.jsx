@@ -60,7 +60,7 @@ const MoveServicesProvider = ({ move, readonly }) => {
     const [saveServices] = useSaveServicesMutation()
 
     useEffect(() => {
-        dispatch({ type: 'init', payload: { items: move.services, vehicleMoveId: move.id } })
+        dispatch({ type: 'init', payload: { items: move?.services, vehicleMoveId: move?.id } })
     }, [move])
 
     useEffect(() => {
@@ -103,7 +103,7 @@ const MoveServicesProvider = ({ move, readonly }) => {
         <ApiContext.Provider value={{ dispatch, saveItems }}>
             <StateContext.Provider value={{ state, readonly }}>
                 <AppAlert show={state.error} clear={() => dispatch({ type: 'clearError' })} title='ошибка' text={state.error} />
-                <Toolbar />
+                {move && <Toolbar />}
                 <Table />
             </StateContext.Provider>
         </ApiContext.Provider>

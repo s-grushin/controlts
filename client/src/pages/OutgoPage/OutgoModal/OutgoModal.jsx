@@ -45,6 +45,7 @@ const OutgoModal = ({ move }) => {
 
       <AppButton
         onClick={showModal}
+        disabled={!move}
       >
         Оформить выезд &nbsp; <ArrowRight color="red" />
       </AppButton>

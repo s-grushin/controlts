@@ -6,10 +6,6 @@ const MoveInfo = () => {
 
   const { selectedMove } = useMovesHelper()
 
-  if (!selectedMove) {
-    return null
-  }
-
   return (
     <MoveInfoCard move={selectedMove} />
   )

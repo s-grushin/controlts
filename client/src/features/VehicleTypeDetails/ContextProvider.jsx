@@ -90,7 +90,7 @@ const VehicleTypeDetailsProvider = ({ children, vehicleTypeDetails, cameraData, 
                 dispatch({ type: 'setVehicleTypes', payload: { vehicleTypes } })
             }
 
-            if (isNew && vehicleTypeDetails.length === 0) {
+            if (isNew || vehicleTypeDetails.length === 0) {
                 dispatch({ type: 'init', payload: { items: convertVehicleTypesToItems(vehicleTypes) } })
             }
 

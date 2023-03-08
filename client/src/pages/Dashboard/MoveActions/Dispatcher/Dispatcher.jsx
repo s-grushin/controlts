@@ -66,7 +66,7 @@ const Dispatcher = () => {
                 {
                     !selectedMove?.dateOut
                     &&
-                    <AppButton>
+                    <AppButton disabled={!selectedMove}>
                         Проверить разрешение на выезд
                     </AppButton>
                 }

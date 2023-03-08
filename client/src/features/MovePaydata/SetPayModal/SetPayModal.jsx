@@ -26,7 +26,7 @@ const SetPayModal = ({ move }) => {
 
     return (
         <>
-            <AppButton onClick={() => setIsShow(true)} style={{ fontSize: '10px' }}>
+            <AppButton onClick={() => setIsShow(true)} style={{ fontSize: '10px' }} disabled={!move}>
                 {btnText}
             </AppButton>
 

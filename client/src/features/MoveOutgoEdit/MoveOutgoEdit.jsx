@@ -27,7 +27,7 @@ const MoveOutgoEdit = ({ move }) => {
 
   return (
     <>
-      <AppButton onClick={() => setIsShow(true)}>
+      <AppButton onClick={() => setIsShow(true)} disabled={!move}>
         Разрешить выезд
       </AppButton>
 

@@ -6,12 +6,8 @@ const Services = () => {
 
     const { selectedMove } = useMovesHelper()
 
-    if (!selectedMove) {
-        return null
-    }
-
     return (
-        <MoveServicesProvider move={selectedMove} readonly={selectedMove.dateOut} />
+        <MoveServicesProvider move={selectedMove} readonly={selectedMove?.dateOut} />
     )
 }
 

@@ -46,7 +46,7 @@ const MoveInfoCard = ({ move }) => {
                 {move?.comment && <InputGroup title='Комментарий' value={move?.comment} className='mb-2' options={{ as: 'textarea' }} />}
 
 
-                <VehicleTypeDetailsProvider vehicleTypeDetails={move.vehicleDetails?.filter(item => item.moveKind === 0)} readonly={true}>
+                <VehicleTypeDetailsProvider vehicleTypeDetails={move?.vehicleDetails?.filter(item => item.moveKind === 0)} readonly={true}>
                     <Row className='gx-1'>
                         <Col>
                             <VehicleTypeDetails />
