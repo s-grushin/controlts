@@ -12,7 +12,8 @@ const LoginPage = () => {
 
   const { login, loading, error, clearError, requestName } = useContext(AppGlobalDataContext)
 
-  async function loginHandler() {
+  const handleSubmit = (e) => {
+    e.preventDefault()
     login(username, password)
   }
 
@@ -25,7 +26,7 @@ const LoginPage = () => {
               {requestName === 'login' && error && <AppAlert show={error} text={error} clear={clearError} />}
             </p>
             <Card.Title>Вход в систему</Card.Title>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <SelectUser onUserSelected={(username) => setUsername(username)} />
               </Form.Group>
@@ -38,7 +39,7 @@ const LoginPage = () => {
               </Form.Group>
 
               <div className='d-flex justify-content-end'>
-                <Button variant='primary' title="Войти" loading={loading} clickHandler={loginHandler} />
+                <Button type='submit' variant='primary' title="Войти" loading={loading} />
               </div>
             </Form>
           </Card.Body>
