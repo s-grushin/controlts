@@ -3,6 +3,7 @@ const User = require('../models/User')
 const Setting = require('../models/Setting')
 const VehicleType = require('../models/VehicleType')
 const Service = require('../models/Service')
+const Camera = require('../models/Camera')
 
 async function init() {
 
@@ -10,6 +11,7 @@ async function init() {
     await fillSettings()
     await fillVehicleTypes()
     await fillServices()
+    await fillCameras()
 }
 
 async function fillSettings() {
@@ -52,6 +54,21 @@ async function fillServices() {
         const exists = await Service.findOne({ where: { progName: item.progName } })
         if (!exists) {
             await Service.create(item)
+        }
+    }
+}
+
+async function fillCameras() {
+
+    const cameras = [
+        { name: 'Для тягача', progName: 'forTruck' },
+        { name: 'Для прицепа', progName: 'forTrailer' },
+    ]
+
+    for (const item of cameras) {
+        const exists = await Camera.findOne({ where: { progName: item.progName } })
+        if (!exists) {
+            await Camera.create(item)
         }
     }
 }

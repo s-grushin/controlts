@@ -26,6 +26,8 @@ import VehicleDetailsProvider from '../pages/ArrivalPage/VehicleDetails/context/
 import ProfilePage from '../pages/ProfilePage'
 import SettingsPage from '../pages/Settings'
 import OutgoPage from '../pages/OutgoPage/OutgoPage'
+import CameraList from './Catalog/Cameras/CameraList'
+import CreateUpdateCamera from './Catalog/Cameras/CreateUpdateCamera'
 
 
 const AppRouter = () => {
@@ -84,6 +86,11 @@ const AppRouter = () => {
                                 <Route index element={<VehicleTypesList />} />
                                 <Route path='create' element={<CreateUpdateVehicleType variant='create' />} />
                                 <Route path=':id' element={<CreateUpdateVehicleType variant='update' />} />
+                            </Route>
+                            <Route path='cameras'>
+                                <Route index element={<CameraList />} />
+                                <Route path='create' element={<CreateUpdateCamera variant='create' />} />
+                                <Route path=':id' element={<CreateUpdateCamera variant='update' />} />
                             </Route>
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />
