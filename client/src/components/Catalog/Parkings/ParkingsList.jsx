@@ -3,8 +3,8 @@ import ItemsList from '../../ItemsList/ItemsList'
 const ParkingsList = () => {
 
     const fieldsDisplay = [
-        { id: 1, name: 'name', title: 'Наименование' },
-        { id: 2, name: 'isBusy', title: 'Занято' },
+        { id: 1, path: 'name', title: 'Наименование' },
+        { id: 2, path: 'isBusy', title: 'Занято' },
     ]
 
     return (

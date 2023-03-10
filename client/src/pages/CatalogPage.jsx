@@ -6,14 +6,15 @@ import { STORAGE_KEYS } from '../constants/appConstants'
 const CatalogPage = () => {
 
     const menuItems = [
-        { id: 1, name: 'services', path: '/catalog/services', title: 'Услуги' },
-        { id: 2, name: 'companies', path: '/catalog/companies', title: 'Компании' },
-        { id: 3, name: 'vehicles', path: '/catalog/vehicleBrands', title: 'Марки и модели авто' },
-        { id: 4, name: 'parkings', path: '/catalog/parkings', title: 'Места стоянки' },
-        { id: 5, name: 'deliveryTypes', path: '/catalog/deliveryTypes', title: 'Виды доставок' },
-        { id: 6, name: 'vehicleTypes', path: '/catalog/vehicleTypes', title: 'Типы автотранспорта' },
-        { id: 7, name: 'cameras', path: '/catalog/cameras', title: 'Настройки камер' },
-        { id: 8, name: 'users', path: '/catalog/users', title: 'Пользователи' },
+        { id: 1, name: 'users', path: '/catalog/users', title: 'Пользователи' },
+        { id: 2, name: 'services', path: '/catalog/services', title: 'Услуги' },
+        { id: 3, name: 'companies', path: '/catalog/companies', title: 'Компании' },
+        { id: 4, name: 'vehicles', path: '/catalog/vehicleBrands', title: 'Марки и модели авто' },
+        { id: 5, name: 'parkings', path: '/catalog/parkings', title: 'Места стоянки' },
+        { id: 6, name: 'deliveryTypes', path: '/catalog/deliveryTypes', title: 'Виды доставок' },
+        { id: 7, name: 'vehicleTypes', path: '/catalog/vehicleTypes', title: 'Типы автотранспорта' },
+        { id: 8, name: 'cameras', path: '/catalog/cameras', title: 'Настройки камер' },
+        { id: 9, name: 'moveRegistrationPhotoSettings', path: '/catalog/moveRegistrationPhotoSettings', title: 'Регистрация въездов' },
     ]
 
     const [selectedItem, setSelectedItem] = useState(null)

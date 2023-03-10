@@ -20,6 +20,7 @@ const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
 const PayData = require('../models/PayData');
 const Outgo = require('../models/Outgo');
+const MoveRegistrationPhotoSettings = require('../models/MoveRegistrationPhotoSettings');
 
 
 async function getAll(req, res) {
@@ -295,21 +296,6 @@ async function checkout(req, res) {
     return res.status(200).json({ message: 'ok' })
 
 }
-
-const getVehicleTypeByCameraName = (cameraName, vehicleTypes) => {
-
-    let vt
-
-    if (cameraName === 'front') {
-        vt = vehicleTypes.find(item => item.progName === 'truck')
-    }
-    if (cameraName === 'back') {
-        vt = vehicleTypes.find(item => item.progName === 'trailer')
-    }
-
-    return vt
-}
-
 
 const vehicleMoveIncludes = [
     { model: Driver, as: 'driver' },

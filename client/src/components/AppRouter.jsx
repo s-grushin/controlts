@@ -28,6 +28,8 @@ import SettingsPage from '../pages/Settings'
 import OutgoPage from '../pages/OutgoPage/OutgoPage'
 import CameraList from './Catalog/Cameras/CameraList'
 import CreateUpdateCamera from './Catalog/Cameras/CreateUpdateCamera'
+import MoveRegistrationPhotoSettingsList from './Catalog/MoveRegistrationPhotoSettings/MoveRegistrationPhotoSettingsList'
+import CreateUpdateMoveRegistrationPhotoSettings from './Catalog/MoveRegistrationPhotoSettings/CreateUpdateMoveRegistrationPhotoSettings'
 
 
 const AppRouter = () => {
@@ -91,6 +93,11 @@ const AppRouter = () => {
                                 <Route index element={<CameraList />} />
                                 <Route path='create' element={<CreateUpdateCamera variant='create' />} />
                                 <Route path=':id' element={<CreateUpdateCamera variant='update' />} />
+                            </Route>
+                            <Route path='moveRegistrationPhotoSettings'>
+                                <Route index element={<MoveRegistrationPhotoSettingsList />} />
+                                <Route path='create' element={<CreateUpdateMoveRegistrationPhotoSettings variant='create' />} />
+                                <Route path=':id' element={<CreateUpdateMoveRegistrationPhotoSettings variant='update' />} />
                             </Route>
                         </Route>
                         <Route path='*' element={<NotFoundPage />} />

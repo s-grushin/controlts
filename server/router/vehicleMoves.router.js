@@ -2,7 +2,8 @@ const express = require('express')
 const router = express()
 const { getArrivalData, getAll, create, checkout, getPhotos, getWeight,
     getById, getCheckoutPassPrintData, saveServices,
-    getStartingServices, savePayData, saveOutgo } = require('../controllers/vehicleMovesController')
+    getStartingServices, savePayData, saveOutgo,
+} = require('../controllers/vehicleMovesController')
 
 router.get('/', getAll)
 router.get('/getArrivalData', getArrivalData)

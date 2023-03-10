@@ -3,10 +3,10 @@ import ItemsList from '../../../components/ItemsList/ItemsList'
 const UsersList = () => {
 
     const fieldsDisplay = [
-        { id: 1, name: 'username', title: 'Имя для входа' },
-        { id: 2, name: 'fullName', title: 'Полное имя' },
-        { id: 3, name: 'role', title: 'Роль' },
-        { id: 4, name: 'isActive', title: 'Активный' },
+        { id: 1, path: 'username', title: 'Имя для входа' },
+        { id: 2, path: 'fullName', title: 'Полное имя' },
+        { id: 3, path: 'role', title: 'Роль' },
+        { id: 4, path: 'isActive', title: 'Активный' },
     ]
 
     return (

@@ -3,7 +3,7 @@ import ItemsList from '../../ItemsList/ItemsList'
 const DeliveryTypesList = () => {
 
     const fieldsDisplay = [
-        { id: 1, name: 'name', title: 'Наименование' },
+        { id: 1, path: 'name', title: 'Наименование' },
     ]
 
     return (

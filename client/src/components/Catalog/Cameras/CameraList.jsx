@@ -3,8 +3,8 @@ import ItemsList from "components/ItemsList/ItemsList"
 const CameraList = () => {
 
     const fieldsDisplay = [
-        { id: 1, name: 'name', title: 'Наименование' },
-        { id: 2, name: 'photosPath', title: 'Путь к фотографиям (на сервере)' },
+        { id: 1, path: 'name', title: 'Наименование' },
+        { id: 2, path: 'photosPath', title: 'Путь к фотографиям (на сервере)' },
     ]
 
     return (

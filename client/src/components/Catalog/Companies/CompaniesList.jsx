@@ -3,9 +3,9 @@ import ItemsList from '../../../components/ItemsList/ItemsList'
 const CompaniesList = () => {
 
     const fieldsDisplay = [
-        { id: 1, name: 'name', title: 'Наименование' },
-        { id: 2, name: 'edrpou', title: 'ЕДРПОУ' },
-        { id: 3, name: 'inn', title: 'ИНН' },
+        { id: 1, path: 'name', title: 'Наименование' },
+        { id: 2, path: 'edrpou', title: 'ЕДРПОУ' },
+        { id: 3, path: 'inn', title: 'ИНН' },
     ]
 
     return (

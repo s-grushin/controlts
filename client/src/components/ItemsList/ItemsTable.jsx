@@ -1,7 +1,12 @@
 import Table from '../Table'
 import { Check } from 'react-bootstrap-icons'
+import { getObjectValueByPath } from 'utils/common';
 
 const ItemsTable = ({ fields, items, selected, currentPage, itemsQtyOnPage }) => {
+
+    //console.log(fields);
+    //console.log(items);
+    //console.log();
 
     const { selectedItemId, selectRowHandler } = selected
 
@@ -30,7 +35,7 @@ const ItemsTable = ({ fields, items, selected, currentPage, itemsQtyOnPage }) =>
                                     return (
                                         <td key={`${item.id}${field.id}`}>
                                             {
-                                                item[field.name] === true ? <Check /> : item[field.name]
+                                                getObjectValueByPath(item, field.path)[0] === true ? <Check /> : getObjectValueByPath(item, field.path)[0]
                                             }
                                         </td>
                                     )

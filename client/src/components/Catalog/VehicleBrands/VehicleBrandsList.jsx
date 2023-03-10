@@ -5,7 +5,7 @@ const VehicleBrandsList = () => {
     const oneOptions = {
         oneTitle: 'Марки',
         oneFields: [
-            { id: 1, name: 'name', title: 'Наименование' }
+            { id: 1, path: 'name', title: 'Наименование' }
         ],
         oneFetchUrl: '/vehicle/brands',
         onePath: '/catalog/vehicleBrands'
@@ -14,9 +14,9 @@ const VehicleBrandsList = () => {
     const manyOptions = {
         manyTitle: 'Модели',
         manyFields: [
-            { id: 1, name: 'name', title: 'Наименование' },
-            { id: 2, name: 'weight', title: 'Грузоподъемность' },
-            { id: 3, name: 'isTruck', title: 'Грузовой' }
+            { id: 1, path: 'name', title: 'Наименование' },
+            { id: 2, path: 'weight', title: 'Грузоподъемность' },
+            { id: 3, path: 'isTruck', title: 'Грузовой' }
         ],
         manyFetchUrl: '/vehicle/models',
         manyPath: '/catalog/vehicleBrands/models',

@@ -3,8 +3,8 @@ import ItemsList from '../../ItemsList/ItemsList'
 const CompaniesList = () => {
 
     const fieldsDisplay = [
-        { id: 1, name: 'name', title: 'Наименование' },
-        { id: 2, name: 'orderInCheckout', title: 'Порядок при оформлении пропуска' },
+        { id: 1, path: 'name', title: 'Наименование' },
+        { id: 2, path: 'orderInCheckout', title: 'Порядок при оформлении пропуска' },
     ]
 
     return (
