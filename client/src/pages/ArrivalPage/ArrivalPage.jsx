@@ -78,7 +78,7 @@ const ArrivalPage = () => {
         setWeight(weight)
     }
 
-    const moveDetails = cameraData.length > 0 ? mapCameraDataToMoveDetails(cameraData) : []
+    const moveDetails = cameraData?.length > 0 ? mapCameraDataToMoveDetails(cameraData) : []
 
     useEffect(() => {
         const getArrivalData = async () => {

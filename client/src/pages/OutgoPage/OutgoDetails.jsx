@@ -39,7 +39,7 @@ const OutgoDetails = ({ move, weightOptions, cameraDataOptions, outgoPhotoDetail
         clearWeightError()
     }
 
-    const moveDetails = cameraData.length > 0 ? mapCameraDataToMoveDetails(cameraData) : move.vehicleDetails
+    const moveDetails = cameraData?.length > 0 ? mapCameraDataToMoveDetails(cameraData) : move.vehicleDetails
 
     useEffect(() => {
         //по умолчанию вес установим как при въезде
