@@ -5,9 +5,9 @@ const useGetWeight = () => {
     const { request, loading, error, clearError } = useHttp(false, 500)
 
     const getWeight = async () => {
-        return await request('/vehicleMoves/getWeight')
+        const response = await request('/vehicleMoves/getWeight')
+        return response
     }
-
 
     return { getWeight, loading, error, clearError }
 }

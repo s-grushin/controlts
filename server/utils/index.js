@@ -3,7 +3,7 @@ const path = require('path')
 
 const MAX_DATE = new Date(3000, 0, 1) //hello from 2023 :)
 
-async function copyPhotos(src, fileName, d = new Date()) {
+async function copyPhotoToPublic(src, fileName, d = new Date()) {
     //src - полный путь к файлу. Пример C:\data\photo\front_camera\picture.jpg
     //fileName - имя файла. Пример picture.jpg
     //Возвращает новый путь к файлу
@@ -66,7 +66,7 @@ function addTimeZoneToDate(date = new Date(), tzOffset) {
 }
 
 module.exports.MAX_DATE = MAX_DATE
-module.exports.copyPhotos = copyPhotos
+module.exports.copyPhotoToPublic = copyPhotoToPublic
 module.exports.subtractDays = subtractDays
 module.exports.startOfYear = startOfYear
 module.exports.parseDateRangeQueryParam = parseDateRangeQueryParam

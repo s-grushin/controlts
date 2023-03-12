@@ -9,7 +9,7 @@ async function getAll(req, res) {
     let offset = parseInt(req.query.offset) || 0
 
     const data = await MoveRegistrationPhotoSettings.findAndCountAll({
-        limit, offset, include: [
+        limit, offset, order: [['order']], include: [
             { model: Camera, as: 'camera', attributes: ['name'] },
             { model: VehicleType, as: 'vehicleType', attributes: ['name'] },
         ]

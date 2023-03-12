@@ -10,7 +10,7 @@ const Camera = db.define('Camera', {
     progName: {
         type: DataTypes.STRING(50)
     },
-    photosPath: {
+    photoPath: {
         type: DataTypes.STRING,
     },
 

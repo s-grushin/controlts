@@ -10,6 +10,8 @@ select * from settings
 select * from users
 select * from services
 select * from vehicle_move_outgo
+select * from cameras
+select * from move_registration_photo_settings
 
 DELETE accountant 
 

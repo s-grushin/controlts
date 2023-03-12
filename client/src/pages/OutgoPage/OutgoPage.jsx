@@ -9,6 +9,7 @@ const OutgoPage = ({ move, triggerOptions }) => {
 
     const [weight, setWeight] = useState(0)
     const [cameraData, setCameraData] = useState([])
+    const [outgoPhotoDetailsIsDiff, setOutgoPhotoDetailsIsDiff] = useState(false)
     const [checkout, { isError, error, reset }] = useCheckoutMutation()
 
     const { triggerSave, triggerOnError, triggerAfterSave } = triggerOptions?.save
@@ -18,13 +19,13 @@ const OutgoPage = ({ move, triggerOptions }) => {
 
         const vehicleDetails = JSON.parse(localStorage.getItem(STORAGE_KEYS.newVehicleDetails))
         try {
-            await checkout({ vehicleMoveId: move.id, vehicleDetails, weight }).unwrap()
+            await checkout({ vehicleMoveId: move.id, vehicleDetails, weight, outgoPhotoDetailsIsDiff }).unwrap()
             return true
         } catch (error) {
             return false
         }
 
-    }, [checkout, move, weight])
+    }, [checkout, move, weight, outgoPhotoDetailsIsDiff])
 
 
     useEffect(() => {
@@ -47,12 +48,19 @@ const OutgoPage = ({ move, triggerOptions }) => {
     }, [triggerSave, triggerOnError, saveCheckout, triggerAfterSave])
 
 
+    const outgoPhotoDetailsIsDiffState = { outgoPhotoDetailsIsDiff, setOutgoPhotoDetailsIsDiff }
+
     return (
         <>
             <ArrivalDetails vehicleMove={move} />
             <hr />
             <AppAlert title='Ошибка' text={JSON.stringify(error)} show={isError} clear={reset} />
-            <OutgoDetails vehicleMove={move} weightOptions={{ weight, setWeight }} cameraDataOptions={{ cameraData, setCameraData }} />
+            <OutgoDetails
+                move={move}
+                weightOptions={{ weight, setWeight }}
+                cameraDataOptions={{ cameraData, setCameraData }}
+                outgoPhotoDetailsIsDiffState={outgoPhotoDetailsIsDiffState}
+            />
         </>
     )
 }

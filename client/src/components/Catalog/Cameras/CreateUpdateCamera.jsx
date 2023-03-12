@@ -6,20 +6,20 @@ import useInputChange from 'hooks/useInputChange'
 const CreateUpdateCamera = ({ variant }) => {
 
     const [name, setName] = useState('')
-    const [photosPath, setPhotosPath] = useState('')
+    const [photoPath, setPhotoPath] = useState('')
 
     const inputChangeHandler = useInputChange()
 
     const updateOptions = useMemo(() => [
         { field: 'name', setState: setName },
-        { field: 'photosPath', setState: setPhotosPath },
+        { field: 'photoPath', setState: setPhotoPath },
     ], [])
 
     return (
         <CreateUpdateItem
             variant={variant}
             fetchUrl='/cameras'
-            data={{ name, photosPath }}
+            data={{ name, photoPath }}
             updateOptions={updateOptions}
         >
             <Card className='mt-2'>
@@ -33,11 +33,11 @@ const CreateUpdateCamera = ({ variant }) => {
                                 value={name} />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Путь к фотографиям (на сервере). Например: C:\nomerok\photos\фото тягача</Form.Label>
-                            <Form.Control size='sm' onChange={e => inputChangeHandler(e, setPhotosPath)}
+                            <Form.Label>Путь к фотографиям (на сервере). Например: C:\nomerok\photos</Form.Label>
+                            <Form.Control size='sm' onChange={e => inputChangeHandler(e, setPhotoPath)}
                                 placeholder="Путь к фотографиям (на сервере)"
-                                name="photosPath"
-                                value={photosPath} />
+                                name="photoPath"
+                                value={photoPath} />
                         </Form.Group>
                     </Form>
                 </Card.Body>

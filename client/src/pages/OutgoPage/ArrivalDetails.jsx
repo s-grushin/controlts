@@ -44,7 +44,12 @@ const ArrivalDetails = ({ vehicleMove, loading, error }) => {
 
                         <Row className='mt-2'>
                             <Col>
-                                <VehicleTypeDetailsProvider vehicleTypeDetails={vehicleMove?.vehicleDetails?.filter(item => item.moveKind === 0)} readonly={true} >
+                                <VehicleTypeDetailsProvider
+                                    //vehicleTypeDetails={vehicleMove?.vehicleDetails?.filter(item => item.moveKind === 0)}
+                                    moveId={vehicleMove?.id}
+                                    moveDetails={vehicleMove?.vehicleDetails?.filter(item => item.moveKind === 0)}
+                                    readonly={true}
+                                >
                                     <Row className='gx-1'>
                                         <Col>
                                             <VehicleTypeDetails />

@@ -6,8 +6,8 @@ const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
 const DriverHistory = require('../models/DriverHistory')
-const { getCameraData } = require('../services/nomerok')
-const { getWeightData } = require('../services/weight')
+const getCameraData = require('../services/getCameraData')
+const { getWeightData } = require('../services/getWeight/weight')
 const VehicleMoveDetail = require('../models/VehicleMoveDetail')
 const Driver = require('../models/Driver')
 const VehicleBrand = require('../models/VehicleBrand')
@@ -20,7 +20,6 @@ const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
 const PayData = require('../models/PayData');
 const Outgo = require('../models/Outgo');
-const MoveRegistrationPhotoSettings = require('../models/MoveRegistrationPhotoSettings');
 
 
 async function getAll(req, res) {
@@ -74,17 +73,8 @@ async function getArrivalData(req, res) {
 
 async function getPhotos(req, res) {
 
-    try {
-        const cameraData = await getCameraData()
-        for (const item of cameraData) {
-            const publicPhotoPath = await copyPhotos(item.filePath, item.file, item.birthTime)
-            item.publicPhotoPath = publicPhotoPath
-        }
-        return res.status(200).json({ cameraData })
-    } catch (error) {
-        throw new Error(`Не удалось получить фотографии. ${error.message}`)
-    }
-
+    const cameraData = await getCameraData()
+    return res.status(200).json(cameraData)
 }
 
 async function getWeight(req, res) {
@@ -225,10 +215,6 @@ async function create(req, res) {
 
     const currentDate = new Date()
 
-    //test
-    const userInId = 1
-    const userOutId = 1
-
     const number = vehicleDetails && vehicleDetails[0] && vehicleDetails[0].number
 
     await db.transaction(async (t) => {
@@ -243,14 +229,14 @@ async function create(req, res) {
 
         // Vehicle move
         const vehicleMove = await VehicleMove.create({
-            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId, userOutId, isOwnCompany, comment, companyId, number
+            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId: req.userId, isOwnCompany, comment, companyId, number
         }, { transaction: t })
 
         // Vehicle move Details
         const vmd = vehicleDetails.map(item => {
             return {
                 number: item.number,
-                photo: item.photo,
+                photoUrl: item.photoUrl,
                 vehicleMoveId: vehicleMove.id,
                 vehicleTypeId: item.vehicleTypeId
             }
@@ -268,29 +254,23 @@ async function create(req, res) {
 async function checkout(req, res) {
     //Оформление выезда
 
-    const { vehicleMoveId, vehicleDetails, weight } = req.body
+    const { vehicleMoveId, vehicleDetails, weight, outgoPhotoDetailsIsDiff } = req.body
 
     await db.transaction(async (t) => {
 
-        const vehicleMove = await VehicleMove.findByPk(vehicleMoveId, { lock: true })
+        const vehicleMove = await VehicleMove.findByPk(vehicleMoveId, { lock: true, transaction: t })
         vehicleMove.weightOut = weight
         vehicleMove.dateOut = new Date()
         await vehicleMove.save({ transaction: t })
 
         await VehicleMoveDetail.destroy({ where: { vehicleMoveId, moveKind: 1 }, transaction: t })
 
-        const vehicleDetailsToSave = vehicleDetails.map(item => {
-            return {
-                number: item.number,
-                photo: item.photo,
-                vehicleMoveId: vehicleMoveId,
-                vehicleTypeId: item.vehicleTypeId,
-                moveKind: 1,
-            }
-        })
+        if (outgoPhotoDetailsIsDiff) {
 
-        await VehicleMoveDetail.bulkCreate(vehicleDetailsToSave, { transaction: t })
-
+            const vehicleDetailsToSave = vehicleDetails.map(item => ({ ...item, vehicleMoveId, moveKind: 1, id: null }))
+            console.log(vehicleDetailsToSave);
+            await VehicleMoveDetail.bulkCreate(vehicleDetailsToSave, { transaction: t })
+        }
     })
 
     return res.status(200).json({ message: 'ok' })

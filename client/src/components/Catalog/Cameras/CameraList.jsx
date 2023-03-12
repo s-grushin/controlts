@@ -4,7 +4,7 @@ const CameraList = () => {
 
     const fieldsDisplay = [
         { id: 1, path: 'name', title: 'Наименование' },
-        { id: 2, path: 'photosPath', title: 'Путь к фотографиям (на сервере)' },
+        { id: 2, path: 'photoPath', title: 'Путь к фотографиям (на сервере)' },
     ]
 
     return (

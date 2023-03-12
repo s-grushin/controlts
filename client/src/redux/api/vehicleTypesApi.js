@@ -20,5 +20,5 @@ const vehicleTypesApi = createApi({
 })
 
 
-export const { useGetVehicleTypesQuery } = vehicleTypesApi
+export const { useGetVehicleTypesQuery, useLazyGetVehicleTypesQuery } = vehicleTypesApi
 export default vehicleTypesApi

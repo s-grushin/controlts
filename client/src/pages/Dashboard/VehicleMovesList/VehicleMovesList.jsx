@@ -8,7 +8,7 @@ import useMovesHelper from './hooks/useMovesHelper'
 const VehicleMovesList = () => {
 
   const { query, setSelected, selectedId, currentPage, changePage, pageSize, setPageSize } = useMovesHelper()
-  const { data, isFetching, isError } = query
+  const { data, isFetching, isError, error } = query
 
   const pagesQty = Math.ceil(data?.count / pageSize)
 
@@ -25,7 +25,7 @@ const VehicleMovesList = () => {
           <div className='mt-2'>
             <AppAlert
               show={isError}
-              text={isError}
+              text={JSON.stringify(error)}
               title='Ошибка при загрузке списка'
             />
           </div>

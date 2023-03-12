@@ -14,6 +14,7 @@ import { STORAGE_KEYS } from 'constants/appConstants'
 import VehicleTypeDetailsProvider from 'features/VehicleTypeDetails/ContextProvider'
 import { useCreateMoveMutation } from 'redux/api/movesApi'
 import AppAlert from 'components/AppAlert'
+import { mapCameraDataToMoveDetails } from 'features/VehicleTypeDetails/helpers'
 
 
 const ArrivalPage = () => {
@@ -42,8 +43,8 @@ const ArrivalPage = () => {
 
     const navigate = useNavigate()
 
-    const { getPhotos, loading: photosLoading, error: photosError } = useGetPhotos()
-    const { getWeight, loading: weightLoading, error: weightError } = useGetWeight()
+    const { getPhotos, loading: photosLoading, error: photosError, clearError: photosClearError } = useGetPhotos()
+    const { getWeight, loading: weightLoading, error: weightError, clearError: weightClearError } = useGetWeight()
 
     const [createMove, { isLoading: createLoading, isError: createIsError, error: createError, reset: createReset }] = useCreateMoveMutation()
 
@@ -71,12 +72,13 @@ const ArrivalPage = () => {
 
     const getWeightAndCameraData = async () => {
 
-        const [photosData, weightData] = await Promise.all([getPhotos(), getWeight()])
-        const camera = photosData.cameraData
+        const [camera, weightData] = await Promise.all([getPhotos(), getWeight()])
         const weight = weightData.weight
         setCameraData(camera)
         setWeight(weight)
     }
+
+    const moveDetails = cameraData.length > 0 ? mapCameraDataToMoveDetails(cameraData) : []
 
     useEffect(() => {
         const getArrivalData = async () => {
@@ -230,7 +232,10 @@ const ArrivalPage = () => {
 
                     </Row>
 
-                    <VehicleTypeDetailsProvider isNew={true} cameraData={cameraData}>
+                    <VehicleTypeDetailsProvider
+                        moveDetails={moveDetails}
+                        loading={photosLoading || weightLoading}
+                    >
 
                         <Row>
                             <Col md={8}>
@@ -246,7 +251,8 @@ const ArrivalPage = () => {
                                             />
                                         </div>
                                     </div>
-                                    <AppAlert show={weightError || photosError} title='Ошибка' text={`${weightError} ${photosError}`} />
+                                    <AppAlert show={photosError} title='Ошибка фото' text={photosError} clear={photosClearError} />
+                                    <AppAlert show={weightError} title='Ошибка веса' text={weightError} clear={weightClearError} />
                                     <div className="bg-light border">
                                         {/* <VehicleDetails /> */}
                                         <VehicleTypeDetails />

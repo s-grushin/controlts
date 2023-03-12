@@ -62,7 +62,6 @@ const VehicleMove = db.define('VehicleMove', {
     },
     userOutId: {
         type: DataTypes.INTEGER,
-        allowNull: false
     },
     parkingId: {
         type: DataTypes.INTEGER,
@@ -94,6 +93,11 @@ const VehicleMove = db.define('VehicleMove', {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
+    },
+    outgoPhotoDetailsIsDiff: {
+        // Признак того что фото и номер отличается от въезда
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     },
 
 }, { timestamps: true, createdAt: 'dateIn' })
@@ -128,5 +132,6 @@ PayData.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
 
 VehicleMove.hasOne(Outgo, { as: 'outgo', foreignKey: 'vehicleMoveId' })
 Outgo.belongsTo(VehicleMove, { foreignKey: 'vehicleMoveId' })
+
 
 module.exports = VehicleMove

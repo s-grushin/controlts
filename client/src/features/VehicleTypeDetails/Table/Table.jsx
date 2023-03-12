@@ -30,51 +30,50 @@ const Table = () => {
 
             <tbody>
               {
-                state.items.map(row =>
+                state.items.map(item =>
                   <tr
-                    key={row.id}
-                    onClick={() => dispatch({ type: 'setSelectedId', payload: { id: row.id } })}
-                    className={row.id === state.selectedId ? 'selectedTableRow' : ''}
+                    key={item.id}
+                    onClick={() => dispatch({ type: 'setSelectedId', payload: { id: item.id } })}
+                    className={item.id === state.selectedId ? 'selectedTableRow' : ''}
                     style={{ cursor: 'pointer' }}
                   >
 
                     <td>
                       {
                         readonly ?
-                          row.number
+                          item.number
                           :
                           <Form.Control
                             name="number"
                             type="text"
                             disabled={readonly}
                             size='sm'
-                            value={row.number}
-                            onChange={e => onChangeHandler(e, row.id)}
+                            value={item.number}
+                            onChange={e => onChangeHandler(e, item.id)}
                           />
                       }
-
                     </td>
 
                     <td>
                       {
                         readonly ?
-                          state.vehicleTypes.find(item => item.id === row.vehicleTypeId).name
+                          state.vehicleTypes.find(vt => vt.id === item.vehicleTypeId).name
                           :
                           <Form.Select
                             name="vehicleTypeId"
                             size="sm"
                             disabled={readonly}
-                            defaultValue={row.vehicleTypeId}
-                            onChange={e => onChangeHandler(e, row.id)}
+                            defaultValue={item.vehicleTypeId}
+                            onChange={e => onChangeHandler(e, item.id)}
                           >
                             <option>--Выбрать тип--</option>
                             {
-                              state.vehicleTypes.map(item =>
+                              state.vehicleTypes.map(vt =>
                                 <option
-                                  key={item.id}
-                                  value={item.id}
+                                  key={vt.id}
+                                  value={vt.id}
                                 >
-                                  {item.name}
+                                  {vt.name}
                                 </option>
                               )
                             }

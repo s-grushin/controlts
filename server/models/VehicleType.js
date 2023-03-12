@@ -19,8 +19,5 @@ const VehicleType = db.define('VehicleType', {
 
 })
 
-VehicleType.addHook('beforeBulkDestroy', (item, options) => {
-    //console.log(item, options);
-})
 
 module.exports = VehicleType

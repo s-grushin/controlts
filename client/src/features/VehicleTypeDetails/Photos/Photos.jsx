@@ -17,7 +17,7 @@ const Photos = ({ mode }) => {
                 {
                     state.items.map(item =>
                         <Col key={item.id} lg='6'>
-                            <VehiclePhoto number={item.number} photoUrl={item.photo} />
+                            <VehiclePhoto number={item.number} photoUrl={item.photoUrl} />
                         </Col>
                     )
                 }
@@ -30,7 +30,7 @@ const Photos = ({ mode }) => {
         return (
             <Row>
                 <Col>
-                    <VehiclePhoto number={selectedItem.number} photoUrl={selectedItem.photo} />
+                    <VehiclePhoto number={selectedItem.number} photoUrl={selectedItem.photoUrl} />
                 </Col>
             </Row>)
     }
