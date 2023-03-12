@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('fs').promises
 const path = require('path')
 
 const MAX_DATE = new Date(3000, 0, 1) //hello from 2023 :)
@@ -17,9 +17,9 @@ async function copyPhotoToPublic(src, fileName, d = new Date()) {
     const day = d.getDate().toString().padStart(2, '0')
 
     const destionationFolder = path.join('public', 'photo', year, month, day)
-    await fs.promises.mkdir(destionationFolder, { recursive: true })
+    await fs.mkdir(destionationFolder, { recursive: true })
     const newPhotoPath = path.join(destionationFolder, fileName)
-    await fs.promises.copyFile(src, newPhotoPath)
+    await fs.copyFile(src, path.resolve(newPhotoPath))
     return newPhotoPath
 
     //console.log(path.join('public', 'photo', year, month, day, fileName));
