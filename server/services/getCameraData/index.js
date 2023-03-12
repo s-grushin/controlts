@@ -2,6 +2,7 @@ const Camera = require('../../models/Camera')
 const MoveRegistrationPhotoSettings = require('../../models/MoveRegistrationPhotoSettings')
 const { copyPhotoToPublic } = require('../../utils')
 const getNomerokData = require('./nomerok')
+const getTestData = require('./test')
 
 
 const getCameraData = async () => {
@@ -17,7 +18,13 @@ const getCameraData = async () => {
 const getCameraDataByPath = async (regPhotoSettingItem) => {
     // Функция должна возвращать объект класса CameraDataResult
 
-    const cameraData = await getNomerokData(regPhotoSettingItem)
+    let cameraData
+
+    if (process.env.TEST_CAMERA_DATA === '1') {
+        cameraData = await getTestData(regPhotoSettingItem)
+    } else {
+        cameraData = await getNomerokData(regPhotoSettingItem)
+    }
     cameraData.regPhotoSettingItem = regPhotoSettingItem
     cameraData.photoUrl = await copyPhotoToPublic(cameraData.filePath, cameraData.fileName, cameraData.createdDate)
     return cameraData
