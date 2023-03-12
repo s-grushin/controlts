@@ -3,12 +3,12 @@ import { Form } from "react-bootstrap"
 import { useGetVehicleTypesQuery } from "redux/api/vehicleTypesApi"
 
 
-const SelectVehicleType = ({ value, onChange }) => {
+const SelectVehicleType = ({ value, onChange, ...props }) => {
 
     const { data, isFetching, isError, error } = useGetVehicleTypesQuery()
 
     return (
-        <Form.Group className="mb-3">
+        <Form.Group {...props}>
             <Form.Label>Тип автотранспорта</Form.Label>
             <Form.Select
                 size='sm'

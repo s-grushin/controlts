@@ -29,7 +29,7 @@ async function getCameraDataByPath(rps) {
         throw new Error('lastFolder not defined')
 
 
-    const targetDir = path.join(rps.camera.photoPath, `${year.toString()}.${month.toString()}`, day.toString(), '2', lastFolder)
+    const targetDir = path.resolve(path.join(rps.camera.photoPath, `${year.toString()}.${month.toString()}`, day.toString(), '2', lastFolder))
     const foundedFiles = await fs.readdir(targetDir)
 
     if (foundedFiles.length === 0) {

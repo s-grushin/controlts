@@ -30,9 +30,9 @@ const CreateUpdateMoveRegistrationPhotoSettings = ({ variant }) => {
             <Card className='mt-2'>
                 <Card.Body>
 
-                    <SelectCamera value={cameraId} onChange={setCameraId} />
+                    <SelectCamera value={cameraId} onChange={setCameraId} className='mb-3' />
 
-                    <SelectVehicleType value={vehicleTypeId} onChange={setVehicleTypeId} />
+                    <SelectVehicleType value={vehicleTypeId} onChange={setVehicleTypeId} className='mb-3' />
 
                     <Form.Group className="mb-3">
                         <Form.Label>Сортировка</Form.Label>

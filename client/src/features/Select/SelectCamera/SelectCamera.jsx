@@ -3,12 +3,13 @@ import { Form } from "react-bootstrap"
 import { useGetCamerasQuery } from "redux/api/camerasApi"
 
 
-const SelectCamera = ({ value, onChange }) => {
+const SelectCamera = ({ value, onChange, ...props }) => {
 
-    const { data, isFetching, isError, error } = useGetCamerasQuery()
+    const { data, isFetching, isError, error } = useGetCamerasQuery(undefined, { skip: !value })
+
 
     return (
-        <Form.Group className="mb-3">
+        <Form.Group {...props}>
             <Form.Label>Камера</Form.Label>
             <Form.Select
                 size='sm'

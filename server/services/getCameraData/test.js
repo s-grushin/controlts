@@ -17,11 +17,11 @@ async function getCameraDataByPath(rps) {
 
     const result = new CameraDataResult()
 
-    const truckFolder = path.join('public', 'test-data', 'photos', 'truck')
-    const trailerFolder = path.join('public', 'test-data', 'photos', 'trailer')
+    const truckFolder = path.resolve(path.join('public', 'test-data', 'photos', 'truck'))
+    const trailerFolder = path.resolve(path.join('public', 'test-data', 'photos', 'trailer'))
 
     const targetDir = rps.camera.progName === 'forTruck' ? truckFolder : trailerFolder
-
+    
     const foundedFiles = await fs.readdir(targetDir)
     const file = foundedFiles[getRandomInt(0, foundedFiles.length - 1)]
     const fileStats = await fs.stat(path.join(targetDir, file))
