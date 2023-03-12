@@ -1,6 +1,7 @@
 const fs = require('fs').promises
 const path = require('path')
 const CameraDataResult = require("../../types/CameraDataResult");
+const { getRandomInt } = require('../../utils/index')
 
 
 function parseNumber(file) {
@@ -10,11 +11,7 @@ function parseNumber(file) {
     return number
 }
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-}
+
 
 async function getCameraDataByPath(rps) {
 

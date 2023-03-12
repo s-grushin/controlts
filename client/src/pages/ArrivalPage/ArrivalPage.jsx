@@ -73,7 +73,7 @@ const ArrivalPage = () => {
     const getWeightAndCameraData = async () => {
 
         const [camera, weightData] = await Promise.all([getPhotos(), getWeight()])
-        const weight = weightData.weight
+        const weight = weightData.value
         setCameraData(camera)
         setWeight(weight)
     }

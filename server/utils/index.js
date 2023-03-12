@@ -65,9 +65,16 @@ function addTimeZoneToDate(date = new Date(), tzOffset) {
     return new Date(date.getTime() + parseInt(tzOffset) * 60 * 1000)
 }
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
 module.exports.MAX_DATE = MAX_DATE
 module.exports.copyPhotoToPublic = copyPhotoToPublic
 module.exports.subtractDays = subtractDays
 module.exports.startOfYear = startOfYear
 module.exports.parseDateRangeQueryParam = parseDateRangeQueryParam
 module.exports.addTimeZoneToDate = addTimeZoneToDate
+module.exports.getRandomInt = getRandomInt

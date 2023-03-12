@@ -1,13 +1,13 @@
 const asyncHandler = require('express-async-handler')
 const db = require('../db/mssql')
 const { Op } = require("sequelize");
-const { copyPhotos, parseDateRangeQueryParam } = require('../utils')
+const { parseDateRangeQueryParam } = require('../utils')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
 const DriverHistory = require('../models/DriverHistory')
 const getCameraData = require('../services/getCameraData')
-const { getWeightData } = require('../services/getWeight/weight')
+const getWeightData = require('../services/getWeight')
 const VehicleMoveDetail = require('../models/VehicleMoveDetail')
 const Driver = require('../models/Driver')
 const VehicleBrand = require('../models/VehicleBrand')
@@ -81,7 +81,7 @@ async function getWeight(req, res) {
 
     try {
         const weight = await getWeightData()
-        return res.status(200).json({ weight })
+        return res.status(200).json(weight)
     } catch (error) {
         return res.status(500).json({ message: `Не удалось получить вес. ${error.message}` })
     }

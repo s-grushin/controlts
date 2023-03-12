@@ -26,7 +26,7 @@ const OutgoDetails = ({ move, weightOptions, cameraDataOptions, outgoPhotoDetail
 
     const handleGetWeight = async () => {
         const weightData = await getWeight()
-        setWeight(weightData.weight)
+        setWeight(weightData.value)
     }
 
     const handleGetPhotos = async () => {
