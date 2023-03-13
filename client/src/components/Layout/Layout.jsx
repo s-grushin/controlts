@@ -7,10 +7,9 @@ const Layout = () => {
     return (
         <>
             <TopNavbar />
-            <Container fluid>
+            <div className='container-xl'>
                 <Outlet />
-            </Container>
-
+            </div>
         </>
     )
 }

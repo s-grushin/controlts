@@ -41,6 +41,10 @@ const CreateUpdateItem = ({ children, fetchUrl, data, variant, updateOptions, on
 
     useEffect(() => {
 
+        if (!id) {
+            return
+        }
+
         const fetchItem = async () => {
             if (variant === 'create' && oneSetter) {
                 const data = await request(oneFetchUrl)
