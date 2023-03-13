@@ -129,9 +129,12 @@ const reducer = (state, action) => {
         case 'init':
             const { items, vehicleMoveId } = action.payload
             return { ...state, items: items || [], vehicleMoveId, isModified: false }
-        case 'addItem':
+        case 'addNewItem':
             return { ...state, isModified: true, items: [...state.items, getNewItem()] }
-
+        case 'addItem':
+            const { calculatedItem } = action.payload
+            const preparedItem = { ...getNewItem(), ...calculatedItem }
+            return { ...state, isModified: true, items: [...state.items, preparedItem] }
         case 'editItem':
             const { itemId, key, value } = action.payload
             return {

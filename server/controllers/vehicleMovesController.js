@@ -88,6 +88,33 @@ async function getWeight(req, res) {
 
 }
 
+async function calculateServices(req, res) {
+
+    const result = {
+        parking: {
+            serviceId: null,
+            quantity: 1,
+            price: 0,
+            summ: 0
+        }
+    }
+
+    const { moveId } = req.query
+    const move = await VehicleMove.findByPk(moveId)
+
+    const parkingPerDay = await Service.findOne({ where: { progName: 'parkingPerDay' } })
+    if (!parkingPerDay) {
+        throw new Error('Не найдена услуга parkingPerDay')
+    }
+    const diffms = Date.now() - move.dateIn
+    const days = diffms / 1000 / 60 / 60 / 24
+    result.parking.serviceId = parkingPerDay.id
+    result.parking.quantity = Math.round(days)
+    result.parking.price = parkingPerDay.price
+    result.parking.summ = result.parking.quantity * result.parking.price
+    return res.status(200).json(result)
+}
+
 async function savePayData(req, res) {
 
     const { vehicleMoveId } = req.body
@@ -310,3 +337,4 @@ module.exports.saveServices = asyncHandler(saveServices)
 module.exports.savePayData = asyncHandler(savePayData)
 module.exports.getAll = asyncHandler(getAll)
 module.exports.getById = asyncHandler(getById)
+module.exports.calculateServices = asyncHandler(calculateServices)
