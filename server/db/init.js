@@ -4,14 +4,31 @@ const Setting = require('../models/Setting')
 const VehicleType = require('../models/VehicleType')
 const Service = require('../models/Service')
 const Camera = require('../models/Camera')
+const Sequence = require('../models/Sequence')
 
 async function init() {
 
     await createRootUser()
+    await fillSequences()
     await fillSettings()
     await fillVehicleTypes()
     await fillServices()
     await fillCameras()
+}
+
+async function fillSequences() {
+
+    const items = [
+        { progName: 'move', number: 100 }
+    ]
+
+    for (const item of items) {
+        const exists = await Sequence.findOne({ where: { progName: item.progName } })
+        if (!exists) {
+            await Sequence.create(item)
+        }
+    }
+
 }
 
 async function fillSettings() {

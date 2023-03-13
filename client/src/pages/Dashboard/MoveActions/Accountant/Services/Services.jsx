@@ -1,4 +1,4 @@
-import MoveServicesProvider from 'features/moveServices'
+import MoveServicesProvider from 'features/MoveServices'
 import useMovesHelper from 'pages/Dashboard/VehicleMovesList/hooks/useMovesHelper'
 
 

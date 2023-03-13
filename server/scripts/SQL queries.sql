@@ -1,4 +1,5 @@
 select * from vehicle_moves order by date_in desc
+select * from sequences
 select * from parkings
 select * from vehicle_move_details where vehicle_move_id=5028
 select * from vehicle_move_services

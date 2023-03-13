@@ -24,7 +24,7 @@ const MovesTable = ({ moves, onRowClicked, selectedId }) => {
               className={item.id === selectedId ? 'selectedTableRow' : ''}
               style={{ cursor: 'pointer' }}
             >
-              <td>{item.id}</td>
+              <td>{item.ticket}</td>
               <td>{item.driver.fullName}</td>
               <td>{formatDate(item.dateIn, { withSeconds: true })}</td>
               <td>{formatDate(item.dateOut, { withSeconds: true })}</td>

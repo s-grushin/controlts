@@ -11,6 +11,7 @@ const User = require('./User')
 const VehicleMoveService = require('./VehicleMoveService')
 const PayData = require('./PayData')
 const Outgo = require('./Outgo')
+const Sequence = require('./Sequence')
 
 
 const VehicleMove = db.define('VehicleMove', {
@@ -98,6 +99,10 @@ const VehicleMove = db.define('VehicleMove', {
         // Признак того что фото и номер отличается от въезда
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    ticket: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
 
 }, { timestamps: true, createdAt: 'dateIn' })

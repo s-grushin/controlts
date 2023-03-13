@@ -20,6 +20,7 @@ const Service = require('../models/Service');
 const VehicleMoveService = require('../models/VehicleMoveService');
 const PayData = require('../models/PayData');
 const Outgo = require('../models/Outgo');
+const Sequence = require('../models/Sequence');
 
 
 async function getAll(req, res) {
@@ -246,6 +247,10 @@ async function create(req, res) {
 
     await db.transaction(async (t) => {
 
+        const moveSequence = await Sequence.findOne({ where: { progName: 'move' }, transaction: t, lock: true })
+        moveSequence.number = moveSequence.number + 1 
+        
+
         // Parking
         const parking = await Parking.findOne({ where: { id: parkingId }, lock: true, transaction: t })
         if (parking?.isBusy) {
@@ -256,7 +261,9 @@ async function create(req, res) {
 
         // Vehicle move
         const vehicleMove = await VehicleMove.create({
-            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, userInId: req.userId, isOwnCompany, comment, companyId, number
+            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, 
+            userInId: req.userId, isOwnCompany, comment, companyId, number, 
+            ticket: moveSequence.number
         }, { transaction: t })
 
         // Vehicle move Details
@@ -272,6 +279,8 @@ async function create(req, res) {
 
         // Driver history
         await DriverHistory.create({ date: currentDate, driverId, companyId, vehicleMoveId: vehicleMove.id }, { transaction: t })
+
+        await moveSequence.save()
 
     })
 
@@ -295,7 +304,6 @@ async function checkout(req, res) {
         if (outgoPhotoDetailsIsDiff) {
 
             const vehicleDetailsToSave = vehicleDetails.map(item => ({ ...item, vehicleMoveId, moveKind: 1, id: null }))
-            console.log(vehicleDetailsToSave);
             await VehicleMoveDetail.bulkCreate(vehicleDetailsToSave, { transaction: t })
         }
     })
