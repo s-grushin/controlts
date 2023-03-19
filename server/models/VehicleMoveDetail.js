@@ -10,6 +10,12 @@ const VehicleMoveDetail = db.define('VehicleMoveDetail', {
     photoUrl: {
         type: DataTypes.STRING
     },
+    fileName: {
+        type: DataTypes.STRING
+    },
+    photo: {
+        type: DataTypes.BLOB
+    },
     moveKind: {
         //0 - въезд
         //1 - выезд
@@ -32,5 +38,6 @@ const VehicleMoveDetail = db.define('VehicleMoveDetail', {
 
 
 VehicleMoveDetail.belongsTo(VehicleType, { as: 'vehicleType', foreignKey: 'vehicleTypeId' })
+
 
 module.exports = VehicleMoveDetail

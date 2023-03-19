@@ -24,6 +24,12 @@ const movesApi = createApi({
             })
         }),
 
+        getPhotoUrl: builder.query({
+            query: (id) => ({
+                url: `getPhotoUrl?moveDetailId=${id}`
+            })
+        }),
+
         saveServices: builder.mutation({
             query: (body) => ({
                 url: 'saveServices',
@@ -72,5 +78,8 @@ const movesApi = createApi({
 })
 
 
-export const { useGetMovesQuery, useGetMoveByIdQuery, useSaveServicesMutation, useSavePayDataMutation, useSaveOutgoMutation, useCreateMoveMutation, useCheckoutMutation } = movesApi
+export const { useGetMovesQuery, useGetMoveByIdQuery, useSaveServicesMutation,
+    useSavePayDataMutation, useSaveOutgoMutation, useCreateMoveMutation,
+    useCheckoutMutation, useGetPhotoUrlQuery } = movesApi
+    
 export default movesApi

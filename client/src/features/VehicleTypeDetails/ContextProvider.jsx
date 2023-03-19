@@ -25,7 +25,9 @@ export const useVehicleTypeDetailsApi = () => {
 
 
 const getNewItem = () => {
-    return new DetailItem()
+    const item = new DetailItem()
+    item.isNew = true
+    return item
 }
 
 const mapRegSettingsToMoveDetails = (regSettings) => {
@@ -33,6 +35,7 @@ const mapRegSettingsToMoveDetails = (regSettings) => {
     const mapped = regSettings.map(item => {
         const di = new DetailItem()
         di.vehicleTypeId = item.vehicleTypeId
+        di.isNew = true
         return di
     })
 
@@ -42,7 +45,6 @@ const mapRegSettingsToMoveDetails = (regSettings) => {
 const VehicleTypeDetailsProvider = ({ children, moveDetails, readonly, loading }) => {
 
     //moveDetails - [] - массив содержащий данные таблицы vehicle_move_details  
-
     const [getMoveRegSettings] = useLazyGetMoveRegistrationPhotoSettingsQuery()
     const [getVehicleTypes] = useLazyGetVehicleTypesQuery()
 

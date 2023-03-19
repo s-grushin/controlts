@@ -9,6 +9,7 @@ export const mapCameraDataToMoveDetails = (cameraData) => {
         di.number = item.number
         di.photoUrl = item.photoUrl
         di.vehicleTypeId = item.regPhotoSettingItem.vehicleTypeId
+        di.isNew = true
         return di
     })
 }

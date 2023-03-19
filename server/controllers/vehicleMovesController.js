@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const db = require('../db/mssql')
 const { Op } = require("sequelize");
-const { parseDateRangeQueryParam } = require('../utils')
+const { parseDateRangeQueryParam, readFile, copyPhotoToTemp, getFileName, saveBinarytoTemp } = require('../utils')
 const DeliveryType = require('../models/DeliveryType')
 const VehicleMove = require('../models/VehicleMove')
 const Parking = require('../models/Parking')
@@ -233,6 +233,30 @@ async function saveServices(req, res) {
 
 }
 
+async function prepareMoveDetails(moveDetails, vehicleMoveId, moveKind) {
+
+    const PHOTO_STORE_METHOD = process.env.PHOTO_STORE_METHOD
+
+    const prepared = moveDetails.map(async (item) => {
+
+        const photoUrl = PHOTO_STORE_METHOD === 'file' ? item.photoUrl : null
+        const photo = PHOTO_STORE_METHOD === 'db' ? await readFile(item.photoUrl) : null
+        const fileName = getFileName(item.photoUrl)
+
+        return {
+            ...item,
+            id: null,
+            vehicleMoveId,
+            moveKind,
+            photoUrl,
+            photo,
+            fileName,
+        }
+    })
+
+    return prepared
+}
+
 async function create(req, res) {
 
     const { brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, companyId, isOwnCompany, comment, vehicleDetails } = req.body
@@ -243,13 +267,14 @@ async function create(req, res) {
 
     const currentDate = new Date()
 
+
     const number = vehicleDetails && vehicleDetails[0] && vehicleDetails[0].number
 
     await db.transaction(async (t) => {
 
         const moveSequence = await Sequence.findOne({ where: { progName: 'move' }, transaction: t, lock: true })
-        moveSequence.number = moveSequence.number + 1 
-        
+        moveSequence.number = moveSequence.number + 1
+
 
         // Parking
         const parking = await Parking.findOne({ where: { id: parkingId }, lock: true, transaction: t })
@@ -261,20 +286,14 @@ async function create(req, res) {
 
         // Vehicle move
         const vehicleMove = await VehicleMove.create({
-            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId, 
-            userInId: req.userId, isOwnCompany, comment, companyId, number, 
+            brandId, modelId, weightIn, driverId, deliveryTypeId, parkingId,
+            userInId: req.userId, isOwnCompany, comment, companyId, number,
             ticket: moveSequence.number
         }, { transaction: t })
 
         // Vehicle move Details
-        const vmd = vehicleDetails.map(item => {
-            return {
-                number: item.number,
-                photoUrl: item.photoUrl,
-                vehicleMoveId: vehicleMove.id,
-                vehicleTypeId: item.vehicleTypeId
-            }
-        })
+        const prepared = await prepareMoveDetails(vehicleDetails, vehicleMove.id, 0)
+        const vmd = await Promise.all(prepared)
         await VehicleMoveDetail.bulkCreate(vmd, { transaction: t })
 
         // Driver history
@@ -299,17 +318,40 @@ async function checkout(req, res) {
         vehicleMove.dateOut = new Date()
         await vehicleMove.save({ transaction: t })
 
-        await VehicleMoveDetail.destroy({ where: { vehicleMoveId, moveKind: 1 }, transaction: t })
-
         if (outgoPhotoDetailsIsDiff) {
-
-            const vehicleDetailsToSave = vehicleDetails.map(item => ({ ...item, vehicleMoveId, moveKind: 1, id: null }))
-            await VehicleMoveDetail.bulkCreate(vehicleDetailsToSave, { transaction: t })
+            await VehicleMoveDetail.destroy({ where: { vehicleMoveId, moveKind: 1 }, transaction: t })
+            const prepared = await prepareMoveDetails(vehicleDetails, vehicleMoveId, 1)
+            const vmd = await Promise.all(prepared)
+            await VehicleMoveDetail.bulkCreate(vmd, { transaction: t })
         }
     })
 
     return res.status(200).json({ message: 'ok' })
 
+}
+
+async function getPhotoUrl(req, res) {
+
+    const { moveDetailId } = req.query
+
+    let photoUrl = ''
+
+    const moveDetail = await VehicleMoveDetail.findByPk(moveDetailId)
+
+
+    if (moveDetail) {
+
+        if (moveDetail.photoUrl) {
+            photoUrl = moveDetail.photoUrl
+        }
+
+        if (moveDetail.photo) {
+            const fileName = moveDetail.fileName || `photo_${Date.now()}.jpg`
+            photoUrl = await saveBinarytoTemp(moveDetail.photo, fileName)
+        }
+    }
+
+    return res.status(200).json(photoUrl)
 }
 
 const vehicleMoveIncludes = [
@@ -328,7 +370,8 @@ const vehicleMoveIncludes = [
         as: 'vehicleDetails',
         include: [
             { model: VehicleType, as: 'vehicleType' }
-        ]
+        ],
+        attributes: ['id', 'number', 'vehicleMoveId', 'vehicleTypeId', 'moveKind']
     },
     { model: VehicleMoveService, as: 'services', include: [{ model: Service, as: 'service' }] },
 ]
@@ -346,3 +389,4 @@ module.exports.savePayData = asyncHandler(savePayData)
 module.exports.getAll = asyncHandler(getAll)
 module.exports.getById = asyncHandler(getById)
 module.exports.calculateServices = asyncHandler(calculateServices)
+module.exports.getPhotoUrl = asyncHandler(getPhotoUrl)

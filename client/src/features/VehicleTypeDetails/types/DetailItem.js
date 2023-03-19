@@ -7,6 +7,7 @@ class DetailItem {
     number = ''
     photoUrl = ''
     vehicleTypeId
+    isNew = false
 
     constructor() {
         this.id = uuid()

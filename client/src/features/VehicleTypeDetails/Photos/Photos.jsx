@@ -1,6 +1,6 @@
 import { Col, Row } from 'react-bootstrap'
-import VehiclePhoto from 'components/VehiclePhoto'
 import { useVehicleTypeDetailsState } from 'features/VehicleTypeDetails/ContextProvider'
+import VehiclePhotoContainer from 'components/VehiclePhoto/VehiclePhotoContainer'
 
 const Photos = ({ mode }) => {
 
@@ -17,7 +17,12 @@ const Photos = ({ mode }) => {
                 {
                     state.items.map(item =>
                         <Col key={item.id} lg='6'>
-                            <VehiclePhoto number={item.number} photoUrl={item.photoUrl} />
+                            <VehiclePhotoContainer
+                                number={item.number}
+                                moveDetailId={selectedItem.id}
+                                isNew={item.isNew}
+                                photoUrl={item.photoUrl}
+                            />
                         </Col>
                     )
                 }
@@ -30,7 +35,12 @@ const Photos = ({ mode }) => {
         return (
             <Row>
                 <Col>
-                    <VehiclePhoto number={selectedItem.number} photoUrl={selectedItem.photoUrl} />
+                    <VehiclePhotoContainer
+                        number={selectedItem.number}
+                        moveDetailId={selectedItem.id}
+                        isNew={selectedItem.isNew}
+                        photoUrl={selectedItem.photoUrl}
+                    />
                 </Col>
             </Row>)
     }

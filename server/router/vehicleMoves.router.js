@@ -4,6 +4,7 @@ const { getArrivalData, getAll, create, checkout,
     getPhotos, getWeight, calculateServices,
     getById, getCheckoutPassPrintData, saveServices,
     getStartingServices, savePayData, saveOutgo,
+    getPhotoUrl
 } = require('../controllers/vehicleMovesController')
 
 router.get('/', getAll)
@@ -13,6 +14,7 @@ router.get('/getWeight', getWeight)
 router.get('/getCheckoutPassPrintData', getCheckoutPassPrintData)
 router.get('/getStartingServices', getStartingServices)
 router.get('/calculateServices', calculateServices)
+router.get('/getPhotoUrl', getPhotoUrl)
 router.get('/:id', getById)
 router.post('/saveServices', saveServices)
 router.post('/savePayData', savePayData)

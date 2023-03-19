@@ -1,6 +1,6 @@
 const Camera = require('../../models/Camera')
 const MoveRegistrationPhotoSettings = require('../../models/MoveRegistrationPhotoSettings')
-const { copyPhotoToPublic } = require('../../utils')
+const { copyPhotoToPublic, copyPhotoToTemp } = require('../../utils')
 const getNomerokData = require('./nomerok')
 const getTestData = require('./test')
 
@@ -26,7 +26,23 @@ const getCameraDataByPath = async (regPhotoSettingItem) => {
         cameraData = await getNomerokData(regPhotoSettingItem)
     }
     cameraData.regPhotoSettingItem = regPhotoSettingItem
-    cameraData.photoUrl = await copyPhotoToPublic(cameraData.filePath, cameraData.fileName, cameraData.createdDate)
+
+    const PHOTO_STORE_METHOD = process.env.PHOTO_STORE_METHOD
+
+    if (PHOTO_STORE_METHOD === 'file') {
+        // Метод хранения фотографий в файле, в БД будут хранится путь к папке public
+        cameraData.photoUrl = await copyPhotoToPublic(cameraData.filePath, cameraData.fileName, cameraData.createdDate)
+
+    } else if (PHOTO_STORE_METHOD === 'db') {
+        // Метод хранения фотографий в базе данных, в папку temp необходимо копировать что бы на клиент передать ссылку, папка temp чистится автоматически со временем  
+        cameraData.photoUrl = await copyPhotoToTemp(cameraData.filePath)
+
+    } else {
+        throw new Error('не назначен способ хранения фотографий')
+    }
+
+
+
     return cameraData
 }
 

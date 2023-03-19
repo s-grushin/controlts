@@ -1,5 +1,5 @@
 import { Stack } from "react-bootstrap"
-import VehiclePhoto from './VehiclePhoto'
+import VehiclePhoto from './VehiclePhoto/VehiclePhoto'
 
 const VehicleDetailsPhotos = ({ vehicleDetails }) => {
     return (

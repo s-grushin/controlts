@@ -10,7 +10,7 @@ async function copyPhotoToPublic(src, fileName, d = new Date()) {
 
     //Функция копирует фото автомобилей из программы которая фотографирует в папку public сервера с разбиением по дням
     //так нужно, потому что на клиент передать путь к файлу из папки программы для фотографий напрямую невозможно
-    //фотография копируется в папку /public/photo/year/month/day
+    //фотография копируется в папку /public/photo/year/month/day    
 
     const year = d.getFullYear().toString()
     const month = (d.getMonth() + 1).toString().padStart(2, '0')
@@ -21,9 +21,22 @@ async function copyPhotoToPublic(src, fileName, d = new Date()) {
     const newPhotoPath = path.join(destionationFolder, fileName)
     await fs.copyFile(src, path.resolve(newPhotoPath))
     return newPhotoPath
+}
 
-    //console.log(path.join('public', 'photo', year, month, day, fileName));
-    //await fs.promises.copyFile(src, path.join('public', fileName))
+async function copyPhotoToTemp(src) {
+
+    const fileName = path.basename(src)
+    const destination = path.join('public', 'temp', 'photo', fileName)
+    await fs.mkdir(path.dirname(destination), { recursive: true })
+    await fs.copyFile(src, destination)
+    return destination
+}
+
+async function saveBinarytoTemp(binary, fileName) {
+
+    const destination = path.join('public', 'temp', 'photo', fileName)
+    await fs.writeFile(destination, binary)
+    return destination
 
 }
 
@@ -71,6 +84,15 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
+async function readFile(filePath) {
+    const res = await fs.readFile(filePath)
+    return res
+}
+
+function getFileName(file) {
+    return path.basename(file)
+}
+
 module.exports.MAX_DATE = MAX_DATE
 module.exports.copyPhotoToPublic = copyPhotoToPublic
 module.exports.subtractDays = subtractDays
@@ -78,3 +100,7 @@ module.exports.startOfYear = startOfYear
 module.exports.parseDateRangeQueryParam = parseDateRangeQueryParam
 module.exports.addTimeZoneToDate = addTimeZoneToDate
 module.exports.getRandomInt = getRandomInt
+module.exports.readFile = readFile
+module.exports.copyPhotoToTemp = copyPhotoToTemp
+module.exports.getFileName = getFileName
+module.exports.saveBinarytoTemp = saveBinarytoTemp
