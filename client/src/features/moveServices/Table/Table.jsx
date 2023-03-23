@@ -48,7 +48,7 @@ const Table = () => {
                                             <td>
                                                 <select
                                                     name="serviceId"
-                                                    defaultValue={item.serviceId}
+                                                    value={item.serviceId}
                                                     onChange={e => onChangeHandler(e, item.id)}
                                                     disabled={readonly}
                                                 >
