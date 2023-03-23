@@ -34,7 +34,7 @@ async function copyPhotoToTemp(src) {
 
 async function saveBinarytoTemp(binary, fileName) {
 
-    const destination = path.join('public', 'temp', 'photo', fileName)
+    const destination = path.join(__dirname, '..', 'public', 'temp', 'photo', fileName)
     await fs.writeFile(destination, binary)
     return destination
 
