@@ -12,9 +12,9 @@ const SelectVehicleType = ({ value, onChange, ...props }) => {
             <Form.Label>Тип автотранспорта</Form.Label>
             <Form.Select
                 size='sm'
-                disabled={isFetching || isError}
+                disabled={isFetching || isError || !value}
                 onChange={(e) => onChange(e.target.value)}
-                defaultValue={value}
+                value={value}
             >
                 <option>--Выбрать тип автотранспорта--</option>
                 {data?.rows.map(item => (

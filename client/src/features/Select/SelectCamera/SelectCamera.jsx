@@ -2,20 +2,18 @@ import InputError from "components/InputError"
 import { Form } from "react-bootstrap"
 import { useGetCamerasQuery } from "redux/api/camerasApi"
 
-
 const SelectCamera = ({ value, onChange, ...props }) => {
 
-    const { data, isFetching, isError, error } = useGetCamerasQuery(undefined, { skip: !value })
-
+    const { data, isFetching, isError, error } = useGetCamerasQuery()
 
     return (
         <Form.Group {...props}>
             <Form.Label>Камера</Form.Label>
             <Form.Select
                 size='sm'
-                disabled={isFetching || isError}
+                disabled={isFetching || isError || !value}
                 onChange={(e) => onChange(e.target.value)}
-                defaultValue={value}
+                value={value}
             >
                 <option>--Выбрать камеру--</option>
                 {data?.rows.map(item => (
