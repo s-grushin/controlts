@@ -10,5 +10,6 @@ export const STORAGE_KEYS = {
     authToken: 'authToken',
     newVehicleDetails: 'newVehicleDetails',
     movesPageSize: 'movesPageSize',
-    moveActionsTab: 'moveActionsTab'
+    moveActionsTab: 'moveActionsTab',
+    deliveryType: 'deliveryType',
 }

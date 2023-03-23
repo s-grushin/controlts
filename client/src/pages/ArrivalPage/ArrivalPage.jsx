@@ -15,6 +15,7 @@ import VehicleTypeDetailsProvider from 'features/VehicleTypeDetails/ContextProvi
 import { useCreateMoveMutation } from 'redux/api/movesApi'
 import AppAlert from 'components/AppAlert'
 import { mapCameraDataToMoveDetails } from 'features/VehicleTypeDetails/helpers'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 
 const ArrivalPage = () => {
@@ -48,6 +49,8 @@ const ArrivalPage = () => {
 
     const [createMove, { isLoading: createLoading, isError: createIsError, error: createError, reset: createReset }] = useCreateMoveMutation()
 
+    const [defaultDeliveryType, setDefaultDeliveryType] = useLocalStorage('deliveryType', null)
+
     const submitHandler = async (e) => {
         e.preventDefault()
 
@@ -68,6 +71,11 @@ const ArrivalPage = () => {
 
         await createMove(formData).unwrap().then(() => navigate('/'))
 
+    }
+
+    const handleSelectDeliveryType = (id) => {
+        setSelectedDeliveryTypeId(id)
+        setDefaultDeliveryType(id)
     }
 
     const getWeightAndCameraData = async () => {
@@ -205,8 +213,8 @@ const ArrivalPage = () => {
                                 <Form.Label>Вид доставки</Form.Label>
                                 <Selector
                                     options={deliveryTypesOptions}
-                                    selectedId={selectedDeliveryTypeId}
-                                    setSelectedId={setSelectedDeliveryTypeId}
+                                    selectedId={selectedDeliveryTypeId || defaultDeliveryType}
+                                    setSelectedId={handleSelectDeliveryType}
                                 />
                             </Form.Group>
 
