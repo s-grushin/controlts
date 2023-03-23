@@ -235,20 +235,15 @@ async function saveServices(req, res) {
 
 async function prepareMoveDetails(moveDetails, vehicleMoveId, moveKind) {
 
-    const PHOTO_STORE_METHOD = process.env.PHOTO_STORE_METHOD
-
     const prepared = moveDetails.map(async (item) => {
 
-        const photoUrl = PHOTO_STORE_METHOD === 'file' ? item.photoUrl : null
-        const photo = PHOTO_STORE_METHOD === 'db' ? await readFile(item.photoUrl) : null
-        const fileName = getFileName(item.photoUrl)
-
+        const photo = await readFile(item.photoUrl)
+        const fileName = getFileName(item.photoUrl)        
         return {
             ...item,
             id: null,
             vehicleMoveId,
             moveKind,
-            photoUrl,
             photo,
             fileName,
         }
@@ -337,7 +332,6 @@ async function getPhotoUrl(req, res) {
     let photoUrl = ''
 
     const moveDetail = await VehicleMoveDetail.findByPk(moveDetailId)
-
 
     if (moveDetail) {
 

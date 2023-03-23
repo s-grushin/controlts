@@ -93,6 +93,10 @@ function getFileName(file) {
     return path.basename(file)
 }
 
+function fakeDelay(ms = 1000) {
+    return new Promise((resolve) => setTimeout(resolve(), ms))
+}
+
 module.exports.MAX_DATE = MAX_DATE
 module.exports.copyPhotoToPublic = copyPhotoToPublic
 module.exports.subtractDays = subtractDays
@@ -104,3 +108,4 @@ module.exports.readFile = readFile
 module.exports.copyPhotoToTemp = copyPhotoToTemp
 module.exports.getFileName = getFileName
 module.exports.saveBinarytoTemp = saveBinarytoTemp
+module.exports.fakeDelay = fakeDelay

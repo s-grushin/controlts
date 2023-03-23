@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index",
-    "import-from-old-db": "node scripts/importDataFromOldDb/execute"
+    "import-from-old-db": "node scripts/importDataFromOldDb/execute",
+    "fill-test-photos": "node scripts/FillTestPhotos"
+
   },
   "author": "s.grushin",
   "license": "ISC",

@@ -27,21 +27,8 @@ const getCameraDataByPath = async (regPhotoSettingItem) => {
     }
     cameraData.regPhotoSettingItem = regPhotoSettingItem
 
-    const PHOTO_STORE_METHOD = process.env.PHOTO_STORE_METHOD
-
-    if (PHOTO_STORE_METHOD === 'file') {
-        // Метод хранения фотографий в файле, в БД будут хранится путь к папке public
-        cameraData.photoUrl = await copyPhotoToPublic(cameraData.filePath, cameraData.fileName, cameraData.createdDate)
-
-    } else if (PHOTO_STORE_METHOD === 'db') {
-        // Метод хранения фотографий в базе данных, в папку temp необходимо копировать что бы на клиент передать ссылку, папка temp чистится автоматически со временем  
-        cameraData.photoUrl = await copyPhotoToTemp(cameraData.filePath)
-
-    } else {
-        throw new Error('не назначен способ хранения фотографий')
-    }
-
-
+    // в папку temp необходимо копировать что бы на клиент передать ссылку, папка temp чистится автоматически со временем  
+    cameraData.photoUrl = await copyPhotoToTemp(cameraData.filePath)
 
     return cameraData
 }

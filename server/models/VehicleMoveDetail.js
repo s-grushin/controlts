@@ -7,9 +7,6 @@ const VehicleMoveDetail = db.define('VehicleMoveDetail', {
     number: {
         type: DataTypes.STRING
     },
-    photoUrl: {
-        type: DataTypes.STRING
-    },
     fileName: {
         type: DataTypes.STRING
     },
