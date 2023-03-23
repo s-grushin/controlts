@@ -31,7 +31,7 @@ function getNewItem() {
     return {
         id: uuid(),
         vehicleMoveId: null,
-        serviceId: null,
+        serviceId: '',
         quantity: 1,
         price: 0,
         summ: 0
