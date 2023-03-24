@@ -202,8 +202,11 @@ async function getCheckoutPassPrintData(req, res) {
         include: vehicleMoveIncludes
     })
 
+    const getPhotosPromises = printData.vm.vehicleDetails.filter(item => item.moveKind === 0).map(async (item) => await getPhotoFromDB(item.id))
+    printData.photos = await Promise.all(getPhotosPromises)
+
     try {
-        return res.status(200).json({ printData })
+        return res.status(200).json(printData)
     } catch (error) {
         return res.status(500).json({ message: `Не удалось получить фотографии. ${error.message}` })
     }
@@ -238,7 +241,7 @@ async function prepareMoveDetails(moveDetails, vehicleMoveId, moveKind) {
     const prepared = moveDetails.map(async (item) => {
 
         const photo = await readFile(item.photoUrl)
-        const fileName = getFileName(item.photoUrl)        
+        const fileName = getFileName(item.photoUrl)
         return {
             ...item,
             id: null,
@@ -329,23 +332,23 @@ async function getPhotoUrl(req, res) {
 
     const { moveDetailId } = req.query
 
-    let photoUrl = ''
+    let photoUrl = await getPhotoFromDB(moveDetailId)
+
+    return res.status(200).json(photoUrl)
+}
+
+async function getPhotoFromDB(moveDetailId) {
+
+    let photoUrl
 
     const moveDetail = await VehicleMoveDetail.findByPk(moveDetailId)
-
     if (moveDetail) {
-
-        if (moveDetail.photoUrl) {
-            photoUrl = moveDetail.photoUrl
-        }
-
         if (moveDetail.photo) {
             const fileName = moveDetail.fileName || `photo_${Date.now()}.jpg`
             photoUrl = await saveBinarytoTemp(moveDetail.photo, fileName)
         }
     }
-
-    return res.status(200).json(photoUrl)
+    return photoUrl
 }
 
 const vehicleMoveIncludes = [

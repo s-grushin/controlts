@@ -1,8 +1,8 @@
 import { useState, useRef } from "react"
 import { Row, Col, Container, Stack, Card } from "react-bootstrap"
-import ReactToPrint, { PrintButton } from "../../../../printForms/Pass/ReactToPrint"
-import useHttp from '../../../../hooks/useHttp'
-import { formatDate } from '../../../../utils/common'
+import ReactToPrint, { PrintButton } from 'printForms/Pass/ReactToPrint'
+import useHttp from "hooks/useHttp"
+import { formatDate } from "utils/common"
 
 const styles = {
   fontSize: '12px'
@@ -22,7 +22,7 @@ const PrintPass = ({ moveId }) => {
     setContentReady(false)
     const data = await request(`vehicleMoves/getCheckoutPassPrintData?vehicleMoveId=${moveId}`)
     setContentReady(true)
-    printParams.current = data.printData
+    printParams.current = data
   }
 
   return (
@@ -34,7 +34,7 @@ const PrintPass = ({ moveId }) => {
             onPrintFinished={() => setContentReady(false)}
 
           >
-            <Container fluid style={styles} className='mt-2'>
+            <Container fluid style={styles}>
               <Form isFirst={true} params={printParams.current} />
               <hr style={{ borderTop: 'dotted 3px black' }} />
               <Form isFirst={false} params={printParams.current} />
@@ -51,13 +51,17 @@ const PrintPass = ({ moveId }) => {
 
 const Form = ({ isFirst, params }) => {
 
-  const truck = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'truck')
-  const trailer = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'trailer')
-  const container = params?.vm?.vehicleDetails?.find(item => item.vehicleType.progName === 'container')
+  const vehicleDetails = params?.vm?.vehicleDetails?.filter(item => item.moveKind === 0) || []
+
+  const truck = vehicleDetails.find(item => item.vehicleType.progName === 'truck')
+  const trailer = vehicleDetails.find(item => item.vehicleType.progName === 'trailer')
+  const container = vehicleDetails.find(item => item.vehicleType.progName === 'container')
+
+  const photos = params?.photos || []
 
   return (
 
-    <Row >
+    <Row className="mt-4">
       <Col xs={1} style={{ fontSize: '10px', position: 'relative' }}>
 
         {
@@ -68,7 +72,7 @@ const Form = ({ isFirst, params }) => {
             className='text-center'
           >
             Після в'їзду на терріторію терміналу Ви забов'язані, не пізніше ніж 3 години, звернутися з усіма документами на товар в кімнату №______та подати ці документи уповноваженій посадовій особі митниці. У разі порушення встановленого терміну Вас буде притягнуто до адміністративної відповідальності за Митним кодексом України.
-            <br /> <span style={{ lineHeight: 2, fontSize: 11 }}> <b>Ознайомлений:________________________</b> </span>
+            <br /> <span style={{ lineHeight: 1, fontSize: 8 }}> <b>Ознайомлений:________________________</b> </span>
           </div>
         }
 
@@ -79,7 +83,7 @@ const Form = ({ isFirst, params }) => {
         <Row>
           <Col xs={9}>
             <div className='text-center'>
-              <b>РАЗОВА ПЕРЕПУСТКА № {params?.vm?.id}</b>
+              <b>РАЗОВА ПЕРЕПУСТКА № {params?.vm?.ticket}</b>
               <p>для в'їзду на територію <span className="text-decoration-underline">{params?.customZone?.value}</span></p>
             </div>
             <Stack direction="horizontal" gap={3} >
@@ -157,14 +161,13 @@ const Form = ({ isFirst, params }) => {
               }
             </span>
 
-            <Card className="mt-2">
-              <Card.Img variant="top" src="http://localhost:5000/public/photo/2023/01/07/2017_01_11_16_40_45_488_2_1_1-AA2074HT_UA_0.jpg" />
-            </Card>
-
-            <Card className="mt-5">
-              <Card.Img variant="top" src="http://localhost:5000/public/photo/2023/01/07/2017_01_11_16_40_45_488_2_1_1-AA2074HT_UA_0.jpg" />
-            </Card>
-
+            {
+              photos.map(url => (
+                <Card className="mt-2" key={url}>
+                  <Card.Img variant="top" src={`${process.env.REACT_APP_SERVER}/${url}`} height='140px' width='140px' />
+                </Card>
+              ))
+            }
           </Col>
 
         </Row>

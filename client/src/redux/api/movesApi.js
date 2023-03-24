@@ -81,5 +81,5 @@ const movesApi = createApi({
 export const { useGetMovesQuery, useGetMoveByIdQuery, useSaveServicesMutation,
     useSavePayDataMutation, useSaveOutgoMutation, useCreateMoveMutation,
     useCheckoutMutation, useGetPhotoUrlQuery } = movesApi
-    
+
 export default movesApi
